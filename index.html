@@ -1,0 +1,1666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BankStatsNepal — Base Rate Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1B2A4A;
+    --ink-soft: #2E3F63;
+    --gold: #C9A961;
+    --gold-soft: #E4D5AC;
+    --paper: #FAF7F0;
+    --paper-dim: #F1ECE0;
+    --slate: #5A6478;
+    --line: #E2DCCB;
+    --up: #B8533E;
+    --down: #4A7C59;
+    --shadow: 0 8px 30px rgba(27, 42, 74, 0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---------- Header ---------- */
+  header {
+    background: var(--ink);
+    color: var(--paper);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.15);
+  }
+
+  .header-inner {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 22px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .brand-mark {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+
+  .brand-mark .accent { color: var(--gold); font-style: italic; }
+
+  .brand-tag {
+    font-size: 12px;
+    color: var(--gold-soft);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 500;
+    border-left: 1px solid rgba(228,213,172,0.3);
+    padding-left: 12px;
+  }
+
+  .updated-pill {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(228,213,172,0.25);
+    border-radius: 999px;
+    padding: 7px 16px;
+    color: var(--gold-soft);
+  }
+
+  /* ---------- Indicator bar (top level nav) ---------- */
+  .indicator-bar {
+    background: var(--ink);
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .indicator-bar-inner {
+    max-width: 1180px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    padding: 10px 28px;
+    gap: 8px;
+  }
+
+  .ind-tab-btn {
+    background: transparent;
+    border: 1.5px solid rgba(228,213,172,0.2);
+    color: rgba(250,247,240,0.5);
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 7px 18px;
+    border-radius: 999px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.18s ease;
+    letter-spacing: 0.01em;
+  }
+  .ind-tab-btn:hover {
+    color: var(--paper);
+    border-color: rgba(228,213,172,0.45);
+  }
+  .ind-tab-btn.active {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--ink);
+  }
+
+  /* Frequency badge — only visible on active pill */
+  .freq-badge {
+    display: none;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink);
+    background: rgba(27,42,74,0.12);
+    border: 1px solid rgba(27,42,74,0.2);
+    border-radius: 4px;
+    padding: 1px 5px;
+    margin-left: 5px;
+    vertical-align: middle;
+  }
+  .ind-tab-btn.active .freq-badge { display: inline; }
+
+  /* ---------- Tabs (BFI category — second level) ---------- */
+  .tab-bar {
+    background: var(--ink);
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .tab-bar-inner {
+    max-width: 1180px;
+    margin: 0 auto;
+    display: flex;
+    padding: 0 28px;
+    gap: 4px;
+    overflow-x: auto;
+  }
+
+  .tab-btn {
+    background: none;
+    border: none;
+    color: rgba(250,247,240,0.55);
+    font-family: 'Inter', sans-serif;
+    font-size: 14.5px;
+    font-weight: 600;
+    padding: 16px 22px;
+    cursor: pointer;
+    position: relative;
+    white-space: nowrap;
+    transition: color 0.2s ease;
+    letter-spacing: 0.01em;
+  }
+
+  .tab-btn:hover { color: var(--paper); }
+
+  .tab-btn.active { color: var(--gold); }
+
+  .tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 22px; right: 22px;
+    height: 3px;
+    background: var(--gold);
+    border-radius: 3px 3px 0 0;
+  }
+
+  .tab-count {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    opacity: 0.6;
+    margin-left: 4px;
+  }
+
+  /* ---------- Main layout ---------- */
+  main { max-width: 1180px; margin: 0 auto; padding: 36px 28px 80px; }
+
+  .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .section-head h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 32px;
+    font-weight: 600;
+  }
+
+  .section-sub {
+    font-size: 13.5px;
+    color: var(--slate);
+    margin-top: 4px;
+  }
+
+  .search-box {
+    position: relative;
+  }
+
+  .search-box input {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    border: 1px solid var(--line);
+    background: #fff;
+    border-radius: 10px;
+    padding: 11px 16px 11px 38px;
+    width: 260px;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .search-box input:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(201,169,97,0.15);
+  }
+
+  .search-box::before {
+    content: '';
+    position: absolute;
+    left: 14px; top: 50%;
+    transform: translateY(-50%);
+    width: 13px; height: 13px;
+    border: 1.5px solid var(--slate);
+    border-radius: 50%;
+  }
+
+  .search-box::after {
+    content: '';
+    position: absolute;
+    left: 24px; top: 64%;
+    width: 6px; height: 1.5px;
+    background: var(--slate);
+    transform: rotate(45deg);
+  }
+
+  /* ---------- Table (desktop) ---------- */
+  .rate-table-wrap {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    border: 1px solid var(--line);
+  }
+
+  table.rate-table { width: 100%; border-collapse: collapse; }
+
+  .rate-table thead th {
+    text-align: left;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--slate);
+    font-weight: 600;
+    padding: 16px 24px;
+    background: var(--paper-dim);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .sortable-th {
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+    transition: color 0.15s ease;
+  }
+  .sortable-th:hover { color: var(--ink); }
+  .sort-active { color: var(--ink) !important; }
+  .sort-arrow { margin-left: 5px; opacity: 0.4; font-size: 10px; }
+  .sort-active .sort-arrow { opacity: 1; }
+
+  .rate-table thead th.num, .rate-table tbody td.num { text-align: right; }
+
+  .rate-table tbody tr {
+    border-bottom: 1px solid var(--line);
+    transition: background 0.15s ease;
+  }
+  .rate-table tbody tr:last-child { border-bottom: none; }
+  .rate-table tbody tr:hover { background: var(--paper-dim); }
+
+  .rate-table td { padding: 18px 24px; font-size: 15px; vertical-align: middle; }
+
+  .inst-name {
+    font-weight: 600;
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+  }
+
+  .rate-value {
+    font-family: 'Space Mono', monospace;
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .rate-date {
+    font-family: 'Space Mono', monospace;
+    font-size: 12.5px;
+    color: var(--slate);
+  }
+
+  .trend-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11.5px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 6px;
+    margin-left: 10px;
+  }
+  .trend-chip.up { color: var(--up); background: rgba(184,83,62,0.08); }
+  .trend-chip.down { color: var(--down); background: rgba(74,124,89,0.08); }
+  .trend-chip.flat { color: var(--slate); background: rgba(90,100,120,0.08); }
+
+  .applicable-rate {
+    font-family: 'Space Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+    background: rgba(201,169,97,0.12);
+    border: 1px solid rgba(201,169,97,0.3);
+    border-radius: 6px;
+    padding: 3px 8px;
+    cursor: help;
+  }
+
+  .applicable-rate:hover {
+    background: rgba(201,169,97,0.22);
+  }
+
+  .pending-badge {
+    display: inline-block;
+    font-family: 'Inter', sans-serif;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    color: var(--gold);
+    background: rgba(201,169,97,0.12);
+    border: 1px solid rgba(201,169,97,0.35);
+    border-radius: 6px;
+    padding: 2px 7px;
+    margin-left: 8px;
+    text-transform: uppercase;
+    vertical-align: middle;
+  }
+
+  .history-btn {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    padding: 9px 18px;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    white-space: nowrap;
+  }
+
+  .history-btn:hover {
+    background: var(--ink);
+    color: var(--gold);
+    border-color: var(--ink);
+  }
+
+  /* ---------- Mobile cards ---------- */
+  .rate-cards { display: none; }
+
+  .rate-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow);
+  }
+
+  .rate-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+    gap: 12px;
+  }
+
+  .rate-card .inst-name { font-size: 16px; }
+
+  .rate-card-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  /* ---------- Footer ---------- */
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 28px;
+    text-align: center;
+    font-size: 12.5px;
+    color: var(--slate);
+  }
+  footer .disclaimer { max-width: 640px; margin: 0 auto 8px; line-height: 1.6; }
+
+  /* ---------- History page (3-column) ---------- */
+  .history-view { display: none; }
+  .history-view.active { display: block; }
+  .tab-view { display: none; }
+  .tab-view.active { display: block; }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--slate);
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 18px;
+    padding: 0;
+    transition: color 0.15s ease;
+  }
+  .back-link:hover { color: var(--ink); }
+  .back-link::before { content: '←'; font-size: 16px; }
+
+  .history-grid {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+
+  /* Top bar: back link + dropdown selectors */
+  .history-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+
+  .inst-selectors {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .selector-wrap {
+    position: relative;
+  }
+
+  .selector-wrap select {
+    font-family: 'Inter', sans-serif;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--ink);
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 10px 36px 10px 16px;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    min-width: 160px;
+  }
+
+  .selector-wrap select:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(201,169,97,0.15);
+  }
+
+  .selector-wrap::after {
+    content: '';
+    position: absolute;
+    right: 14px; top: 50%;
+    width: 8px; height: 8px;
+    border-right: 1.5px solid var(--slate);
+    border-bottom: 1.5px solid var(--slate);
+    transform: translateY(-65%) rotate(45deg);
+    pointer-events: none;
+  }
+
+  #instSelect { min-width: 240px; }
+
+  /* Column 2: detail panel (scrollable) */
+  .detail-col {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    padding: 26px 24px;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+    position: sticky;
+    top: 100px;
+  }
+
+  .detail-col .category-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--gold);
+    font-weight: 700;
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  .detail-col h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.25;
+    margin-bottom: 20px;
+  }
+
+  .detail-col h1 .pending-badge {
+    display: block;
+    width: fit-content;
+    margin: 8px 0 0;
+  }
+
+  .chart-extra-stats {
+    font-family: 'Space Mono', monospace;
+    font-size: 11.5px;
+    color: var(--slate);
+    margin-top: 4px;
+    line-height: 1.6;
+  }
+  .chart-extra-stats b { color: var(--ink); }
+
+  .detail-history h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 15px;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .hist-entry {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 13px;
+  }
+  .hist-entry:last-child { border-bottom: none; }
+  .hist-entry-header { padding: 4px 0 6px; }
+
+  .hist-entry .he-date {
+    font-family: 'Space Mono', monospace;
+    font-size: 11.5px;
+    color: var(--slate);
+    flex-shrink: 0;
+    min-width: 90px;
+  }
+  .hist-entry .he-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .hist-entry .he-rate {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    min-width: 80px;
+    text-align: right;
+  }
+  .hist-entry .he-applicable {
+    font-family: 'Space Mono', monospace;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--ink);
+    background: rgba(201,169,97,0.1);
+    border: 1px solid rgba(201,169,97,0.25);
+    border-radius: 5px;
+    padding: 2px 7px;
+    min-width: 64px;
+    text-align: center;
+    cursor: help;
+  }
+
+  /* Column 3: chart panel */
+  .chart-col {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    padding: 22px 24px;
+  }
+
+  .chart-col-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 4px;
+  }
+
+  .chart-price {
+    font-family: 'Space Mono', monospace;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.1;
+  }
+
+  .chart-price-change {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    margin-top: 4px;
+  }
+
+  .chart-price-change.pos { color: var(--up); }
+  .chart-price-change.neg { color: var(--down); }
+  .chart-price-change.flat { color: var(--slate); }
+
+  .chart-hover-date {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--slate);
+    text-align: right;
+  }
+
+  #robinhoodChart {
+    margin: 14px 0 14px;
+  }
+
+  .range-pills {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .range-pill {
+    background: var(--paper-dim);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--slate);
+    padding: 7px 16px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .range-pill:hover { color: var(--ink); border-color: var(--gold); }
+  .range-pill.active {
+    background: var(--ink);
+    color: var(--gold);
+    border-color: var(--ink);
+  }
+
+  /* ---------- Responsive history ---------- */
+  @media (max-width: 1080px) {
+    .history-grid { grid-template-columns: 1fr; }
+    .detail-col {
+      position: static;
+      max-height: none;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .history-topbar { flex-direction: column; align-items: stretch; }
+    .inst-selectors { flex-direction: column; }
+    .selector-wrap select, #instSelect { width: 100%; min-width: 0; }
+  }
+
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 760px) {
+    .rate-table-wrap { display: none; }
+    .rate-cards { display: block; }
+    .section-head h1 { font-size: 26px; }
+    .search-box input { width: 100%; }
+    .search-box { width: 100%; }
+    .detail-col h1 { font-size: 20px; }
+    .chart-col, .detail-col { padding: 18px; }
+    .chart-price { font-size: 30px; }
+  }
+
+  @media (max-width: 480px) {
+    .header-inner { padding: 16px 18px; }
+    .brand-tag { display: none; }
+    main { padding: 24px 16px 60px; }
+  }
+
+  /* ---------- Misc ---------- */
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--slate);
+    font-size: 14px;
+  }
+
+  ::placeholder { color: #B5AF9E; }
+
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      <img src="logo.png" alt="BankStatsNepal logo" style="height:52px;width:52px;object-fit:contain;flex-shrink:0;vertical-align:middle;">
+      <span class="brand-mark">BankStats<span class="accent">Nepal</span></span>
+      <span class="brand-tag">Nepal BFI Base Rates</span>
+    </div>
+    <div class="updated-pill" id="lastUpdatedPill">Loading…</div>
+  </div>
+  <div class="indicator-bar" id="indBar">
+    <div class="indicator-bar-inner">
+      <button class="ind-tab-btn active" data-indicator="base_rate">Base Rate</button>
+      <button class="ind-tab-btn" data-indicator="interest_spread">Interest Spread</button>
+      <!-- Future indicators added here, e.g.:
+      <button class="ind-tab-btn" data-indicator="npl">NPL <span class="freq-badge">Quarterly</span></button>
+      <button class="ind-tab-btn" data-indicator="capital_adequacy">Capital Adequacy <span class="freq-badge">Quarterly</span></button>
+      -->
+    </div>
+  </div>
+  <div class="tab-bar">
+    <div class="tab-bar-inner">
+      <button class="tab-btn active" data-tab="commercial_banks">Commercial Banks <span class="tab-count" id="count-commercial_banks"></span></button>
+      <button class="tab-btn" data-tab="development_banks">Development Banks <span class="tab-count" id="count-development_banks"></span></button>
+      <button class="tab-btn" data-tab="finance_companies">Finance Companies <span class="tab-count" id="count-finance_companies"></span></button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- LIST VIEWS -->
+  <div id="listViews">
+    <div class="tab-view active" data-tab-view="commercial_banks">
+      <div class="section-head">
+        <div>
+          <h1>Commercial Banks</h1>
+          <div class="section-sub" id="sub-commercial_banks">'A' Class institutions — base lending rate as published monthly</div>
+        </div>
+        <div class="search-box"><input type="text" placeholder="Search bank…" data-search="commercial_banks"></div>
+      </div>
+      <div class="rate-table-wrap"><table class="rate-table"><thead><tr id="thead-commercial_banks">
+        <th>Institution</th><th class="num">Base Rate</th><th class="num">3M Avg Rate</th><th></th>
+      </tr></thead><tbody id="tbody-commercial_banks"></tbody></table></div>
+      <div class="rate-cards" id="cards-commercial_banks"></div>
+    </div>
+
+    <div class="tab-view" data-tab-view="development_banks">
+      <div class="section-head">
+        <div>
+          <h1>Development Banks</h1>
+          <div class="section-sub" id="sub-development_banks">'B' Class institutions — base lending rate as published monthly</div>
+        </div>
+        <div class="search-box"><input type="text" placeholder="Search bank…" data-search="development_banks"></div>
+      </div>
+      <div class="rate-table-wrap"><table class="rate-table"><thead><tr id="thead-development_banks">
+        <th>Institution</th><th class="num">Base Rate</th><th class="num">3M Avg Rate</th><th></th>
+      </tr></thead><tbody id="tbody-development_banks"></tbody></table></div>
+      <div class="rate-cards" id="cards-development_banks"></div>
+    </div>
+
+    <div class="tab-view" data-tab-view="finance_companies">
+      <div class="section-head">
+        <div>
+          <h1>Finance Companies</h1>
+          <div class="section-sub" id="sub-finance_companies">'C' Class institutions — base lending rate as published monthly</div>
+        </div>
+        <div class="search-box"><input type="text" placeholder="Search company…" data-search="finance_companies"></div>
+      </div>
+      <div class="rate-table-wrap"><table class="rate-table"><thead><tr id="thead-finance_companies">
+        <th>Institution</th><th class="num">Base Rate</th><th class="num">3M Avg Rate</th><th></th>
+      </tr></thead><tbody id="tbody-finance_companies"></tbody></table></div>
+      <div class="rate-cards" id="cards-finance_companies"></div>
+    </div>
+  </div>
+
+  <!-- HISTORY VIEW -->
+  <div class="history-view" id="historyView">
+    <div class="history-topbar">
+      <button class="back-link" id="backBtn" style="margin-bottom:0">Back to list</button>
+      <div class="inst-selectors">
+        <div class="selector-wrap">
+          <select id="categorySelect">
+            <option value="commercial_banks">Commercial Banks</option>
+            <option value="development_banks">Development Banks</option>
+            <option value="finance_companies">Finance Companies</option>
+          </select>
+        </div>
+        <div class="selector-wrap">
+          <select id="instSelect"></select>
+        </div>
+      </div>
+    </div>
+
+    <div class="history-grid">
+
+      <!-- Column 1: detail panel (scrollable rate history) -->
+      <div class="detail-col">
+        <span class="category-label" id="histCategory"></span>
+        <h1 id="histName"></h1>
+
+        <div class="detail-history">
+          <h2>Rate History</h2>
+          <div id="histEntries"></div>
+        </div>
+      </div>
+
+      <!-- Column 2: Robinhood-style chart -->
+      <div class="chart-col">
+        <div class="chart-col-head">
+          <div>
+            <div class="chart-price" id="chartPrice">—</div>
+            <div class="chart-price-change" id="chartPriceChange">—</div>
+          </div>
+          <div style="text-align:right">
+            <div class="chart-hover-date" id="chartHoverDate"></div>
+            <div class="chart-extra-stats" id="chartExtraStats"></div>
+          </div>
+        </div>
+        <div id="robinhoodChart"></div>
+        <div class="range-pills" id="rangePills">
+          <button class="range-pill" data-range="6">6M</button>
+          <button class="range-pill" data-range="12">1Y</button>
+          <button class="range-pill" data-range="36">3Y</button>
+          <button class="range-pill active" data-range="all">All</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="disclaimer">
+    Rates shown are indicative and sourced from publicly disclosed monthly statements of each institution. Always verify the current base rate directly with the institution or Nepal Rastra Bank before making financial decisions.
+  </div>
+  <div>BankStatsNepal · Independent base rate tracker for Nepali BFIs</div>
+</footer>
+
+<script>
+const CATEGORY_LABELS = {
+  commercial_banks: 'Commercial Bank',
+  development_banks: 'Development Bank',
+  finance_companies: 'Finance Company'
+};
+
+let DATA = null;
+let SPREAD_DATA = null;
+let GLOBAL_LATEST_DATE = null;
+let currentIndicator = 'base_rate';
+let sortState = { col: null, dir: null }; // col: 'rate'|'avg3', dir: 'desc'|'asc'
+
+const BS_MONTHS = ['Baisakh','Jestha','Ashadh','Shrawan','Bhadra','Ashwin','Kartik','Mangsir','Poush','Magh','Falgun','Chaitra'];
+const BS_MONTHS_SHORT = ['Bai','Jes','Asa','Shr','Bha','Asw','Kar','Man','Pou','Mag','Fal','Cha'];
+
+function fmtDate(d) {
+  // d is "YYYY-MM" in Bikram Sambat, MM = 01 (Baisakh) .. 12 (Chaitra)
+  const [year, month] = d.split('-');
+  const idx = parseInt(month, 10) - 1;
+  return `${BS_MONTHS[idx]} ${year}`;
+}
+
+function fmtDateShort(d) {
+  const [year, month] = d.split('-');
+  const idx = parseInt(month, 10) - 1;
+  return `${BS_MONTHS_SHORT[idx]} ${year.slice(2)}`;
+}
+
+function fmtRate(r) { return r.toFixed(2) + '%'; }
+
+function avg3Month(history) {
+  const slice = history.slice(0, 3);
+  const sum = slice.reduce((s, h) => s + h.rate, 0);
+  return sum / slice.length;
+}
+
+function avg3MonthTooltip(history) {
+  // Returns tooltip text showing the 3 constituent months
+  return history.slice(0, 3).map(h => `${fmtDate(h.date)}: ${fmtRate(h.rate)}`).join(' · ');
+}
+
+function avg3Change(history) {
+  // Change in 3M avg: current (history[0..2]) vs previous (history[1..3])
+  if (history.length < 4) return undefined;
+  const curr = (history[0].rate + history[1].rate + history[2].rate) / 3;
+  const prev = (history[1].rate + history[2].rate + history[3].rate) / 3;
+  return +(curr - prev).toFixed(2);
+}
+
+// Applicable rate for a given row index i = avg of history[i+1], [i+2], [i+3]
+// 3M avg for month i = avg of history[i], history[i+1], history[i+2]
+function applicableRate(history, i) {
+  const slice = history.slice(i, i+3);
+  if (slice.length < 3) return null;
+  return slice.reduce((s, h) => s + h.rate, 0) / slice.length;
+}
+
+function trendChip(curr, prev) {
+  if (prev === undefined) return '';
+  const diff = +(curr - prev).toFixed(2);
+  if (diff > 0) return `<span class="trend-chip up">▲ ${diff.toFixed(2)}</span>`;
+  if (diff < 0) return `<span class="trend-chip down">▼ ${Math.abs(diff).toFixed(2)}</span>`;
+  return `<span class="trend-chip flat">— 0.00</span>`;
+}
+
+function cycleSortDir(col) {
+  if (sortState.col !== col) { sortState = { col, dir: 'desc' }; }
+  else if (sortState.dir === 'desc') { sortState = { col, dir: 'asc' }; }
+  else { sortState = { col: null, dir: null }; }
+}
+
+function sortItems(items) {
+  if (!sortState.col) return [...items].sort((a,b) => a.name.localeCompare(b.name));
+  if (sortState.col === 'name') {
+    return [...items].sort((a,b) => sortState.dir === 'desc'
+      ? b.name.localeCompare(a.name)
+      : a.name.localeCompare(b.name));
+  }
+  return [...items].sort((a,b) => {
+    const va = sortState.col === 'avg3' ? avg3Month(a.history) : a.history[0].rate;
+    const vb = sortState.col === 'avg3' ? avg3Month(b.history) : b.history[0].rate;
+    return sortState.dir === 'desc' ? vb - va : va - vb;
+  });
+}
+
+function sortArrow(col) {
+  if (sortState.col !== col) return '<span class="sort-arrow">↕</span>';
+  return `<span class="sort-arrow">${sortState.dir === 'desc' ? '↓' : '↑'}</span>`;
+}
+
+function baseRateTheadHTML() {
+  return `
+    <th class="sortable-th${sortState.col === 'name' ? ' sort-active' : ''}" data-sort="name">Institution ${sortArrow('name')}</th>
+    <th class="num sortable-th${sortState.col === 'rate' ? ' sort-active' : ''}" data-sort="rate">Base Rate ${sortArrow('rate')}</th>
+    <th class="num sortable-th${sortState.col === 'avg3' ? ' sort-active' : ''}" data-sort="avg3">3M Avg Rate ${sortArrow('avg3')}</th>
+    <th></th>`;
+}
+
+function spreadTheadHTML() {
+  return `
+    <th class="sortable-th${sortState.col === 'name' ? ' sort-active' : ''}" data-sort="name">Institution ${sortArrow('name')}</th>
+    <th class="num sortable-th${sortState.col === 'rate' ? ' sort-active' : ''}" data-sort="rate">Interest Spread ${sortArrow('rate')}</th>
+    <th class="num">12M Range</th>
+    <th></th>`;
+}
+
+function attachSortHandlers(category) {
+  const thead = document.getElementById('thead-' + category);
+  if (!thead) return;
+  thead.querySelectorAll('.sortable-th').forEach(th => {
+    th.addEventListener('click', () => {
+      cycleSortDir(th.dataset.sort);
+      // Only re-render this category, not all tabs
+      if (currentIndicator === 'interest_spread') renderSpreadList(category);
+      else renderList(category);
+    });
+  });
+}
+
+function renderList(category) {
+  const items = sortItems(DATA[category]);
+  const tbody = document.getElementById('tbody-' + category);
+  const cards = document.getElementById('cards-' + category);
+  tbody.innerHTML = '';
+  cards.innerHTML = '';
+  const theadRow = document.getElementById('thead-' + category);
+  if (theadRow) theadRow.innerHTML = baseRateTheadHTML();
+  attachSortHandlers(category);
+
+  items.forEach(inst => {
+    const curr = inst.history[0];
+    const prev = inst.history[1];
+    const chip = trendChip(curr.rate, prev ? prev.rate : undefined);
+    const avg3 = avg3Month(inst.history);
+    const avg3Tip = avg3MonthTooltip(inst.history);
+    const avgChg = avg3Change(inst.history);
+    const avgChip = trendChip(avg3, avgChg !== undefined ? avg3 - avgChg : undefined);
+    const isPending = GLOBAL_LATEST_DATE && curr.date < GLOBAL_LATEST_DATE;
+    const pendingBadge = isPending ? `<span class="pending-badge" title="No rate reported yet for ${fmtDate(GLOBAL_LATEST_DATE)}">Pending update</span>` : '';
+
+    const tr = document.createElement('tr');
+    tr.dataset.name = inst.name.toLowerCase();
+    tr.innerHTML = `
+      <td><div class="inst-name">${inst.name}${pendingBadge}</div></td>
+      <td class="num">
+        <div><span class="rate-value">${fmtRate(curr.rate)}</span>${chip}</div>
+        <div class="rate-date" style="margin-top:4px">${fmtDate(curr.date)}</div>
+      </td>
+      <td class="num">
+        <div style="display:flex;align-items:center;justify-content:flex-end;gap:12px">
+          <div><span class="rate-value" style="font-size:16px" title="${avg3Tip}">${fmtRate(avg3)}</span>${avgChip}</div>
+          <div style="font-family:'Space Mono',monospace;font-size:11px;color:var(--slate);line-height:1.9">${inst.history.slice(0,3).map(h=>`<div style="display:flex;justify-content:space-between;gap:10px"><span>${fmtDateShort(h.date)}</span><span>${h.rate.toFixed(2)}</span></div>`).join('')}</div>
+        </div>
+      </td>
+      <td style="text-align:right"><button class="history-btn" data-cat="${category}" data-id="${inst.id}">View History</button></td>
+    `;
+    tbody.appendChild(tr);
+
+    const card = document.createElement('div');
+    card.className = 'rate-card';
+    card.dataset.name = inst.name.toLowerCase();
+    card.innerHTML = `
+      <div class="rate-card-top">
+        <div class="inst-name">${inst.name}${pendingBadge}</div>
+        <button class="history-btn" data-cat="${category}" data-id="${inst.id}">History</button>
+      </div>
+      <div style="display:flex;gap:20px;margin-top:10px;flex-wrap:wrap">
+        <div>
+          <div class="rate-date" style="margin-bottom:4px">Base Rate</div>
+          <div><span class="rate-value">${fmtRate(curr.rate)}</span>${chip}</div>
+          <div class="rate-date" style="margin-top:3px">${fmtDate(curr.date)}</div>
+        </div>
+        <div style="border-left:1px solid var(--line);padding-left:20px">
+          <div class="rate-date" style="margin-bottom:4px">3M Avg</div>
+          <div><span class="rate-value" style="font-size:16px" title="${avg3Tip}">${fmtRate(avg3)}</span>${avgChip}</div>
+          <div class="rate-date" style="margin-top:3px">${fmtDateShort(inst.history[2]?.date||inst.history[0].date)}–${fmtDateShort(inst.history[0].date)}</div>
+        </div>
+      </div>
+    `;
+    cards.appendChild(card);
+  });
+
+  document.getElementById('count-' + category).textContent = items.length;
+}
+
+// ---------- Interest Spread list ----------
+function renderSpreadList(category) {
+  const source = SPREAD_DATA ? SPREAD_DATA[category] : null;
+  const tbody = document.getElementById('tbody-' + category);
+  const cards = document.getElementById('cards-' + category);
+  const theadRow = document.getElementById('thead-' + category);
+  tbody.innerHTML = '';
+  cards.innerHTML = '';
+
+  if (theadRow) theadRow.innerHTML = spreadTheadHTML();
+  attachSortHandlers(category);
+
+  if (!source || source.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="4" style="padding:40px;text-align:center;color:var(--slate);font-size:14px">No interest spread data available for this category</td></tr>`;
+    document.getElementById('count-' + category).textContent = 0;
+    return;
+  }
+
+  const items = sortItems(source);
+  items.forEach(inst => {
+    const curr = inst.history[0];
+    const prev = inst.history[1];
+    const chip = trendChip(curr.rate, prev ? prev.rate : undefined);
+    const last12 = inst.history.slice(0, Math.min(12, inst.history.length));
+    const rates12 = last12.map(h => h.rate);
+    const minR = Math.min(...rates12).toFixed(2);
+    const maxR = Math.max(...rates12).toFixed(2);
+
+    const tr = document.createElement('tr');
+    tr.dataset.name = inst.name.toLowerCase();
+    tr.innerHTML = `
+      <td><div class="inst-name">${inst.name}</div></td>
+      <td class="num">
+        <div><span class="rate-value">${fmtRate(curr.rate)}</span>${chip}</div>
+        <div class="rate-date" style="margin-top:4px">${fmtDate(curr.date)}</div>
+      </td>
+      <td class="num">
+        <div style="font-family:'Space Mono',monospace;font-size:13px;font-weight:700;color:var(--ink)">${minR}–${maxR}%</div>
+        <div class="rate-date" style="margin-top:2px">last ${last12.length} months</div>
+      </td>
+      <td style="text-align:right"><button class="history-btn" data-cat="${category}" data-id="${inst.id}">View History</button></td>
+    `;
+    tbody.appendChild(tr);
+
+    const card = document.createElement('div');
+    card.className = 'rate-card';
+    card.dataset.name = inst.name.toLowerCase();
+    card.innerHTML = `
+      <div class="rate-card-top">
+        <div class="inst-name">${inst.name}</div>
+        <button class="history-btn" data-cat="${category}" data-id="${inst.id}">History</button>
+      </div>
+      <div style="display:flex;gap:20px;margin-top:10px">
+        <div>
+          <div class="rate-date" style="margin-bottom:4px">Interest Spread</div>
+          <div><span class="rate-value">${fmtRate(curr.rate)}</span>${chip}</div>
+          <div class="rate-date" style="margin-top:3px">${fmtDate(curr.date)}</div>
+        </div>
+        <div style="border-left:1px solid var(--line);padding-left:20px">
+          <div class="rate-date" style="margin-bottom:4px">12M Range</div>
+          <div style="font-family:'Space Mono',monospace;font-size:14px;font-weight:700">${minR}–${maxR}%</div>
+        </div>
+      </div>
+    `;
+    cards.appendChild(card);
+  });
+
+  document.getElementById('count-' + category).textContent = items.length;
+}
+
+// ---------- Dot + range band chart (Interest Spread) ----------
+function drawSpreadChart(history, range) {
+  const data = getRangeData(history, range);
+  const container = document.getElementById('robinhoodChart');
+  const W = 640, H = 280, padL = 8, padR = 8, padT = 16, padB = 30;
+
+  const rates = data.map(d => d.rate);
+  const minRate = Math.min(...rates), maxRate = Math.max(...rates);
+  const meanRate = rates.reduce((a, b) => a + b, 0) / rates.length;
+  const span = (maxRate - minRate) || 0.5;
+  const yMin = minRate - span * 0.5;
+  const yMax = maxRate + span * 0.5;
+
+  const xPos = i => padL + (data.length === 1 ? (W - padL - padR) / 2 : (i / (data.length - 1)) * (W - padL - padR));
+  const yPos = v => padT + (1 - (v - yMin) / (yMax - yMin)) * (H - padT - padB);
+
+  const bandTop = yPos(maxRate);
+  const bandBot = yPos(minRate);
+  const bandH = Math.max(bandBot - bandTop, 2);
+  const meanY = yPos(meanRate);
+
+  let path = '';
+  data.forEach((d, i) => {
+    path += (i === 0 ? 'M' : 'L') + xPos(i).toFixed(2) + ' ' + yPos(d.rate).toFixed(2) + ' ';
+  });
+
+  let dots = '';
+  data.forEach((d, i) => {
+    dots += `<circle class="spread-dot" cx="${xPos(i).toFixed(2)}" cy="${yPos(d.rate).toFixed(2)}" r="4" fill="var(--ink)" stroke="#FAF7F0" stroke-width="1.5" />`;
+  });
+
+  let hoverDots = '';
+  data.forEach((d, i) => {
+    hoverDots += `<circle class="hover-dot" data-idx="${i}" cx="${xPos(i).toFixed(2)}" cy="${yPos(d.rate).toFixed(2)}" r="10" fill="transparent" />`;
+  });
+
+  let xLabels = '';
+  const labelCount = Math.min(6, data.length);
+  for (let i = 0; i < labelCount; i++) {
+    const idx = Math.round((i / (labelCount - 1 || 1)) * (data.length - 1));
+    const d = data[idx];
+    const anchor = i === 0 ? 'start' : (i === labelCount-1 ? 'end' : 'middle');
+    xLabels += `<text x="${xPos(idx).toFixed(2)}" y="${H-8}" text-anchor="${anchor}" font-family="Space Mono, monospace" font-size="11" fill="#5A6478">${fmtDateShort(d.date)}</text>`;
+  }
+
+  const meanLabel = `<text x="${(W - padR).toFixed(2)}" y="${(meanY - 5).toFixed(2)}" text-anchor="end" font-family="Space Mono, monospace" font-size="10" fill="#5A6478">avg ${meanRate.toFixed(2)}%</text>`;
+
+  container.innerHTML = `
+  <svg id="rhSvg" viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block;cursor:crosshair" preserveAspectRatio="xMidYMid meet">
+    <rect x="${padL}" y="${bandTop.toFixed(2)}" width="${W - padL - padR}" height="${bandH.toFixed(2)}" fill="rgba(79,110,247,0.07)" rx="2" />
+    <line x1="${padL}" y1="${meanY.toFixed(2)}" x2="${W - padR}" y2="${meanY.toFixed(2)}" stroke="#5A6478" stroke-width="1" stroke-dasharray="4,3" />
+    ${meanLabel}
+    <path d="${path}" fill="none" stroke="var(--ink)" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" opacity="0.2" />
+    ${dots}
+    ${xLabels}
+    <g id="crosshair" style="display:none">
+      <line id="chLine" x1="0" y1="${padT}" x2="0" y2="${H-padB}" stroke="#5A6478" stroke-width="1" stroke-dasharray="3,3" />
+      <circle id="chDot" r="5" fill="var(--ink)" stroke="#FAF7F0" stroke-width="2" />
+    </g>
+    ${hoverDots}
+  </svg>`;
+
+  const svg = document.getElementById('rhSvg');
+  const crosshair = document.getElementById('crosshair');
+  const chLine = document.getElementById('chLine');
+  const chDot = document.getElementById('chDot');
+  const priceEl = document.getElementById('chartPrice');
+  const changeEl = document.getElementById('chartPriceChange');
+  const hoverDateEl = document.getElementById('chartHoverDate');
+
+  const latest = data[data.length - 1];
+
+  function setSpreadHeaderTo(point, isLive) {
+    priceEl.textContent = fmtRate(point.rate);
+    if (isLive) {
+      changeEl.className = 'chart-price-change flat';
+      changeEl.textContent = `Mean: ${meanRate.toFixed(2)}% · Range: ${minRate.toFixed(2)}–${maxRate.toFixed(2)}%`;
+      hoverDateEl.textContent = '';
+    } else {
+      const diff = +(point.rate - latest.rate).toFixed(2);
+      changeEl.className = 'chart-price-change ' + (diff > 0 ? 'pos' : diff < 0 ? 'neg' : 'flat');
+      const sign = diff >= 0 ? '+' : '';
+      changeEl.textContent = `${sign}${diff.toFixed(2)} pp vs latest`;
+      hoverDateEl.textContent = fmtDate(point.date);
+    }
+  }
+  setSpreadHeaderTo(latest, true);
+
+  svg.querySelectorAll('.hover-dot').forEach(dot => {
+    dot.addEventListener('mouseenter', () => {
+      const idx = parseInt(dot.dataset.idx, 10);
+      const point = data[idx];
+      const px = xPos(idx), py = yPos(point.rate);
+      chLine.setAttribute('x1', px); chLine.setAttribute('x2', px);
+      chDot.setAttribute('cx', px); chDot.setAttribute('cy', py);
+      crosshair.style.display = 'block';
+      setSpreadHeaderTo(point, false);
+    });
+  });
+
+  svg.addEventListener('mouseleave', () => {
+    crosshair.style.display = 'none';
+    setSpreadHeaderTo(latest, true);
+  });
+}
+
+// ---------- Spread detail panel ----------
+function renderSpreadDetailPanel(category, inst) {
+  document.getElementById('histCategory').textContent = CATEGORY_LABELS[category] + ' — Interest Spread';
+  document.getElementById('histName').innerHTML = inst.name;
+
+  const last12 = inst.history.slice(0, Math.min(12, inst.history.length));
+  const rates12 = last12.map(h => h.rate);
+  const mean12 = (rates12.reduce((a,b) => a+b, 0) / rates12.length).toFixed(2);
+  document.getElementById('chartExtraStats').innerHTML =
+    `12M Mean: <b>${mean12}%</b> &nbsp;·&nbsp; Range: <b>${Math.min(...rates12).toFixed(2)}–${Math.max(...rates12).toFixed(2)}%</b>`;
+
+  const entriesEl = document.getElementById('histEntries');
+  entriesEl.innerHTML = '';
+
+  const headerRow = document.createElement('div');
+  headerRow.className = 'hist-entry hist-entry-header';
+  headerRow.innerHTML = `
+    <div class="he-date"></div>
+    <div class="he-right">
+      <div class="he-rate" style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--slate);font-weight:700">Spread</div>
+    </div>`;
+  entriesEl.appendChild(headerRow);
+
+  inst.history.forEach(h => {
+    const row = document.createElement('div');
+    row.className = 'hist-entry';
+    row.innerHTML = `
+      <div class="he-date">${fmtDate(h.date)}</div>
+      <div class="he-right">
+        <div class="he-rate">${fmtRate(h.rate)}</div>
+      </div>`;
+    entriesEl.appendChild(row);
+  });
+
+  currentHistory = inst.history;
+  currentRange = 'all';
+  renderRangePills(currentHistory);
+  drawSpreadChart(currentHistory, currentRange);
+}
+
+// ---------- Select spread institution (history view) ----------
+function selectSpreadInstitution(category, id) {
+  const inst = SPREAD_DATA[category]?.find(x => x.id === id);
+  if (!inst) return;
+  activeCategory = category;
+  activeInstId = id;
+
+  document.getElementById('categorySelect').value = category;
+  const select = document.getElementById('instSelect');
+  const items = [...(SPREAD_DATA[category] || [])].sort((a,b) => a.name.localeCompare(b.name));
+  select.innerHTML = items.map(i => `<option value="${i.id}">${i.name}</option>`).join('');
+  select.value = id;
+
+  renderSpreadDetailPanel(category, inst);
+
+  document.getElementById('listViews').style.display = 'none';
+  document.querySelector('.tab-bar').style.display = 'none';
+  document.getElementById('historyView').classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ---------- Switch indicator ----------
+function switchIndicator(ind) {
+  if (ind === currentIndicator) return;
+  currentIndicator = ind;
+  sortState = { col: null, dir: null };
+  // Exit history view if open
+  if (document.getElementById('historyView').classList.contains('active')) {
+    showListViews();
+  }
+  document.querySelectorAll('.ind-tab-btn').forEach(b => b.classList.toggle('active', b.dataset.indicator === ind));
+
+  const financeTab = document.querySelector('[data-tab="finance_companies"]');
+  const catSelect = document.getElementById('categorySelect');
+
+  if (ind === 'interest_spread') {
+    financeTab.disabled = true;
+    financeTab.style.opacity = '0.38';
+    financeTab.style.pointerEvents = 'none';
+    if (document.querySelector('.tab-btn.active')?.dataset.tab === 'finance_companies') {
+      setActiveTab('commercial_banks');
+    }
+    catSelect.innerHTML = `
+      <option value="commercial_banks">Commercial Banks</option>
+      <option value="development_banks">Development Banks</option>
+    `;
+    document.getElementById('sub-commercial_banks').textContent = "'A' Class institutions — interest rate spread as published monthly";
+    document.getElementById('sub-development_banks').textContent = "'B' Class institutions — interest rate spread as published monthly";
+    ['commercial_banks','development_banks','finance_companies'].forEach(renderSpreadList);
+  } else {
+    financeTab.disabled = false;
+    financeTab.style.opacity = '';
+    financeTab.style.pointerEvents = '';
+    catSelect.innerHTML = `
+      <option value="commercial_banks">Commercial Banks</option>
+      <option value="development_banks">Development Banks</option>
+      <option value="finance_companies">Finance Companies</option>
+    `;
+    document.getElementById('sub-commercial_banks').textContent = "'A' Class institutions — base lending rate as published monthly";
+    document.getElementById('sub-development_banks').textContent = "'B' Class institutions — base lending rate as published monthly";
+    document.getElementById('sub-finance_companies').textContent = "'C' Class institutions — base lending rate as published monthly";
+    // Restore thead headers
+    ['commercial_banks','development_banks','finance_companies'].forEach(cat => {
+      const theadRow = document.getElementById('thead-' + cat);
+      if (theadRow) theadRow.innerHTML = `<th>Institution</th><th class="num">Base Rate</th><th class="num">3M Avg Rate</th><th></th>`;
+      renderList(cat);
+    });
+  }
+}
+
+// ---------- Robinhood-style chart ----------
+let currentHistory = null;   // full history of currently viewed inst (most recent first)
+let currentRange = 'all';
+
+function getRangeData(history, range) {
+  const chronological = [...history].reverse(); // oldest -> newest
+  if (range === 'all') return chronological;
+  const n = parseInt(range, 10);
+  return chronological.slice(-n);
+}
+
+function drawRobinhoodChart(history, range) {
+  const data = getRangeData(history, range);
+  const container = document.getElementById('robinhoodChart');
+  const W = 640, H = 280, padL = 8, padR = 8, padT = 16, padB = 30;
+
+  const rates = data.map(d => d.rate);
+  const min = Math.min(...rates), max = Math.max(...rates);
+  const span = (max - min) || 0.5;
+  const yMin = min - span * 0.18;
+  const yMax = max + span * 0.18;
+
+  const x = i => padL + (data.length === 1 ? (W - padL - padR) / 2 : (i / (data.length - 1)) * (W - padL - padR));
+  const y = v => padT + (1 - (v - yMin) / (yMax - yMin)) * (H - padT - padB);
+
+  let path = '';
+  let area = '';
+  data.forEach((d, i) => {
+    const px = x(i), py = y(d.rate);
+    path += (i === 0 ? 'M' : 'L') + px.toFixed(2) + ' ' + py.toFixed(2) + ' ';
+    area += (i === 0 ? 'M' + px.toFixed(2) + ' ' + (H-padB) + ' L' : 'L') + px.toFixed(2) + ' ' + py.toFixed(2) + ' ';
+  });
+  area += `L${x(data.length-1).toFixed(2)} ${H-padB} Z`;
+
+  // Determine line color based on trend (first vs last in range)
+  const trendUp = data[data.length-1].rate >= data[0].rate;
+  const lineColor = '#1B2A4A';
+  const gradColor = trendUp ? '#4A7C59' : '#B8533E';
+
+  // X-axis date labels — max 6 evenly-spaced labels
+  let xLabels = '';
+  const labelCount = Math.min(6, data.length);
+  for (let i = 0; i < labelCount; i++) {
+    const idx = Math.round((i / (labelCount - 1 || 1)) * (data.length - 1));
+    const d = data[idx];
+    const label = fmtDateShort(d.date);
+    const anchor = i === 0 ? 'start' : (i === labelCount-1 ? 'end' : 'middle');
+    xLabels += `<text x="${x(idx).toFixed(2)}" y="${H-8}" text-anchor="${anchor}" font-family="Space Mono, monospace" font-size="11" fill="#5A6478">${label}</text>`;
+  }
+
+  // Invisible hover targets
+  let hoverDots = '';
+  data.forEach((d, i) => {
+    hoverDots += `<circle class="hover-dot" data-idx="${i}" cx="${x(i).toFixed(2)}" cy="${y(d.rate).toFixed(2)}" r="10" fill="transparent" />`;
+  });
+
+  container.innerHTML = `
+  <svg id="rhSvg" viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block;font-family:Inter,sans-serif;cursor:crosshair" preserveAspectRatio="xMidYMid meet">
+    <defs>
+      <linearGradient id="rhGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="${gradColor}" stop-opacity="0.22" />
+        <stop offset="100%" stop-color="${gradColor}" stop-opacity="0" />
+      </linearGradient>
+    </defs>
+    <path d="${area}" fill="url(#rhGrad)" />
+    <path d="${path}" fill="none" stroke="${lineColor}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" />
+    ${xLabels}
+    <g id="crosshair" style="display:none">
+      <line id="chLine" x1="0" y1="${padT}" x2="0" y2="${H-padB}" stroke="#5A6478" stroke-width="1" stroke-dasharray="3,3" />
+      <circle id="chDot" r="5" fill="${lineColor}" stroke="#FAF7F0" stroke-width="2" />
+    </g>
+    ${hoverDots}
+  </svg>`;
+
+  const svg = document.getElementById('rhSvg');
+  const crosshair = document.getElementById('crosshair');
+  const chLine = document.getElementById('chLine');
+  const chDot = document.getElementById('chDot');
+  const priceEl = document.getElementById('chartPrice');
+  const changeEl = document.getElementById('chartPriceChange');
+  const hoverDateEl = document.getElementById('chartHoverDate');
+
+  const latest = data[data.length - 1];
+  const earliest = data[0];
+
+  function setHeaderTo(point, isLive) {
+    priceEl.textContent = fmtRate(point.rate);
+    const diff = +(point.rate - earliest.rate).toFixed(2);
+    changeEl.className = 'chart-price-change ' + (diff > 0 ? 'pos' : diff < 0 ? 'neg' : 'flat');
+    const sign = diff > 0 ? '+' : '';
+    changeEl.textContent = `${sign}${diff.toFixed(2)} pp since ${fmtDate(earliest.date)}`;
+    hoverDateEl.textContent = isLive ? '' : fmtDate(point.date);
+  }
+  setHeaderTo(latest, true);
+
+  svg.querySelectorAll('.hover-dot').forEach(dot => {
+    dot.addEventListener('mouseenter', () => {
+      const idx = parseInt(dot.dataset.idx, 10);
+      const point = data[idx];
+      const px = x(idx), py = y(point.rate);
+      chLine.setAttribute('x1', px); chLine.setAttribute('x2', px);
+      chDot.setAttribute('cx', px); chDot.setAttribute('cy', py);
+      crosshair.style.display = 'block';
+      setHeaderTo(point, false);
+    });
+  });
+
+  svg.addEventListener('mouseleave', () => {
+    crosshair.style.display = 'none';
+    setHeaderTo(latest, true);
+  });
+}
+
+function renderRangePills(history) {
+  document.querySelectorAll('.range-pill').forEach(pill => {
+    pill.classList.toggle('active', pill.dataset.range === currentRange);
+    pill.onclick = () => {
+      currentRange = pill.dataset.range;
+      renderRangePills(history);
+      if (currentIndicator === 'interest_spread') {
+        drawSpreadChart(history, currentRange);
+      } else {
+        drawRobinhoodChart(history, currentRange);
+      }
+    };
+  });
+}
+
+// ---------- Detail panel ----------
+function renderDetailPanel(category, inst) {
+  document.getElementById('histCategory').textContent = CATEGORY_LABELS[category];
+  const curr = inst.history[0];
+  const isPending = GLOBAL_LATEST_DATE && curr.date < GLOBAL_LATEST_DATE;
+  document.getElementById('histName').innerHTML = inst.name + (isPending ? `<span class="pending-badge" title="No rate reported yet for ${fmtDate(GLOBAL_LATEST_DATE)}">Pending update</span>` : '');
+
+  const last12 = inst.history.slice(0, 12);
+  const rates12 = last12.map(h => h.rate);
+  const avg3 = avg3Month(inst.history);
+  const avg3Tip = avg3MonthTooltip(inst.history);
+  document.getElementById('chartExtraStats').innerHTML =
+    `Applicable Rate: <b title="${avg3Tip}" style="cursor:help">${fmtRate(avg3)}</b> &nbsp;·&nbsp; 12-Mo Range: <b>${Math.min(...rates12).toFixed(2)}–${Math.max(...rates12).toFixed(2)}%</b>`;
+
+  const entriesEl = document.getElementById('histEntries');
+  entriesEl.innerHTML = '';
+
+  // Header row
+  const headerRow = document.createElement('div');
+  headerRow.className = 'hist-entry hist-entry-header';
+  headerRow.innerHTML = `
+    <div class="he-date"></div>
+    <div class="he-right">
+      <div class="he-rate" style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--slate);font-weight:700">Base Rate</div>
+      <div class="he-applicable" style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--slate);font-weight:700;background:none;border:none;padding:0;cursor:default">3M Avg</div>
+    </div>`;
+  entriesEl.appendChild(headerRow);
+
+  inst.history.forEach((h, i) => {
+    const appRate = applicableRate(inst.history, i);
+    const appRateStr = appRate !== null ? fmtRate(appRate) : '—';
+
+    const row = document.createElement('div');
+    row.className = 'hist-entry';
+    row.innerHTML = `
+      <div class="he-date">${fmtDate(h.date)}</div>
+      <div class="he-right">
+        <div class="he-rate">${fmtRate(h.rate)}</div>
+        <div class="he-applicable" style="background:none;border:none;padding:0;color:var(--slate);cursor:default">${appRateStr}</div>
+      </div>`;
+    entriesEl.appendChild(row);
+  });
+
+  currentHistory = inst.history;
+  currentRange = 'all';
+  renderRangePills(currentHistory);
+  drawRobinhoodChart(currentHistory, currentRange);
+}
+
+// ---------- Dropdown selectors (column header) ----------
+let activeCategory = 'commercial_banks';
+let activeInstId = null;
+
+function populateInstSelect(category, preserveSelection) {
+  const select = document.getElementById('instSelect');
+  const items = [...DATA[category]].sort((a,b) => a.name.localeCompare(b.name));
+  select.innerHTML = items.map(inst =>
+    `<option value="${inst.id}">${inst.name}</option>`
+  ).join('');
+
+  if (preserveSelection && items.some(i => i.id === activeInstId)) {
+    select.value = activeInstId;
+  } else {
+    select.value = items[0].id;
+  }
+}
+
+function selectInstitution(category, id) {
+  const inst = DATA[category].find(x => x.id === id);
+  if (!inst) return;
+  activeCategory = category;
+  activeInstId = id;
+
+  document.getElementById('categorySelect').value = category;
+  populateInstSelect(category, true);
+  document.getElementById('instSelect').value = id;
+
+  renderDetailPanel(category, inst);
+
+  document.getElementById('listViews').style.display = 'none';
+  document.querySelector('.tab-bar').style.display = 'none';
+  document.getElementById('historyView').classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showListViews() {
+  document.getElementById('historyView').classList.remove('active');
+  document.getElementById('listViews').style.display = 'block';
+  document.querySelector('.tab-bar').style.display = '';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function setActiveTab(tab) {
+  sortState = { col: null, dir: null }; // Reset sort when switching tabs
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+  document.querySelectorAll('.tab-view').forEach(v => v.classList.toggle('active', v.dataset.tabView === tab));
+}
+
+function applySearch(category, query) {
+  const q = query.trim().toLowerCase();
+  document.querySelectorAll(`#tbody-${category} tr`).forEach(row => {
+    row.style.display = row.dataset.name.includes(q) ? '' : 'none';
+  });
+  document.querySelectorAll(`#cards-${category} .rate-card`).forEach(card => {
+    card.style.display = card.dataset.name.includes(q) ? '' : 'none';
+  });
+}
+
+function getMostRecentDate() {
+  let latest = null;
+  ['commercial_banks','development_banks','finance_companies'].forEach(cat => {
+    DATA[cat].forEach(inst => {
+      const d = inst.history[0].date;
+      if (!latest || d > latest) latest = d;
+    });
+  });
+  return latest;
+}
+
+function init() {
+  GLOBAL_LATEST_DATE = getMostRecentDate();
+  ['commercial_banks','development_banks','finance_companies'].forEach(renderList);
+  document.getElementById('lastUpdatedPill').textContent = 'Updated through ' + fmtDate(GLOBAL_LATEST_DATE);
+
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => setActiveTab(btn.dataset.tab));
+  });
+
+  document.querySelectorAll('[data-search]').forEach(input => {
+    input.addEventListener('input', e => applySearch(input.dataset.search, e.target.value));
+  });
+
+  document.getElementById('listViews').addEventListener('click', e => {
+    const btn = e.target.closest('.history-btn');
+    if (btn) {
+      if (currentIndicator === 'interest_spread') {
+        selectSpreadInstitution(btn.dataset.cat, btn.dataset.id);
+      } else {
+        selectInstitution(btn.dataset.cat, btn.dataset.id);
+      }
+    }
+  });
+
+  document.getElementById('backBtn').addEventListener('click', showListViews);
+
+  // Indicator switcher
+  document.querySelectorAll('.ind-tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => switchIndicator(btn.dataset.indicator));
+  });
+
+  // Dropdown selectors in history view
+  document.getElementById('categorySelect').addEventListener('change', e => {
+    const category = e.target.value;
+    if (currentIndicator === 'interest_spread') {
+      const items = [...(SPREAD_DATA[category] || [])].sort((a,b) => a.name.localeCompare(b.name));
+      const select = document.getElementById('instSelect');
+      select.innerHTML = items.map(i => `<option value="${i.id}">${i.name}</option>`).join('');
+      if (items.length > 0) selectSpreadInstitution(category, select.value);
+    } else {
+      populateInstSelect(category, false);
+      const firstId = document.getElementById('instSelect').value;
+      selectInstitution(category, firstId);
+    }
+  });
+
+  document.getElementById('instSelect').addEventListener('change', e => {
+    if (currentIndicator === 'interest_spread') {
+      selectSpreadInstitution(activeCategory, e.target.value);
+    } else {
+      selectInstitution(activeCategory, e.target.value);
+    }
+  });
+}
+
+Promise.all([
+  fetch('data/base-rates.json').then(r => r.json()),
+  fetch('data/interest-spread.json').then(r => r.json())
+]).then(([baseData, spreadData]) => {
+  DATA = baseData;
+  SPREAD_DATA = spreadData;
+  init();
+}).catch(err => {
+  document.querySelector('main').innerHTML = `<div class="empty-state">Could not load data. Make sure data files are present and the page is served over HTTP (not opened directly as a file).</div>`;
+  console.error(err);
+});
+</script>
+
+</body>
+</html>
