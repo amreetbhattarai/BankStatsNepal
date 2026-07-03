@@ -1,0 +1,9 @@
+{
+  "_readme": "Slow-changing reference data. interest_rate_corridor: one entry per BS period ('YYYY-MM'); upper = Bank Rate (ceiling), policy = Policy/Repo Rate, lower = Deposit Collection Rate (floor), interbank = weighted avg interbank rate (optional). Add other infrequently-updated datasets as new top-level keys.",
+  "interest_rate_corridor": [
+    { "date": "2082-12", "upper": 5.75, "policy": 4.25, "lower": 2.75 },
+    { "date": "2082-09", "upper": 5.75, "policy": 4.25, "lower": 2.75 },
+    { "date": "2082-06", "upper": 5.75, "policy": 4.25, "lower": 2.75 },
+    { "date": "2082-03", "upper": 6.00, "policy": 4.50, "lower": 2.75 }
+  ]
+}
