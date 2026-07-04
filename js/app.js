@@ -575,19 +575,44 @@ function renderIRC() {
   const band = toPath(stepPts('upper')) +
     ' L' + stepPts('lower').reverse().map(p => `${p[0].toFixed(1)},${p[1].toFixed(1)}`).join(' L') + ' Z';
 
-  // Revision markers: vertical line + new values wherever the corridor changed
-  let changeMarks = '';
+  // Regime segments: a new segment starts wherever any corridor rate changes
+  const KEYS = ['upper', 'policy', 'lower'];
   const KEY_COLORS = { upper: '#B8533E', policy: '#C9A961', lower: '#4A7C59' };
+  const bounds = [0];
   for (let i = 1; i < data.length; i++) {
-    const changed = ['upper', 'policy', 'lower'].filter(k => data[i][k] !== data[i - 1][k]);
-    if (!changed.length) continue;
+    if (KEYS.some(k => data[i][k] !== data[i - 1][k])) bounds.push(i);
+  }
+  bounds.push(data.length);
+
+  let changeMarks = '';
+
+  // Plateau value labels for past regimes (the current regime is labeled at the right edge)
+  for (let s = 0; s < bounds.length - 2; s++) {
+    const a = bounds[s], b = bounds[s + 1] - 1;
+    if (x(b) - x(a) < 60) continue;
+    const mx = ((x(a) + x(b)) / 2).toFixed(1);
+    KEYS.forEach(k => {
+      const v = data[a][k];
+      const dy = k === 'lower' ? 13 : -5;
+      changeMarks += `<text x="${mx}" y="${(y(v) + dy).toFixed(1)}" text-anchor="middle" font-family="Space Mono, monospace" font-size="9.5" font-weight="700" fill="${KEY_COLORS[k]}">${v.toFixed(2)}</text>`;
+    });
+  }
+
+  // Revision line: month at top + direction chip (▲/▼ change) beside each jump
+  for (let s = 1; s < bounds.length - 1; s++) {
+    const i = bounds[s];
     const cx = x(i).toFixed(1);
     changeMarks += `<line x1="${cx}" x2="${cx}" y1="${padT}" y2="${H - padB}" stroke="#5A6478" stroke-width="1" stroke-dasharray="3,3" opacity="0.4"/>`;
     changeMarks += `<text x="${+cx + 4}" y="${padT + 9}" font-family="Space Mono, monospace" font-size="9" fill="#5A6478">${fmtDateShort(data[i].date)}</text>`;
-    changed.forEach(k => {
-      // Label mid-jump: old value → new value
-      const midY = (y(data[i - 1][k]) + y(data[i][k])) / 2;
-      changeMarks += `<text x="${+cx + 4}" y="${(midY + 3.5).toFixed(1)}" font-family="Space Mono, monospace" font-size="9.5" font-weight="700" fill="${KEY_COLORS[k]}">${data[i - 1][k].toFixed(2)} → ${data[i][k].toFixed(2)}</text>`;
+    KEYS.filter(k => data[i][k] !== data[i - 1][k]).forEach(k => {
+      const oldV = data[i - 1][k], newV = data[i][k];
+      const d = newV - oldV;
+      const midY = (y(oldV) + y(newV)) / 2;
+      const col = d > 0 ? '#B8533E' : '#4A7C59';
+      // Pre-change rate, just left of the revision line at its old level
+      const oldDy = d < 0 ? -4 : 11;
+      changeMarks += `<text x="${+cx - 4}" y="${(y(oldV) + oldDy).toFixed(1)}" text-anchor="end" font-family="Space Mono, monospace" font-size="9" font-weight="700" fill="${KEY_COLORS[k]}" opacity="0.75">${oldV.toFixed(2)}</text>`;
+      changeMarks += `<text x="${+cx + 4}" y="${(midY + 3.5).toFixed(1)}" font-family="Space Mono, monospace" font-size="9.5" font-weight="700" fill="${col}">${d > 0 ? '▲' : '▼'}${Math.abs(d).toFixed(2)}</text>`;
     });
   }
 
