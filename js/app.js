@@ -1254,9 +1254,9 @@ function navigateTo(page) {
           <option value="commercial_banks">Commercial Banks</option>
           <option value="development_banks">Development Banks</option>` + (hasFCSpread ? `
           <option value="finance_companies">Finance Companies</option>` : '');
-        document.getElementById('sub-commercial_banks').textContent = "'A' Class institutions — interest rate spread as published monthly";
-        document.getElementById('sub-development_banks').textContent = "'B' Class institutions — interest rate spread as published monthly";
-        document.getElementById('sub-finance_companies').textContent = "'C' Class institutions — interest rate spread as published monthly";
+        document.getElementById('sub-commercial_banks').textContent = "Interest rate spread of commercial banks in Nepal — 'A' class institutions, updated monthly";
+        document.getElementById('sub-development_banks').textContent = "Interest rate spread of development banks in Nepal — 'B' class institutions, updated monthly";
+        document.getElementById('sub-finance_companies').textContent = "Interest rate spread of finance companies in Nepal — 'C' class institutions, updated monthly";
         ['commercial_banks','development_banks','finance_companies'].forEach(renderSpreadList);
       } else {
         fcBtn.disabled = false;
@@ -1264,9 +1264,9 @@ function navigateTo(page) {
           <option value="commercial_banks">Commercial Banks</option>
           <option value="development_banks">Development Banks</option>
           <option value="finance_companies">Finance Companies</option>`;
-        document.getElementById('sub-commercial_banks').textContent = "'A' Class institutions — base lending rate as published monthly";
-        document.getElementById('sub-development_banks').textContent = "'B' Class institutions — base lending rate as published monthly";
-        document.getElementById('sub-finance_companies').textContent = "'C' Class institutions — base lending rate as published monthly";
+        document.getElementById('sub-commercial_banks').textContent = "Base rates of commercial banks in Nepal — 'A' class institutions, updated monthly from official disclosures";
+        document.getElementById('sub-development_banks').textContent = "Base rates of development banks in Nepal — 'B' class institutions, updated monthly from official disclosures";
+        document.getElementById('sub-finance_companies').textContent = "Base rates of finance companies in Nepal — 'C' class institutions, updated monthly from official disclosures";
         ['commercial_banks','development_banks','finance_companies'].forEach(renderList);
       }
     } else {
