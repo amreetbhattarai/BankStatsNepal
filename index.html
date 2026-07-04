@@ -28,6 +28,38 @@
   "inLanguage": "en"
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is the base rate of banks in Nepal?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The base rate is the minimum lending rate a bank can charge, calculated from its cost of funds and operating costs under Nepal Rastra Bank rules. Every commercial bank, development bank and finance company publishes it monthly — the rates on this site come from those official disclosures."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is interest rate spread?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The interest rate spread is the difference between a bank's average lending rate and its average deposit rate — the margin it earns for intermediating money. Nepal Rastra Bank caps the spread that banks and financial institutions may maintain."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How often is this data updated?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Monthly. Institutions publish rates for each Nepali calendar month, and the site is updated as disclosures become available."
+      }
+    }
+  ]
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -41,7 +73,7 @@
     <div class="nav-inner">
       <div class="nav-brand" onclick="navigateTo('dashboard')">
         <img src="logo.png" alt="BankStatsNepal" style="height:44px;width:44px;object-fit:contain;flex-shrink:0;">
-        <span class="brand-mark">BankStats<span class="accent">Nepal</span><sup style="font-size:10px;color:var(--gold-soft);letter-spacing:0.08em;margin-left:4px;">BETA</sup></span>
+        <span class="brand-mark">BankStats<span class="accent">Nepal</span></span>
       </div>
 
       <div class="nav-links">
@@ -213,7 +245,7 @@
         <div class="section-head">
           <div>
             <h1>Commercial Banks</h1>
-            <div class="section-sub" id="sub-commercial_banks">'A' Class institutions — base lending rate as published monthly</div>
+            <div class="section-sub" id="sub-commercial_banks">Base rates of commercial banks in Nepal — 'A' class institutions, updated monthly from official disclosures</div>
           </div>
           <div class="search-box"><input type="text" placeholder="Search bank…" data-search="commercial_banks"></div>
         </div>
@@ -227,7 +259,7 @@
         <div class="section-head">
           <div>
             <h1>Development Banks</h1>
-            <div class="section-sub" id="sub-development_banks">'B' Class institutions — base lending rate as published monthly</div>
+            <div class="section-sub" id="sub-development_banks">Base rates of development banks in Nepal — 'B' class institutions, updated monthly from official disclosures</div>
           </div>
           <div class="search-box"><input type="text" placeholder="Search bank…" data-search="development_banks"></div>
         </div>
@@ -241,7 +273,7 @@
         <div class="section-head">
           <div>
             <h1>Finance Companies</h1>
-            <div class="section-sub" id="sub-finance_companies">'C' Class institutions — base lending rate as published monthly</div>
+            <div class="section-sub" id="sub-finance_companies">Base rates of finance companies in Nepal — 'C' class institutions, updated monthly from official disclosures</div>
           </div>
           <div class="search-box"><input type="text" placeholder="Search company…" data-search="finance_companies"></div>
         </div>
@@ -316,10 +348,42 @@
 </main>
 
 <footer>
-  <div class="disclaimer">
-    Rates shown are indicative and sourced from publicly disclosed monthly statements of each institution. Always verify the current rate directly with the institution or Nepal Rastra Bank before making financial decisions.
+  <div class="footer-inner">
+
+      <div>
+        <div class="footer-title">About this data</div>
+        <div class="footer-sub">Common questions on base rates and spreads in Nepal</div>
+        <details class="faq-item" open>
+          <summary>What is the base rate of banks in Nepal?</summary>
+          <p>The base rate is the minimum lending rate a bank can charge, calculated from its cost of funds and operating costs under Nepal Rastra Bank rules. Every commercial bank, development bank and finance company publishes it monthly — the rates on this site come from those official disclosures.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What is interest rate spread?</summary>
+          <p>The interest rate spread is the difference between a bank's average lending rate and its average deposit rate — the margin it earns for intermediating money. Nepal Rastra Bank caps the spread that banks and financial institutions may maintain.</p>
+        </details>
+        <details class="faq-item">
+          <summary>How often is this data updated?</summary>
+          <p>Monthly. Institutions publish rates for each Nepali calendar month, and the site is updated as disclosures become available. The indicator at the top of the dashboard shows the latest covered month.</p>
+        </details>
+      </div>
+
+      <div>
+        <div class="footer-title">Feedback</div>
+        <div class="footer-sub">Spotted an error or want a new statistic tracked?</div>
+        <p class="footer-text">BankStatsNepal is an independent project. Corrections, suggestions and requests for new indicators are always welcome.</p>
+        <a class="footer-btn" href="https://docs.google.com/forms/d/e/1FAIpQLSfdIRY2k1cT20pW-jmejLOa0AvpG2byer5D2yepw0wow8hlyw/viewform" target="_blank" rel="noopener">Send feedback</a>
+        <p class="footer-text" style="margin:14px 0 0">For correspondence: <a href="mailto:bankstatsnepal@gmail.com" style="color:var(--gold-soft);text-decoration:none">bankstatsnepal@gmail.com</a></p>
+        <!-- Future footer links (about, data sources, socials) go here -->
+      </div>
+
   </div>
-  <div>BankStatsNepal · Independent BFI data tracker for Nepal</div>
+
+  <div class="footer-base">
+    <div class="disclaimer">
+      Rates shown are indicative and sourced from publicly disclosed monthly statements of each institution. Always verify the current rate directly with the institution or Nepal Rastra Bank before making financial decisions.
+    </div>
+    <div>BankStatsNepal · Independent BFI data tracker for Nepal</div>
+  </div>
 </footer>
 
 <!-- Tooltips -->
