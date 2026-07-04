@@ -559,8 +559,92 @@
   }
 
   /* ========= FOOTER ========= */
-  footer { border-top: 1px solid var(--line); padding: 28px; text-align: center; font-size: 12.5px; color: var(--slate); }
-  footer .disclaimer { max-width: 640px; margin: 0 auto 8px; line-height: 1.6; }
+  footer { background: var(--ink); padding: 48px 28px 26px; }
+
+  .footer-inner {
+    max-width: 1180px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+
+  .footer-title {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--paper);
+  }
+
+  .footer-sub { font-size: 12px; color: rgba(250,247,240,0.5); margin: 3px 0 14px; }
+
+  .faq-item {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    margin-bottom: 8px;
+  }
+
+  .faq-item summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--paper);
+  }
+
+  .faq-item summary::-webkit-details-marker { display: none; }
+
+  .faq-item summary::after {
+    content: '+';
+    color: var(--gold);
+    font-size: 16px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .faq-item[open] summary::after { content: '−'; }
+
+  .faq-item p { padding: 0 16px 13px; font-size: 12.5px; line-height: 1.65; color: rgba(250,247,240,0.6); }
+
+  .footer-text { font-size: 12.5px; color: rgba(250,247,240,0.6); line-height: 1.65; margin-bottom: 14px; }
+
+  .footer-btn {
+    display: inline-block;
+    background: transparent;
+    border: 1.5px solid var(--gold);
+    color: var(--gold-soft);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 18px;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+
+  .footer-btn:hover { background: var(--gold); color: var(--ink); }
+
+  .footer-base {
+    max-width: 1180px;
+    margin: 36px auto 0;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding-top: 20px;
+    text-align: center;
+    font-size: 12px;
+    color: rgba(250,247,240,0.45);
+  }
+
+  .footer-base .disclaimer { max-width: 640px; margin: 0 auto 8px; line-height: 1.6; }
+
+  @media (max-width: 760px) {
+    .footer-inner { grid-template-columns: 1fr; gap: 32px; }
+  }
 
   /* ========= MISC ========= */
   .empty-state { text-align: center; padding: 60px 20px; color: var(--slate); font-size: 14px; }
