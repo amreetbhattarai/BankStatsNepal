@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>BankStatsNepal — Admin Updater</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1B2A4A;
+    --gold: #C9A961;
+    --paper: #FAF7F0;
+    --paper-dim: #F1ECE0;
+    --slate: #5A6478;
+    --line: #E2DCCB;
+    --up: #B8533E;
+    --down: #4A7C59;
+    --good: #4A7C59;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; background: var(--paper); color: var(--ink); padding: 0 0 80px; }
+
+  header { background: var(--ink); color: var(--paper); padding: 28px; }
+  header h1 { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 600; }
+  header .accent { color: var(--gold); font-style: italic; }
+  header p { font-size: 13.5px; color: #C9C4B5; margin-top: 6px; max-width: 640px; line-height: 1.6; }
+
+  .ind-toggle { display: flex; gap: 8px; margin-top: 18px; }
+  .ind-toggle button {
+    font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600;
+    padding: 8px 18px; border-radius: 8px; cursor: pointer;
+    border: 1.5px solid rgba(228,213,172,0.3);
+    background: transparent; color: rgba(250,247,240,0.55);
+    transition: all 0.15s ease;
+  }
+  .ind-toggle button.active { background: rgba(201,169,97,0.15); color: var(--gold); border-color: rgba(201,169,97,0.5); }
+  .ind-toggle button:hover:not(.active) { color: var(--paper); }
+
+  main { max-width: 980px; margin: 0 auto; padding: 32px 24px; }
+
+  .step {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 6px 24px rgba(27,42,74,0.06);
+  }
+  .step h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 19px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px; height: 26px;
+    background: var(--ink);
+    color: var(--gold);
+    border-radius: 50%;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .step .desc { font-size: 13px; color: var(--slate); margin-bottom: 16px; line-height: 1.6; }
+
+  input[type="file"], input[type="date"], select#effMonth, select#effYear {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 10px 14px;
+    background: var(--paper-dim);
+    color: var(--ink);
+  }
+
+  .global-date-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+    padding: 14px 16px;
+    background: var(--paper-dim);
+    border-radius: 10px;
+  }
+  .global-date-row label { font-size: 13px; font-weight: 600; }
+  .global-date-row .hint { font-size: 12px; color: var(--slate); }
+
+  .tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--line);
+  }
+  .tabs button {
+    background: none; border: none; cursor: pointer;
+    font-family: 'Inter', sans-serif; font-size: 13.5px; font-weight: 600;
+    color: var(--slate); padding: 10px 16px;
+    border-bottom: 2px solid transparent;
+  }
+  .tabs button.active { color: var(--ink); border-bottom-color: var(--gold); }
+
+  .inst-row {
+    display: grid;
+    grid-template-columns: 1fr 100px 120px 90px;
+    gap: 12px;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 14px;
+  }
+  .inst-row:last-child { border-bottom: none; }
+  .inst-row .name { font-family: 'Fraunces', serif; font-weight: 600; font-size: 15px; }
+  .inst-row .prev-rate { font-family: 'Space Mono', monospace; font-size: 13px; color: var(--slate); }
+  .inst-row input[type="number"] {
+    font-family: 'Space Mono', monospace;
+    font-size: 14px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 8px 10px;
+    width: 100%;
+  }
+  .inst-row input[type="number"]:focus { outline: 2px solid var(--gold); border-color: var(--gold); }
+  .inst-row input[type="number"].changed { border-color: var(--good); background: #F0F7F2; }
+  .row-status { font-family: 'Space Mono', monospace; font-size: 11.5px; color: var(--slate); text-align: right; }
+  .row-status.changed { color: var(--good); font-weight: 700; }
+
+  .col-headers {
+    display: grid;
+    grid-template-columns: 1fr 100px 120px 90px;
+    gap: 12px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--slate);
+    font-weight: 700;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--line);
+    margin-bottom: 4px;
+  }
+
+  button.primary {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 14.5px;
+    background: var(--ink);
+    color: var(--gold);
+    border: none;
+    border-radius: 10px;
+    padding: 13px 26px;
+    cursor: pointer;
+    transition: opacity 0.15s ease;
+  }
+  button.primary:hover { opacity: 0.88; }
+  button.primary:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  button.secondary {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 13.5px;
+    background: #fff;
+    color: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 11px 20px;
+    cursor: pointer;
+  }
+
+  .actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 18px; }
+
+  .summary-pill {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    background: var(--paper-dim);
+    border-radius: 999px;
+    padding: 8px 16px;
+  }
+  .summary-pill .num { font-weight: 700; color: var(--ink); }
+
+  textarea {
+    width: 100%;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 14px;
+    min-height: 200px;
+    background: var(--paper-dim);
+    color: var(--ink);
+    resize: vertical;
+  }
+
+  .empty-msg { text-align: center; padding: 40px; color: var(--slate); font-size: 14px; }
+
+  .add-inst-toggle {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600;
+    color: var(--slate); background: var(--paper-dim);
+    border: 1px solid var(--line); border-radius: 8px;
+    padding: 8px 14px; cursor: pointer; margin-top: 16px;
+    transition: all 0.15s ease;
+  }
+  .add-inst-toggle:hover { color: var(--ink); border-color: var(--gold); }
+
+  .add-inst-form {
+    display: none;
+    margin-top: 16px;
+    padding: 18px;
+    background: var(--paper-dim);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+  }
+  .add-inst-form.open { display: block; }
+
+  .add-inst-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 140px;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .field-group label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--slate);
+    margin-bottom: 5px;
+  }
+
+  .field-group input, .field-group select {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 9px 12px;
+    width: 100%;
+    background: #fff;
+    color: var(--ink);
+  }
+  .field-group input:focus, .field-group select:focus {
+    outline: 2px solid var(--gold); border-color: var(--gold);
+  }
+
+  .add-inst-rate-row {
+    display: grid;
+    grid-template-columns: 160px 100px 140px 1fr;
+    gap: 12px;
+    align-items: end;
+    margin-bottom: 12px;
+  }
+
+  .add-inst-note {
+    font-size: 12px; color: var(--slate); line-height: 1.5; padding-top: 4px;
+  }
+
+  @media (max-width: 640px) {
+    .add-inst-grid { grid-template-columns: 1fr; }
+    .add-inst-rate-row { grid-template-columns: 1fr 1fr; }
+  }
+
+  .toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+    background: var(--ink); color: var(--gold); padding: 12px 24px; border-radius: 10px;
+    font-size: 13.5px; font-weight: 600; box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    opacity: 0; pointer-events: none; transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  @media (max-width: 640px) {
+    .inst-row, .col-headers { grid-template-columns: 1fr 80px 90px; }
+    .col-headers span:last-child, .inst-row .row-status { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1 id="headerTitle">Base Rate <span class="accent">Updater</span></h1>
+  <p id="headerDesc">Monthly workflow: load your current <code>base-rates.json</code>, enter the new month's base rate for each institution, then download the updated file and replace it in your <code>data/</code> folder. Only institutions with a new rate entered will get a new history entry — leave blank to skip.</p>
+  <div class="ind-toggle">
+    <button class="active" data-ind="base_rate">Base Rate</button>
+    <button data-ind="interest_spread">Interest Spread</button>
+  </div>
+</header>
+
+<main>
+
+  <div class="step">
+    <h2><span class="step-num">1</span>Load current data file</h2>
+    <div class="desc">Select the existing <code>base-rates.json</code> from your site's <code>data/</code> folder.</div>
+    <input type="file" id="fileInput" accept="application/json">
+  </div>
+
+  <div id="updateSection" style="display:none;">
+
+    <div class="step">
+      <h2><span class="step-num">2</span>Set the effective Bikram Sambat month</h2>
+      <div class="global-date-row">
+        <label for="effMonth">New rate effective month:</label>
+        <select id="effMonth"></select>
+        <select id="effYear"></select>
+        <span class="hint">Applied to every rate you enter below.</span>
+      </div>
+    </div>
+
+    <div class="step">
+      <h2><span class="step-num">3</span>Enter new base rates</h2>
+      <div class="desc" id="step3Desc">Previous rate is shown for reference. Enter the new rate (%) only for institutions that changed or that you're confirming for this month — fields left empty won't get a new entry.</div>
+
+      <div class="tabs">
+        <button class="tab-btn active" data-cat="commercial_banks">Commercial Banks</button>
+        <button class="tab-btn" data-cat="development_banks">Development Banks</button>
+        <button class="tab-btn" data-cat="finance_companies">Finance Companies</button>
+      </div>
+
+      <div class="col-headers">
+        <span>Institution</span>
+        <span>Previous</span>
+        <span>New Rate (%)</span>
+        <span>Status</span>
+      </div>
+
+      <div id="instContainer"></div>
+
+      <button class="add-inst-toggle" id="addInstToggle">+ Add New Institution</button>
+      <div class="add-inst-form" id="addInstForm">
+        <div class="add-inst-grid">
+          <div class="field-group">
+            <label>Institution Name</label>
+            <input type="text" id="newInstName" placeholder="e.g. Rastriya Banijya Bank">
+          </div>
+          <div class="field-group">
+            <label>Ticker / ID</label>
+            <input type="text" id="newInstId" placeholder="e.g. rbb" style="text-transform:lowercase">
+          </div>
+          <div class="field-group">
+            <label>Category</label>
+            <select id="newInstCat">
+              <option value="commercial_banks">Commercial Bank</option>
+              <option value="development_banks">Development Bank</option>
+              <option value="finance_companies">Finance Company</option>
+            </select>
+          </div>
+        </div>
+        <div class="add-inst-rate-row">
+          <div class="field-group">
+            <label>Initial Rate (%) — optional</label>
+            <input type="number" id="newInstRate" step="0.01" min="0" max="30" placeholder="e.g. 8.50">
+          </div>
+          <div class="field-group">
+            <label>Month</label>
+            <select id="newInstMonth"></select>
+          </div>
+          <div class="field-group">
+            <label>Year (BS)</label>
+            <select id="newInstYear"></select>
+          </div>
+          <div class="add-inst-note">Leave rate blank to add the institution with no history yet — you can enter rates in the update step above.</div>
+        </div>
+        <div class="actions" style="margin-top:4px">
+          <button class="primary" id="confirmAddInst">Add Institution</button>
+          <button class="secondary" id="cancelAddInst">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <h2><span class="step-num">4</span>Download updated file</h2>
+      <div class="desc" id="step4Desc">This generates a new <code>base-rates.json</code> with your changes added to the front of each institution's history. Replace the file in your <code>data/</code> folder with this one.</div>
+      <div class="actions">
+        <span class="summary-pill"><span class="num" id="changeCount">0</span> institution(s) updated</span>
+        <button class="primary" id="downloadBtn">Download base-rates.json</button>
+        <button class="secondary" id="previewBtn">Preview JSON</button>
+      </div>
+      <div id="previewWrap" style="display:none; margin-top:16px;">
+        <textarea id="previewArea" readonly></textarea>
+      </div>
+    </div>
+
+  </div>
+
+  <div id="emptyMsg" class="empty-msg">Load a JSON file above to begin.</div>
+
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let DATA = null;
+let activeCat = 'commercial_banks';
+let currentIndicator = 'base_rate';
+const CATS = ['commercial_banks','development_banks','finance_companies'];
+
+const INDICATOR_CONFIG = {
+  base_rate: {
+    title: 'Base Rate <span class="accent">Updater</span>',
+    desc: 'Monthly workflow: load your current <code>base-rates.json</code>, enter the new month\'s base rate for each institution, then download the updated file and replace it in your <code>data/</code> folder. Only institutions with a new rate entered will get a new history entry — leave blank to skip.',
+    step3Desc: 'Previous rate is shown for reference. Enter the new base rate (%) only for institutions that changed — fields left empty won\'t get a new entry.',
+    step4Desc: 'This generates a new <code>base-rates.json</code> with your changes prepended to each institution\'s history.',
+    filename: 'base-rates.json',
+    downloadLabel: 'Download base-rates.json',
+  },
+  interest_spread: {
+    title: 'Interest Spread <span class="accent">Updater</span>',
+    desc: 'Monthly workflow: load your current <code>interest-spread.json</code>, enter the new month\'s interest spread for each institution, then download the updated file and replace it in your <code>data/</code> folder. Leave blank to skip an institution.',
+    step3Desc: 'Previous spread is shown for reference. Enter the new interest spread (%) only for institutions that have been updated — fields left empty won\'t get a new entry.',
+    step4Desc: 'This generates a new <code>interest-spread.json</code> with your changes prepended to each institution\'s history.',
+    filename: 'interest-spread.json',
+    downloadLabel: 'Download interest-spread.json',
+  }
+};
+
+function applyIndicator(ind) {
+  currentIndicator = ind;
+  const cfg = INDICATOR_CONFIG[ind];
+  document.getElementById('headerTitle').innerHTML = cfg.title;
+  document.getElementById('headerDesc').innerHTML = cfg.desc;
+  document.getElementById('step3Desc').innerHTML = cfg.step3Desc;
+  document.getElementById('step4Desc').innerHTML = cfg.step4Desc;
+  document.getElementById('downloadBtn').textContent = cfg.downloadLabel;
+  document.querySelectorAll('.ind-toggle button').forEach(b => b.classList.toggle('active', b.dataset.ind === ind));
+  // Reset state when switching indicator
+  DATA = null;
+  pendingChanges = {};
+  document.getElementById('fileInput').value = '';
+  updateSection.style.display = 'none';
+  emptyMsg.style.display = 'block';
+  instContainer.innerHTML = '';
+  changeCount.textContent = 0;
+}
+
+document.querySelectorAll('.ind-toggle button').forEach(btn => {
+  btn.addEventListener('click', () => applyIndicator(btn.dataset.ind));
+});
+
+const fileInput = document.getElementById('fileInput');
+const updateSection = document.getElementById('updateSection');
+const emptyMsg = document.getElementById('emptyMsg');
+const instContainer = document.getElementById('instContainer');
+const effMonthSelect = document.getElementById('effMonth');
+const effYearSelect = document.getElementById('effYear');
+const changeCount = document.getElementById('changeCount');
+
+const BS_MONTHS = ['Baisakh','Jestha','Ashadh','Shrawan','Bhadra','Ashwin','Kartik','Mangsir','Poush','Magh','Falgun','Chaitra'];
+
+BS_MONTHS.forEach((m, i) => {
+  const opt = document.createElement('option');
+  opt.value = String(i+1).padStart(2,'0');
+  opt.textContent = m;
+  effMonthSelect.appendChild(opt);
+});
+
+// Populate a sensible BS year range (adjust as years pass)
+for (let y = 2078; y <= 2090; y++) {
+  const opt = document.createElement('option');
+  opt.value = String(y);
+  opt.textContent = y;
+  effYearSelect.appendChild(opt);
+}
+effYearSelect.value = '2083';
+
+function effDateValue() {
+  return `${effYearSelect.value}-${effMonthSelect.value}`;
+}
+
+function fmtBSDate(d) {
+  const [year, month] = d.split('-');
+  const idx = parseInt(month, 10) - 1;
+  return `${BS_MONTHS[idx]} ${year}`;
+}
+
+fileInput.addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      DATA = JSON.parse(ev.target.result);
+      CATS.forEach(c => { if (!DATA[c]) DATA[c] = []; });
+      updateSection.style.display = 'block';
+      emptyMsg.style.display = 'none';
+      renderInstitutions();
+      showToast('File loaded successfully');
+    } catch (err) {
+      alert('Invalid JSON file: ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+});
+
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeCat = btn.dataset.cat;
+    renderInstitutions();
+  });
+});
+
+function renderInstitutions() {
+  instContainer.innerHTML = '';
+  const items = [...DATA[activeCat]].sort((a,b) => a.name.localeCompare(b.name));
+  items.forEach(inst => {
+    const prev = inst.history && inst.history[0] ? inst.history[0] : null;
+    const row = document.createElement('div');
+    row.className = 'inst-row';
+    row.innerHTML = `
+      <div class="name">${inst.name}</div>
+      <div class="prev-rate">${prev ? prev.rate.toFixed(2) + '% (' + fmtBSDate(prev.date) + ')' : '—'}</div>
+      <div><input type="number" step="0.01" min="0" max="30" data-id="${inst.id}" placeholder="${prev ? prev.rate.toFixed(2) : '0.00'}"></div>
+      <div class="row-status" data-status="${inst.id}"></div>
+    `;
+    instContainer.appendChild(row);
+  });
+
+  instContainer.querySelectorAll('input[type="number"]').forEach(input => {
+    input.addEventListener('input', () => {
+      const status = instContainer.querySelector(`[data-status="${input.dataset.id}"]`);
+      if (input.value.trim() !== '') {
+        input.classList.add('changed');
+        status.textContent = '✓ pending';
+        status.classList.add('changed');
+      } else {
+        input.classList.remove('changed');
+        status.textContent = '';
+        status.classList.remove('changed');
+      }
+      updateChangeCount();
+    });
+  });
+  updateChangeCount();
+}
+
+function updateChangeCount() {
+  let count = 0;
+  CATS.forEach(cat => {
+    // We only track inputs currently rendered for activeCat in DOM,
+    // so we track via a global pendingChanges map instead.
+  });
+  count = Object.keys(pendingChanges).filter(id => pendingChanges[id] !== undefined && pendingChanges[id] !== '').length;
+  changeCount.textContent = count;
+}
+
+// Track changes across tab switches
+let pendingChanges = {};
+instContainer.addEventListener('input', e => {
+  if (e.target.matches('input[type="number"]')) {
+    const id = e.target.dataset.id;
+    if (e.target.value.trim() === '') {
+      delete pendingChanges[id];
+    } else {
+      pendingChanges[id] = parseFloat(e.target.value);
+    }
+    updateChangeCount();
+  }
+});
+
+// Restore values when switching tabs
+const origRender = renderInstitutions;
+renderInstitutions = function() {
+  origRender();
+  instContainer.querySelectorAll('input[type="number"]').forEach(input => {
+    const id = input.dataset.id;
+    if (pendingChanges[id] !== undefined) {
+      input.value = pendingChanges[id];
+      input.classList.add('changed');
+      const status = instContainer.querySelector(`[data-status="${id}"]`);
+      status.textContent = '✓ pending';
+      status.classList.add('changed');
+    }
+  });
+};
+
+function buildUpdatedData() {
+  const date = effDateValue();
+  const updated = JSON.parse(JSON.stringify(DATA));
+  CATS.forEach(cat => {
+    updated[cat].forEach(inst => {
+      if (pendingChanges[inst.id] !== undefined) {
+        inst.history.unshift({ date: date, rate: pendingChanges[inst.id] });
+      }
+    });
+  });
+  if (!updated._meta) updated._meta = {};
+  updated._meta.last_site_update = date;
+  return updated;
+}
+
+document.getElementById('previewBtn').addEventListener('click', () => {
+  const updated = buildUpdatedData();
+  const wrap = document.getElementById('previewWrap');
+  const area = document.getElementById('previewArea');
+  area.value = JSON.stringify(updated, null, 2);
+  wrap.style.display = wrap.style.display === 'none' ? 'block' : 'none';
+});
+
+document.getElementById('downloadBtn').addEventListener('click', () => {
+  const updated = buildUpdatedData();
+  const blob = new Blob([JSON.stringify(updated, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = INDICATOR_CONFIG[currentIndicator].filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast(`Downloaded — ${Object.keys(pendingChanges).length} institution(s) updated for ${fmtBSDate(effDateValue())}`);
+});
+
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// ---------- Add Institution ----------
+// Populate month/year dropdowns for new institution
+BS_MONTHS.forEach((m, i) => {
+  const opt = document.createElement('option');
+  opt.value = String(i+1).padStart(2,'0');
+  opt.textContent = m;
+  document.getElementById('newInstMonth').appendChild(opt);
+});
+for (let y = 2078; y <= 2090; y++) {
+  const opt = document.createElement('option');
+  opt.value = String(y);
+  opt.textContent = y;
+  document.getElementById('newInstYear').appendChild(opt);
+}
+document.getElementById('newInstYear').value = '2083';
+
+// Auto-generate ticker ID from name
+document.getElementById('newInstName').addEventListener('input', e => {
+  const idField = document.getElementById('newInstId');
+  if (!idField.dataset.manuallyEdited) {
+    idField.value = e.target.value
+      .toLowerCase()
+      .replace(/[^a-z0-9\s]/g, '')
+      .trim()
+      .split(/\s+/)
+      .map(w => w[0])
+      .join('');
+  }
+});
+document.getElementById('newInstId').addEventListener('input', function() {
+  this.dataset.manuallyEdited = 'true';
+  this.value = this.value.toLowerCase().replace(/[^a-z0-9_]/g, '');
+});
+
+document.getElementById('addInstToggle').addEventListener('click', () => {
+  document.getElementById('addInstForm').classList.toggle('open');
+});
+
+document.getElementById('cancelAddInst').addEventListener('click', () => {
+  document.getElementById('addInstForm').classList.remove('open');
+  clearAddForm();
+});
+
+function clearAddForm() {
+  document.getElementById('newInstName').value = '';
+  document.getElementById('newInstId').value = '';
+  delete document.getElementById('newInstId').dataset.manuallyEdited;
+  document.getElementById('newInstRate').value = '';
+}
+
+document.getElementById('confirmAddInst').addEventListener('click', () => {
+  const name = document.getElementById('newInstName').value.trim();
+  const id = document.getElementById('newInstId').value.trim();
+  const cat = document.getElementById('newInstCat').value;
+  const rateVal = document.getElementById('newInstRate').value.trim();
+  const month = document.getElementById('newInstMonth').value;
+  const year = document.getElementById('newInstYear').value;
+
+  if (!name) { alert('Institution name is required.'); return; }
+  if (!id) { alert('Ticker / ID is required.'); return; }
+
+  // Check for duplicate ID
+  const allInsts = CATS.flatMap(c => DATA[c] || []);
+  if (allInsts.some(i => i.id === id)) {
+    alert(`ID "${id}" already exists. Please use a different ticker.`); return;
+  }
+
+  const newInst = {
+    id,
+    name,
+    history: rateVal !== '' ? [{ date: `${year}-${month}`, rate: parseFloat(rateVal) }] : []
+  };
+
+  if (!DATA[cat]) DATA[cat] = [];
+  DATA[cat].push(newInst);
+
+  // Switch to the added institution's tab and re-render
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === cat));
+  activeCat = cat;
+  renderInstitutions();
+
+  document.getElementById('addInstForm').classList.remove('open');
+  clearAddForm();
+  showToast(`"${name}" added to ${cat.replace('_', ' ')} — enter rate in the list above`);
+});
+</script>
+
+</body>
+</html>
