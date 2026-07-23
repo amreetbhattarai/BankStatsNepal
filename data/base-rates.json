@@ -2,13 +2,17 @@
   "_meta": {
     "description": "Base rate data for Nepali BFIs. To update monthly: append a new {date, rate} object to the FRONT of each institution's history array (most recent first). The website automatically picks history[0] as the current rate.",
     "date_format": "BS year-month, e.g. 2083-01 = Baisakh 2083 (months 01-12 map to Baisakh..Chaitra)",
-    "last_site_update": "2083-02"
+    "last_site_update": "2083-03"
   },
   "commercial_banks": [
     {
       "id": "adbl",
       "name": "Agriculture Development Bank",
       "history": [
+        {
+          "date": "2083-03",
+          "rate": 4.56
+        },
         {
           "date": "2083-02",
           "rate": 4.86
@@ -203,6 +207,10 @@
       "id": "ctzn",
       "name": "Citizens Bank International",
       "history": [
+        {
+          "date": "2083-03",
+          "rate": 5.04
+        },
         {
           "date": "2083-02",
           "rate": 5.11
@@ -487,7 +495,7 @@
         },
         {
           "date": "2081-04",
-          "rate": 7.0
+          "rate": 7
         },
         {
           "date": "2081-03",
@@ -591,6 +599,10 @@
       "id": "gbime",
       "name": "Global IME Bank",
       "history": [
+        {
+          "date": "2083-03",
+          "rate": 4.67
+        },
         {
           "date": "2083-02",
           "rate": 4.75
@@ -786,6 +798,10 @@
       "name": "Himalayan Bank",
       "history": [
         {
+          "date": "2083-03",
+          "rate": 5.19
+        },
+        {
           "date": "2083-02",
           "rate": 5.31
         },
@@ -979,6 +995,10 @@
       "id": "kbl",
       "name": "Kumari Bank",
       "history": [
+        {
+          "date": "2083-03",
+          "rate": 5.08
+        },
         {
           "date": "2083-02",
           "rate": 5.18
@@ -1174,6 +1194,10 @@
       "name": "Laxmi Sunrise Bank",
       "history": [
         {
+          "date": "2083-03",
+          "rate": 5.05
+        },
+        {
           "date": "2083-02",
           "rate": 5.1
         },
@@ -1367,6 +1391,10 @@
       "id": "mbl",
       "name": "Machhapuchhre Bank",
       "history": [
+        {
+          "date": "2083-03",
+          "rate": 5.02
+        },
         {
           "date": "2083-02",
           "rate": 5.01
@@ -1562,6 +1590,10 @@
       "name": "NIC Asia Bank",
       "history": [
         {
+          "date": "2083-03",
+          "rate": 5.83
+        },
+        {
           "date": "2083-02",
           "rate": 5.9
         },
@@ -1755,6 +1787,10 @@
       "id": "nmb",
       "name": "NMB Bank",
       "history": [
+        {
+          "date": "2083-03",
+          "rate": 5.01
+        },
         {
           "date": "2083-02",
           "rate": 5.12
@@ -1950,6 +1986,10 @@
       "name": "Nabil Bank",
       "history": [
         {
+          "date": "2083-03",
+          "rate": 4.32
+        },
+        {
           "date": "2083-02",
           "rate": 4.47
         },
@@ -2144,6 +2184,10 @@
       "name": "Nepal Bank",
       "history": [
         {
+          "date": "2083-03",
+          "rate": 4.45
+        },
+        {
           "date": "2083-02",
           "rate": 4.47
         },
@@ -2277,7 +2321,7 @@
         },
         {
           "date": "2080-05",
-          "rate": 10.0
+          "rate": 10
         },
         {
           "date": "2080-04",
@@ -2355,7 +2399,7 @@
         },
         {
           "date": "2082-10",
-          "rate": 5.0
+          "rate": 5
         },
         {
           "date": "2082-09",
@@ -2399,7 +2443,7 @@
         },
         {
           "date": "2081-11",
-          "rate": 6.0
+          "rate": 6
         },
         {
           "date": "2081-10",
@@ -2496,6 +2540,10 @@
       "name": "Nepal SBI Bank",
       "history": [
         {
+          "date": "2083-03",
+          "rate": 5.19
+        },
+        {
           "date": "2083-02",
           "rate": 5.19
         },
@@ -2537,7 +2585,7 @@
         },
         {
           "date": "2082-04",
-          "rate": 6.0
+          "rate": 6
         },
         {
           "date": "2082-03",
@@ -2681,7 +2729,7 @@
         },
         {
           "date": "2079-04",
-          "rate": 10.0
+          "rate": 10
         }
       ]
     },
@@ -2884,6 +2932,10 @@
       "name": "Prime Commercial Bank",
       "history": [
         {
+          "date": "2083-03",
+          "rate": 4.95
+        },
+        {
           "date": "2083-02",
           "rate": 5.06
         },
@@ -3078,6 +3130,10 @@
       "name": "Sanima Bank",
       "history": [
         {
+          "date": "2083-03",
+          "rate": 4.91
+        },
+        {
           "date": "2083-02",
           "rate": 4.88
         },
@@ -3271,6 +3327,10 @@
       "id": "sbl",
       "name": "Siddhartha Bank",
       "history": [
+        {
+          "date": "2083-03",
+          "rate": 5.02
+        },
         {
           "date": "2083-02",
           "rate": 5.03
@@ -3660,6 +3720,10 @@
       "name": "Rastriya Banijya Bank",
       "history": [
         {
+          "date": "2083-03",
+          "rate": 4.06
+        },
+        {
           "date": "2083-02",
           "rate": 4.2
         },
@@ -3897,7 +3961,7 @@
         },
         {
           "date": "2082-03",
-          "rate": 9.0
+          "rate": 9
         },
         {
           "date": "2082-02",
@@ -4055,7 +4119,7 @@
         },
         {
           "date": "2081-12",
-          "rate": 7.0
+          "rate": 7
         },
         {
           "date": "2081-11",
@@ -4091,7 +4155,7 @@
         },
         {
           "date": "2081-03",
-          "rate": 8.0
+          "rate": 8
         },
         {
           "date": "2081-02",
@@ -4151,7 +4215,7 @@
         },
         {
           "date": "2079-12",
-          "rate": 12.0
+          "rate": 12
         },
         {
           "date": "2079-11",
@@ -4697,7 +4761,7 @@
         },
         {
           "date": "2080-09",
-          "rate": 11.0
+          "rate": 11
         },
         {
           "date": "2080-08",
@@ -5267,7 +5331,7 @@
         },
         {
           "date": "2080-12",
-          "rate": 10.0
+          "rate": 10
         },
         {
           "date": "2080-11",
@@ -5665,7 +5729,7 @@
         },
         {
           "date": "2081-10",
-          "rate": 11.0
+          "rate": 11
         },
         {
           "date": "2081-09",
@@ -5717,7 +5781,7 @@
         },
         {
           "date": "2080-09",
-          "rate": 12.0
+          "rate": 12
         },
         {
           "date": "2080-08",
@@ -6057,7 +6121,7 @@
         },
         {
           "date": "2080-08",
-          "rate": 11.0
+          "rate": 11
         },
         {
           "date": "2080-07",
@@ -6147,7 +6211,7 @@
         },
         {
           "date": "2082-10",
-          "rate": 6.0
+          "rate": 6
         },
         {
           "date": "2082-09",
@@ -7093,7 +7157,7 @@
         },
         {
           "date": "2079-04",
-          "rate": 12.0
+          "rate": 12
         }
       ]
     },
@@ -7219,7 +7283,7 @@
         },
         {
           "date": "2080-09",
-          "rate": 12.0
+          "rate": 12
         },
         {
           "date": "2080-08",
@@ -7365,7 +7429,7 @@
         },
         {
           "date": "2081-09",
-          "rate": 9.0
+          "rate": 9
         },
         {
           "date": "2081-08",
@@ -7867,7 +7931,7 @@
         },
         {
           "date": "2082-08",
-          "rate": 10.0
+          "rate": 10
         },
         {
           "date": "2082-07",
@@ -8417,7 +8481,7 @@
         },
         {
           "date": "2080-01",
-          "rate": 15.0
+          "rate": 15
         },
         {
           "date": "2079-12",
@@ -8483,7 +8547,7 @@
         },
         {
           "date": "2082-09",
-          "rate": 8.0
+          "rate": 8
         },
         {
           "date": "2082-08",
@@ -8677,7 +8741,7 @@
         },
         {
           "date": "2082-09",
-          "rate": 8.0
+          "rate": 8
         },
         {
           "date": "2082-08",

@@ -16,6 +16,35 @@ const DEV_CAT_MAP = {
   fc: 'finance_companies'
 };
 
+/* ---- URL routing: /base-rate-spread/{category}/ (and legacy routes) ---- */
+const CATEGORY_SLUG = {
+  commercial_banks: 'commercial-banks',
+  development_banks: 'development-banks',
+  finance_companies: 'finance-companies'
+};
+const SLUG_CATEGORY = Object.fromEntries(Object.entries(CATEGORY_SLUG).map(([k, v]) => [v, k]));
+
+const INDICATOR_SLUG = { base_rate: 'base-rate', interest_spread: 'interest-spread', base_rate_spread: 'base-rate-spread' };
+const SLUG_INDICATOR = Object.fromEntries(Object.entries(INDICATOR_SLUG).map(([k, v]) => [v, k]));
+
+function urlForPage(page, category) {
+  if (page === 'base_rate' || page === 'interest_spread' || page === 'base_rate_spread') {
+    const slug = INDICATOR_SLUG[page] || 'base-rate-spread';
+    return `/${slug}/${CATEGORY_SLUG[category]}/`;
+  }
+  return '/';
+}
+
+function parseLocationPath() {
+  const parts = location.pathname.split('/').filter(Boolean);
+  if (parts.length === 2 && SLUG_INDICATOR[parts[0]] && SLUG_CATEGORY[parts[1]]) {
+    const p = SLUG_INDICATOR[parts[0]];
+    const norm = (p === 'base_rate' || p === 'interest_spread' || p === 'base_rate_spread') ? 'base_rate_spread' : p;
+    return { page: norm, category: SLUG_CATEGORY[parts[1]] };
+  }
+  return { page: 'dashboard', category: 'commercial_banks' };
+}
+
 let DATA = null;
 let SPREAD_DATA = null;
 let GLOBAL_LATEST_DATE = null;
@@ -23,11 +52,13 @@ let GLOBAL_LATEST_DATE = null;
 /* Interest Rate Corridor data — loaded from data/reference.json */
 let IRC_DATA = [];
 
-let currentPage = 'dashboard';
-let currentIndicator = 'base_rate';
+const _initialLoc = parseLocationPath();
+let currentPage = _initialLoc.page;
+let currentIndicator = 'base_rate_spread';
+let activeHistoryIndicator = 'base_rate';
 let currentDevCat = 'cb';
 let currentScatCat = 'cb';
-let activeSubTab = 'commercial_banks';
+let activeSubTab = _initialLoc.category;
 let sortState = { col: null, dir: null };
 
 const BS_MONTHS = ['Baisakh','Jestha','Ashadh','Shrawan','Bhadra','Ashwin','Kartik','Mangsir','Poush','Magh','Falgun','Chaitra'];
@@ -139,14 +170,33 @@ function cycleSortDir(col) {
   else { sortState = { col: null, dir: null }; }
 }
 
-function sortItems(items) {
-  if (!sortState.col) return [...items].sort((a,b) => a.name.localeCompare(b.name));
+function sortItems(category) {
+  const baseItems = DATA[category] || [];
+  const spreadItems = (SPREAD_DATA && SPREAD_DATA[category]) || [];
+
+  const combined = baseItems.map(b => {
+    const s = spreadItems.find(x => x.id === b.id) || spreadItems.find(x => x.name === b.name);
+    return { base: b, spread: s, name: b.name, id: b.id };
+  });
+
+  if (!sortState.col) return combined.sort((a,b) => a.name.localeCompare(b.name));
+
   if (sortState.col === 'name') {
-    return [...items].sort((a,b) => sortState.dir === 'desc' ? b.name.localeCompare(a.name) : a.name.localeCompare(b.name));
+    return combined.sort((a,b) => sortState.dir === 'desc' ? b.name.localeCompare(a.name) : a.name.localeCompare(b.name));
   }
-  return [...items].sort((a,b) => {
-    const va = sortState.col === 'avg3' ? avg3Month(a.history) : a.history[0].rate;
-    const vb = sortState.col === 'avg3' ? avg3Month(b.history) : b.history[0].rate;
+
+  return combined.sort((a,b) => {
+    let va, vb;
+    if (sortState.col === 'rate') {
+      va = a.base.history[0].rate;
+      vb = b.base.history[0].rate;
+    } else if (sortState.col === 'avg3') {
+      va = avg3Month(a.base.history);
+      vb = avg3Month(b.base.history);
+    } else if (sortState.col === 'spread') {
+      va = a.spread && a.spread.history && a.spread.history[0] ? a.spread.history[0].rate : -999;
+      vb = b.spread && b.spread.history && b.spread.history[0] ? b.spread.history[0].rate : -999;
+    }
     return sortState.dir === 'desc' ? vb - va : va - vb;
   });
 }
@@ -156,19 +206,12 @@ function sortArrow(col) {
   return `<span class="sort-arrow">${sortState.dir === 'desc' ? '↓' : '↑'}</span>`;
 }
 
-function baseRateTheadHTML() {
+function unifiedTheadHTML() {
   return `
     <th class="sortable-th${sortState.col==='name'?' sort-active':''}" data-sort="name">Institution ${sortArrow('name')}</th>
     <th class="num sortable-th${sortState.col==='rate'?' sort-active':''}" data-sort="rate">Base Rate ${sortArrow('rate')}</th>
     <th class="num sortable-th${sortState.col==='avg3'?' sort-active':''}" data-sort="avg3">3M Avg Rate ${sortArrow('avg3')}</th>
-    <th></th>`;
-}
-
-function spreadTheadHTML() {
-  return `
-    <th class="sortable-th${sortState.col==='name'?' sort-active':''}" data-sort="name">Institution ${sortArrow('name')}</th>
-    <th class="num sortable-th${sortState.col==='rate'?' sort-active':''}" data-sort="rate">Interest Spread ${sortArrow('rate')}</th>
-    <th class="num">12M Range</th>
+    <th class="num sortable-th${sortState.col==='spread'?' sort-active':''}" data-sort="spread">Spread Rate ${sortArrow('spread')}</th>
     <th></th>`;
 }
 
@@ -178,24 +221,24 @@ function attachSortHandlers(category) {
   thead.querySelectorAll('.sortable-th').forEach(th => {
     th.addEventListener('click', () => {
       cycleSortDir(th.dataset.sort);
-      if (currentIndicator === 'interest_spread') renderSpreadList(category);
-      else renderList(category);
+      renderUnifiedList(category);
     });
   });
 }
 
-/* ---- Render base rate list ---- */
-function renderList(category) {
-  const items = sortItems(DATA[category]);
+/* ---- Render unified rate list (Base Rate & Spread Rate) ---- */
+function renderUnifiedList(category) {
+  const items = sortItems(category);
   const tbody = document.getElementById('tbody-' + category);
   const cards = document.getElementById('cards-' + category);
+  if (!tbody || !cards) return;
   tbody.innerHTML = '';
   cards.innerHTML = '';
   const theadRow = document.getElementById('thead-' + category);
-  if (theadRow) theadRow.innerHTML = baseRateTheadHTML();
+  if (theadRow) theadRow.innerHTML = unifiedTheadHTML();
   attachSortHandlers(category);
 
-  items.forEach(inst => {
+  items.forEach(({ base: inst, spread: spreadInst }) => {
     const curr = inst.history[0];
     const prev = inst.history[1];
     const chip = trendChip(curr.rate, prev ? prev.rate : undefined);
@@ -206,20 +249,27 @@ function renderList(category) {
     const isPending = GLOBAL_LATEST_DATE && curr.date < GLOBAL_LATEST_DATE;
     const pendingBadge = isPending ? `<span class="pending-badge" title="No rate reported yet for ${fmtDate(GLOBAL_LATEST_DATE)}">Pending update</span>` : '';
 
+    let spreadHTML = `<span style="color:var(--slate)">—</span>`;
+    let cardSpreadHTML = `<span style="color:var(--slate)">—</span>`;
+    if (spreadInst && spreadInst.history && spreadInst.history.length) {
+      const sCurr = spreadInst.history[0];
+      const sPrev = spreadInst.history[1];
+      const sChip = trendChip(sCurr.rate, sPrev ? sPrev.rate : undefined);
+      spreadHTML = `<div><span class="rate-value" style="font-size:16px">${fmtRate(sCurr.rate)}</span>${sChip}</div>`;
+      cardSpreadHTML = `<div><span class="rate-value" style="font-size:16px">${fmtRate(sCurr.rate)}</span>${sChip}</div>`;
+    }
+
     const tr = document.createElement('tr');
     tr.dataset.name = inst.name.toLowerCase();
     tr.innerHTML = `
       <td><div class="inst-name">${inst.name}${pendingBadge}</div></td>
       <td class="num">
         <div><span class="rate-value">${fmtRate(curr.rate)}</span>${chip}</div>
-        <div class="rate-date" style="margin-top:4px">${fmtDate(curr.date)}</div>
       </td>
       <td class="num">
-        <div style="display:flex;align-items:center;justify-content:flex-end;gap:12px">
-          <div><span class="rate-value" style="font-size:16px" title="${avg3Tip}">${fmtRate(avg3)}</span>${avgChip}</div>
-          <div style="font-family:'Space Mono',monospace;font-size:11px;color:var(--slate);line-height:1.9">${inst.history.slice(0,3).map(h=>`<div style="display:flex;justify-content:space-between;gap:10px"><span>${fmtDateShort(h.date)}</span><span>${h.rate.toFixed(2)}</span></div>`).join('')}</div>
-        </div>
+        <div><span class="rate-value" style="font-size:16px">${fmtRate(avg3)}</span>${avgChip}</div>
       </td>
+      <td class="num">${spreadHTML}</td>
       <td style="text-align:right"><button class="history-btn" data-cat="${category}" data-id="${inst.id}">View History</button></td>
     `;
     tbody.appendChild(tr);
@@ -232,86 +282,18 @@ function renderList(category) {
         <div class="inst-name">${inst.name}${pendingBadge}</div>
         <button class="history-btn" data-cat="${category}" data-id="${inst.id}">History</button>
       </div>
-      <div style="display:flex;gap:20px;margin-top:10px;flex-wrap:wrap">
+      <div style="display:flex;gap:16px;margin-top:10px;flex-wrap:wrap">
         <div>
           <div class="rate-date" style="margin-bottom:4px">Base Rate</div>
-          <div><span class="rate-value">${fmtRate(curr.rate)}</span>${chip}</div>
-          <div class="rate-date" style="margin-top:3px">${fmtDate(curr.date)}</div>
+          <div><span class="rate-value" style="font-size:16px">${fmtRate(curr.rate)}</span>${chip}</div>
         </div>
-        <div style="border-left:1px solid var(--line);padding-left:20px">
+        <div style="border-left:1px solid var(--line);padding-left:16px">
           <div class="rate-date" style="margin-bottom:4px">3M Avg</div>
-          <div><span class="rate-value" style="font-size:16px" title="${avg3Tip}">${fmtRate(avg3)}</span>${avgChip}</div>
-          <div class="rate-date" style="margin-top:3px">${fmtDateShort(inst.history[2]?.date||inst.history[0].date)}–${fmtDateShort(inst.history[0].date)}</div>
+          <div><span class="rate-value" style="font-size:16px">${fmtRate(avg3)}</span>${avgChip}</div>
         </div>
-      </div>
-    `;
-    cards.appendChild(card);
-  });
-
-  document.getElementById('count-' + category).textContent = items.length;
-}
-
-/* ---- Render spread list ---- */
-function renderSpreadList(category) {
-  const source = SPREAD_DATA ? SPREAD_DATA[category] : null;
-  const tbody = document.getElementById('tbody-' + category);
-  const cards = document.getElementById('cards-' + category);
-  const theadRow = document.getElementById('thead-' + category);
-  tbody.innerHTML = '';
-  cards.innerHTML = '';
-
-  if (theadRow) theadRow.innerHTML = spreadTheadHTML();
-  attachSortHandlers(category);
-
-  if (!source || source.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="4" style="padding:40px;text-align:center;color:var(--slate);font-size:14px">No interest spread data available for this category</td></tr>`;
-    document.getElementById('count-' + category).textContent = 0;
-    return;
-  }
-
-  const items = sortItems(source);
-  items.forEach(inst => {
-    const curr = inst.history[0];
-    const prev = inst.history[1];
-    const chip = trendChip(curr.rate, prev ? prev.rate : undefined);
-    const last12 = inst.history.slice(0, Math.min(12, inst.history.length));
-    const rates12 = last12.map(h => h.rate);
-    const minR = Math.min(...rates12).toFixed(2);
-    const maxR = Math.max(...rates12).toFixed(2);
-
-    const tr = document.createElement('tr');
-    tr.dataset.name = inst.name.toLowerCase();
-    tr.innerHTML = `
-      <td><div class="inst-name">${inst.name}</div></td>
-      <td class="num">
-        <div><span class="rate-value">${fmtRate(curr.rate)}</span>${chip}</div>
-        <div class="rate-date" style="margin-top:4px">${fmtDate(curr.date)}</div>
-      </td>
-      <td class="num">
-        <div style="font-family:'Space Mono',monospace;font-size:13px;font-weight:700;color:var(--ink)">${minR}–${maxR}%</div>
-        <div class="rate-date" style="margin-top:2px">last ${last12.length} months</div>
-      </td>
-      <td style="text-align:right"><button class="history-btn" data-cat="${category}" data-id="${inst.id}">View History</button></td>
-    `;
-    tbody.appendChild(tr);
-
-    const card = document.createElement('div');
-    card.className = 'rate-card';
-    card.dataset.name = inst.name.toLowerCase();
-    card.innerHTML = `
-      <div class="rate-card-top">
-        <div class="inst-name">${inst.name}</div>
-        <button class="history-btn" data-cat="${category}" data-id="${inst.id}">History</button>
-      </div>
-      <div style="display:flex;gap:20px;margin-top:10px">
-        <div>
-          <div class="rate-date" style="margin-bottom:4px">Interest Spread</div>
-          <div><span class="rate-value">${fmtRate(curr.rate)}</span>${chip}</div>
-          <div class="rate-date" style="margin-top:3px">${fmtDate(curr.date)}</div>
-        </div>
-        <div style="border-left:1px solid var(--line);padding-left:20px">
-          <div class="rate-date" style="margin-bottom:4px">12M Range</div>
-          <div style="font-family:'Space Mono',monospace;font-size:14px;font-weight:700">${minR}–${maxR}%</div>
+        <div style="border-left:1px solid var(--line);padding-left:16px">
+          <div class="rate-date" style="margin-bottom:4px">Spread</div>
+          ${cardSpreadHTML}
         </div>
       </div>
     `;
@@ -1144,52 +1126,59 @@ function renderSpreadDetailPanel(category, inst) {
   drawSpreadChart(currentHistory, currentRange);
 }
 
-/* ---- Institution selection ---- */
+/* ---- Institution selection & History View ---- */
 let activeCategory = 'commercial_banks';
 let activeInstId = null;
 
 function populateInstSelect(category, preserveSelection) {
   const select = document.getElementById('instSelect');
-  const items = [...DATA[category]].sort((a,b) => a.name.localeCompare(b.name));
+  const items = [...(DATA[category] || [])].sort((a,b) => a.name.localeCompare(b.name));
   select.innerHTML = items.map(inst => `<option value="${inst.id}">${inst.name}</option>`).join('');
   if (preserveSelection && items.some(i => i.id === activeInstId)) {
     select.value = activeInstId;
   } else {
-    select.value = items[0].id;
+    select.value = items[0]?.id || '';
   }
 }
 
-function selectInstitution(category, id) {
-  const inst = DATA[category].find(x => x.id === id);
-  if (!inst) return;
+function selectInstitutionHistory(category, id, indicator = activeHistoryIndicator || 'base_rate') {
+  const baseInst = DATA[category]?.find(x => x.id === id);
+  if (!baseInst) return;
+
   activeCategory = category;
   activeInstId = id;
+
+  const spreadInst = SPREAD_DATA[category]?.find(x => x.id === id || x.name === baseInst.name);
+  const hasSpread = !!(spreadInst && spreadInst.history && spreadInst.history.length);
 
   document.getElementById('categorySelect').value = category;
   populateInstSelect(category, true);
   document.getElementById('instSelect').value = id;
 
-  renderDetailPanel(category, inst);
+  const basePill = document.querySelector('.hist-indicator-pill[data-hist-ind="base_rate"]');
+  const spreadPill = document.querySelector('.hist-indicator-pill[data-hist-ind="interest_spread"]');
 
-  document.getElementById('listViews').style.display = 'none';
-  document.getElementById('subNav').style.display = 'none';
-  document.getElementById('historyView').classList.add('active');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
+  if (spreadPill) {
+    spreadPill.classList.toggle('disabled', !hasSpread);
+    spreadPill.title = hasSpread ? '' : 'No interest spread data available for this institution';
+  }
 
-function selectSpreadInstitution(category, id) {
-  const inst = SPREAD_DATA[category]?.find(x => x.id === id);
-  if (!inst) return;
-  activeCategory = category;
-  activeInstId = id;
+  if (indicator === 'interest_spread' && !hasSpread) {
+    indicator = 'base_rate';
+  }
+  activeHistoryIndicator = indicator;
 
-  document.getElementById('categorySelect').value = category;
-  const select = document.getElementById('instSelect');
-  const items = [...(SPREAD_DATA[category] || [])].sort((a,b) => a.name.localeCompare(b.name));
-  select.innerHTML = items.map(i => `<option value="${i.id}">${i.name}</option>`).join('');
-  select.value = id;
+  if (basePill) basePill.classList.toggle('active', activeHistoryIndicator === 'base_rate');
+  if (spreadPill) spreadPill.classList.toggle('active', activeHistoryIndicator === 'interest_spread');
 
-  renderSpreadDetailPanel(category, inst);
+  const titleEl = document.getElementById('histSectionTitle');
+  if (titleEl) titleEl.textContent = activeHistoryIndicator === 'interest_spread' ? 'Spread Rate History' : 'Base Rate History';
+
+  if (activeHistoryIndicator === 'interest_spread' && spreadInst) {
+    renderSpreadDetailPanel(category, spreadInst);
+  } else {
+    renderDetailPanel(category, baseInst);
+  }
 
   document.getElementById('listViews').style.display = 'none';
   document.getElementById('subNav').style.display = 'none';
@@ -1204,21 +1193,80 @@ function showListViews() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+const CAT_LABELS = {
+  commercial_banks: 'Commercial Banks',
+  development_banks: 'Development Banks',
+  finance_companies: 'Finance Companies'
+};
+
+function updateAsofStatus(cat) {
+  if (!GLOBAL_LATEST_DATE) return;
+  // Dashboard overall summary
+  let totalBFIs = 0, updatedBFIs = 0;
+  ['commercial_banks','development_banks','finance_companies'].forEach(c => {
+    (DATA[c] || []).forEach(inst => {
+      totalBFIs++;
+      if (inst.history[0].date >= GLOBAL_LATEST_DATE) updatedBFIs++;
+    });
+  });
+  const overallPending = totalBFIs - updatedBFIs;
+  const overallDot = overallPending > 0 ? '<span class="asof-dot blinking"></span>' : '<span class="asof-dot"></span>';
+  const overallText = `${fmtDate(GLOBAL_LATEST_DATE)} Rates · ${updatedBFIs} Updated, ${overallPending} Pending`;
+
+  const dashEl = document.getElementById('dataAsOf');
+  if (dashEl) dashEl.innerHTML = `${overallDot}${overallText}`;
+
+  // Category specific tab status
+  const targetCat = cat || activeSubTab || 'commercial_banks';
+  const items = DATA[targetCat] || [];
+  const totalInCat = items.length;
+  const updatedInCat = items.filter(i => i.history[0].date >= GLOBAL_LATEST_DATE).length;
+  const pendingInCat = totalInCat - updatedInCat;
+
+  const catDot = pendingInCat > 0 ? '<span class="asof-dot blinking"></span>' : '<span class="asof-dot"></span>';
+  const catText = `${fmtDate(GLOBAL_LATEST_DATE)} Rates · ${updatedInCat} Updated, ${pendingInCat} Pending`;
+
+  const dataEl = document.getElementById('dataAsOfData');
+  if (dataEl) dataEl.innerHTML = `${catDot}${catText}`;
+}
+
 /* ---- Sub-nav category pills ---- */
-function setActiveSubTab(tab) {
+function setActiveSubTab(tab, opts = {}) {
   sortState = { col: null, dir: null };
   activeSubTab = tab;
   document.querySelectorAll('.cat-pill-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === tab));
   document.querySelectorAll('.tab-view').forEach(v => v.classList.toggle('active', v.dataset.tabView === tab));
+  updateAsofStatus(tab);
+
+  if (opts.pushState !== false && (currentPage === 'base_rate_spread' || currentPage === 'base_rate' || currentPage === 'interest_spread')) {
+    const url = urlForPage(currentPage, tab);
+    if (location.pathname !== url) history.pushState(null, '', url);
+  }
+}
+
+/* ---- Indicator-specific chrome: category descriptions, list render ---- */
+function applyIndicatorUI(page) {
+  document.getElementById('categorySelect').innerHTML = `
+    <option value="commercial_banks">Commercial Banks</option>
+    <option value="development_banks">Development Banks</option>
+    <option value="finance_companies">Finance Companies</option>`;
+  document.getElementById('sub-commercial_banks').textContent = "Base rates & interest spreads of commercial banks in Nepal — 'A' class institutions, updated monthly from official disclosures";
+  document.getElementById('sub-development_banks').textContent = "Base rates & interest spreads of development banks in Nepal — 'B' class institutions, updated monthly from official disclosures";
+  document.getElementById('sub-finance_companies').textContent = "Base rates & interest spreads of finance companies in Nepal — 'C' class institutions, updated monthly from official disclosures";
+  ['commercial_banks','development_banks','finance_companies'].forEach(renderUnifiedList);
 }
 
 /* ---- Page navigation ---- */
-function navigateTo(page) {
+function navigateTo(page, opts = {}) {
   currentPage = page;
 
-  document.querySelectorAll('.nav-link').forEach(l => l.classList.toggle('active', l.dataset.page === page));
+  document.querySelectorAll('.nav-link').forEach(l => {
+    const isMatch = l.dataset.page === page ||
+      (l.dataset.page === 'base_rate_spread' && (page === 'base_rate' || page === 'interest_spread' || page === 'base_rate_spread'));
+    l.classList.toggle('active', isMatch);
+  });
 
-  const isDataPage = page === 'base_rate' || page === 'interest_spread';
+  const isDataPage = page === 'base_rate' || page === 'interest_spread' || page === 'base_rate_spread';
   const isComingSoon = page === 'npl' || page === 'capital_adequacy';
   const histActive = document.getElementById('historyView').classList.contains('active');
 
@@ -1226,56 +1274,22 @@ function navigateTo(page) {
   document.getElementById('pageData').classList.toggle('active', isDataPage);
   document.getElementById('pageComingSoon').classList.toggle('active', isComingSoon);
 
-  // Sub-nav only visible on data pages when not in history view
   document.getElementById('subNav').style.display = (isDataPage && !histActive) ? '' : 'none';
 
   if (page === 'dashboard') {
     renderDashboard();
   } else if (isDataPage) {
-    if (page !== currentIndicator) {
-      currentIndicator = page;
-      sortState = { col: null, dir: null };
-
-      // Exit history view if open
-      if (histActive) {
-        document.getElementById('historyView').classList.remove('active');
-        document.getElementById('listViews').style.display = 'block';
-      }
-
-      document.getElementById('subNav').style.display = '';
-
-      const fcBtn = document.querySelector('[data-cat="finance_companies"]');
-
-      if (page === 'interest_spread') {
-        const hasFCSpread = !!(SPREAD_DATA && SPREAD_DATA.finance_companies && SPREAD_DATA.finance_companies.length);
-        fcBtn.disabled = !hasFCSpread;
-        if (!hasFCSpread && activeSubTab === 'finance_companies') setActiveSubTab('commercial_banks');
-        document.getElementById('categorySelect').innerHTML = `
-          <option value="commercial_banks">Commercial Banks</option>
-          <option value="development_banks">Development Banks</option>` + (hasFCSpread ? `
-          <option value="finance_companies">Finance Companies</option>` : '');
-        document.getElementById('sub-commercial_banks').textContent = "Interest rate spread of commercial banks in Nepal — 'A' class institutions, updated monthly";
-        document.getElementById('sub-development_banks').textContent = "Interest rate spread of development banks in Nepal — 'B' class institutions, updated monthly";
-        document.getElementById('sub-finance_companies').textContent = "Interest rate spread of finance companies in Nepal — 'C' class institutions, updated monthly";
-        ['commercial_banks','development_banks','finance_companies'].forEach(renderSpreadList);
-      } else {
-        fcBtn.disabled = false;
-        document.getElementById('categorySelect').innerHTML = `
-          <option value="commercial_banks">Commercial Banks</option>
-          <option value="development_banks">Development Banks</option>
-          <option value="finance_companies">Finance Companies</option>`;
-        document.getElementById('sub-commercial_banks').textContent = "Base rates of commercial banks in Nepal — 'A' class institutions, updated monthly from official disclosures";
-        document.getElementById('sub-development_banks').textContent = "Base rates of development banks in Nepal — 'B' class institutions, updated monthly from official disclosures";
-        document.getElementById('sub-finance_companies').textContent = "Base rates of finance companies in Nepal — 'C' class institutions, updated monthly from official disclosures";
-        ['commercial_banks','development_banks','finance_companies'].forEach(renderList);
-      }
-    } else {
-      document.getElementById('subNav').style.display = histActive ? 'none' : '';
-    }
+    applyIndicatorUI(page);
+    document.getElementById('subNav').style.display = histActive ? 'none' : '';
   } else if (isComingSoon) {
     const labels = { npl: 'NPL (Non-Performing Loan) data', capital_adequacy: 'Capital Adequacy data' };
     document.getElementById('comingSoonTitle').textContent = page === 'npl' ? 'NPL' : 'Capital Adequacy';
     document.getElementById('comingSoonLabel').textContent = labels[page];
+  }
+
+  if (opts.pushState !== false && (page === 'dashboard' || isDataPage)) {
+    const url = urlForPage(page, activeSubTab);
+    if (location.pathname !== url) history.pushState(null, '', url);
   }
 
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1307,29 +1321,20 @@ function getMostRecentDate() {
 function init() {
   GLOBAL_LATEST_DATE = getMostRecentDate();
 
-  // Data freshness line on dashboard
-  let pending = 0;
-  ['commercial_banks','development_banks','finance_companies'].forEach(cat => {
-    DATA[cat].forEach(inst => { if (inst.history[0].date < GLOBAL_LATEST_DATE) pending++; });
-  });
-  const asofHTML =
-    `<span class="asof-dot${pending ? ' pending' : ''}"></span>` +
-    `Data through ${fmtDate(GLOBAL_LATEST_DATE)}` +
-    (pending ? ` · ${pending} BFI${pending > 1 ? 's' : ''} pending update` : '');
-  document.getElementById('dataAsOf').innerHTML = asofHTML;
-  document.getElementById('dataAsOfData').innerHTML = asofHTML;
+  updateAsofStatus(activeSubTab);
 
-  ['commercial_banks','development_banks','finance_companies'].forEach(renderList);
+  ['commercial_banks','development_banks','finance_companies'].forEach(renderUnifiedList);
 
   // Nav links
   document.querySelectorAll('.nav-link:not(.coming-soon)').forEach(btn => {
-    btn.addEventListener('click', () => navigateTo(btn.dataset.page));
+    btn.addEventListener('click', e => { e.preventDefault(); navigateTo(btn.dataset.page); });
   });
 
   // Sub-nav category pills
   document.querySelectorAll('.cat-pill-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      if (!btn.disabled) setActiveSubTab(btn.dataset.cat);
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      if (!btn.classList.contains('is-disabled')) setActiveSubTab(btn.dataset.cat);
     });
   });
 
@@ -1342,9 +1347,17 @@ function init() {
   document.getElementById('listViews').addEventListener('click', e => {
     const btn = e.target.closest('.history-btn');
     if (btn) {
-      if (currentIndicator === 'interest_spread') selectSpreadInstitution(btn.dataset.cat, btn.dataset.id);
-      else selectInstitution(btn.dataset.cat, btn.dataset.id);
+      selectInstitutionHistory(btn.dataset.cat, btn.dataset.id);
     }
+  });
+
+  // History view indicator toggle pills
+  document.querySelectorAll('.hist-indicator-pill').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (btn.classList.contains('disabled')) return;
+      activeHistoryIndicator = btn.dataset.histInd;
+      selectInstitutionHistory(activeCategory, activeInstId, activeHistoryIndicator);
+    });
   });
 
   document.getElementById('backBtn').addEventListener('click', showListViews);
@@ -1352,20 +1365,12 @@ function init() {
   // History view dropdowns
   document.getElementById('categorySelect').addEventListener('change', e => {
     const category = e.target.value;
-    if (currentIndicator === 'interest_spread') {
-      const items = [...(SPREAD_DATA[category] || [])].sort((a,b) => a.name.localeCompare(b.name));
-      const select = document.getElementById('instSelect');
-      select.innerHTML = items.map(i => `<option value="${i.id}">${i.name}</option>`).join('');
-      if (items.length > 0) selectSpreadInstitution(category, select.value);
-    } else {
-      populateInstSelect(category, false);
-      selectInstitution(category, document.getElementById('instSelect').value);
-    }
+    populateInstSelect(category, false);
+    selectInstitutionHistory(category, document.getElementById('instSelect').value, activeHistoryIndicator);
   });
 
   document.getElementById('instSelect').addEventListener('change', e => {
-    if (currentIndicator === 'interest_spread') selectSpreadInstitution(activeCategory, e.target.value);
-    else selectInstitution(activeCategory, e.target.value);
+    selectInstitutionHistory(activeCategory, e.target.value, activeHistoryIndicator);
   });
 
   // Dashboard deviation chart category pills
@@ -1385,9 +1390,18 @@ function init() {
     });
   });
 
-  // Render dashboard on load
-  renderDashboard();
+  applyIndicatorUI(currentIndicator);
+  navigateTo(currentPage, { pushState: false });
+  if (currentPage !== 'dashboard') setActiveSubTab(activeSubTab, { pushState: false });
 }
+
+/* ---- Browser back/forward across indicator + category URLs ---- */
+window.addEventListener('popstate', () => {
+  if (!DATA) return;
+  const loc = parseLocationPath();
+  navigateTo(loc.page, { pushState: false });
+  if (loc.page !== 'dashboard') setActiveSubTab(loc.category, { pushState: false });
+});
 
 /* ---- Debounced re-render on resize (width changes only, so mobile
        address-bar show/hide doesn't trigger pointless redraws) ---- */
@@ -1414,9 +1428,9 @@ window.addEventListener('resize', () => {
 
 /* ---- Data fetch ---- */
 Promise.all([
-  fetch('data/base-rates.json').then(r => r.json()),
-  fetch('data/interest-spread.json').then(r => r.json()),
-  fetch('data/reference.json').then(r => r.json()).catch(() => ({}))
+  fetch('/data/base-rates.json').then(r => r.json()),
+  fetch('/data/interest-spread.json').then(r => r.json()),
+  fetch('/data/reference.json').then(r => r.json()).catch(() => ({}))
 ]).then(([baseData, spreadData, refData]) => {
   DATA = baseData;
   SPREAD_DATA = spreadData;
