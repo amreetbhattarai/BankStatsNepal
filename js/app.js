@@ -27,20 +27,33 @@ const SLUG_CATEGORY = Object.fromEntries(Object.entries(CATEGORY_SLUG).map(([k, 
 const INDICATOR_SLUG = { base_rate: 'base-rate', interest_spread: 'interest-spread', base_rate_spread: 'base-rate-spread' };
 const SLUG_INDICATOR = Object.fromEntries(Object.entries(INDICATOR_SLUG).map(([k, v]) => [v, k]));
 
-function urlForPage(page, category) {
-  if (page === 'base_rate' || page === 'interest_spread' || page === 'base_rate_spread') {
-    const slug = INDICATOR_SLUG[page] || 'base-rate-spread';
-    return `/${slug}/${CATEGORY_SLUG[category]}/`;
+function getBasePath() {
+  const parts = location.pathname.split('/').filter(Boolean);
+  const indIndex = parts.findIndex(p => SLUG_INDICATOR[p]);
+  if (indIndex > 0) {
+    return '/' + parts.slice(0, indIndex).join('/') + '/';
   }
   return '/';
 }
 
+function urlForPage(page, category) {
+  const base = getBasePath();
+  if (page === 'base_rate' || page === 'interest_spread' || page === 'base_rate_spread') {
+    const slug = INDICATOR_SLUG[page] || 'base-rate-spread';
+    return `${base}${slug}/${CATEGORY_SLUG[category]}/`;
+  }
+  return base;
+}
+
 function parseLocationPath() {
   const parts = location.pathname.split('/').filter(Boolean);
-  if (parts.length === 2 && SLUG_INDICATOR[parts[0]] && SLUG_CATEGORY[parts[1]]) {
-    const p = SLUG_INDICATOR[parts[0]];
+  const indIndex = parts.findIndex(p => SLUG_INDICATOR[p]);
+  if (indIndex !== -1) {
+    const p = SLUG_INDICATOR[parts[indIndex]];
     const norm = (p === 'base_rate' || p === 'interest_spread' || p === 'base_rate_spread') ? 'base_rate_spread' : p;
-    return { page: norm, category: SLUG_CATEGORY[parts[1]] };
+    const catSlug = parts[indIndex + 1];
+    const category = (catSlug && SLUG_CATEGORY[catSlug]) ? SLUG_CATEGORY[catSlug] : 'commercial_banks';
+    return { page: norm, category };
   }
   return { page: 'dashboard', category: 'commercial_banks' };
 }
@@ -194,8 +207,12 @@ function sortItems(category) {
       va = avg3Month(a.base.history);
       vb = avg3Month(b.base.history);
     } else if (sortState.col === 'spread') {
-      va = a.spread && a.spread.history && a.spread.history[0] ? a.spread.history[0].rate : -999;
-      vb = b.spread && b.spread.history && b.spread.history[0] ? b.spread.history[0].rate : -999;
+      const aCurr = a.base.history[0];
+      const bCurr = b.base.history[0];
+      const aSMatch = a.spread && a.spread.history ? a.spread.history.find(h => h.date === aCurr.date) : null;
+      const bSMatch = b.spread && b.spread.history ? b.spread.history.find(h => h.date === bCurr.date) : null;
+      va = aSMatch ? aSMatch.rate : -999;
+      vb = bSMatch ? bSMatch.rate : -999;
     }
     return sortState.dir === 'desc' ? vb - va : va - vb;
   });
@@ -238,25 +255,29 @@ function renderUnifiedList(category) {
   if (theadRow) theadRow.innerHTML = unifiedTheadHTML();
   attachSortHandlers(category);
 
-  items.forEach(({ base: inst, spread: spreadInst }) => {
+  items.forEach(item => {
+    const inst = item.base;
+    const spreadInst = item.spread;
     const curr = inst.history[0];
     const prev = inst.history[1];
     const chip = trendChip(curr.rate, prev ? prev.rate : undefined);
     const avg3 = avg3Month(inst.history);
-    const avg3Tip = avg3MonthTooltip(inst.history);
     const avgChg = avg3Change(inst.history);
-    const avgChip = trendChip(avg3, avgChg !== undefined ? avg3 - avgChg : undefined);
-    const isPending = GLOBAL_LATEST_DATE && curr.date < GLOBAL_LATEST_DATE;
+    const avgChip = avgChg !== undefined ? trendChip(avg3, avg3 - avgChg) : '';
+    const isPending = curr.date < GLOBAL_LATEST_DATE;
     const pendingBadge = isPending ? `<span class="pending-badge" title="No rate reported yet for ${fmtDate(GLOBAL_LATEST_DATE)}">Pending update</span>` : '';
 
     let spreadHTML = `<span style="color:var(--slate)">—</span>`;
     let cardSpreadHTML = `<span style="color:var(--slate)">—</span>`;
     if (spreadInst && spreadInst.history && spreadInst.history.length) {
-      const sCurr = spreadInst.history[0];
-      const sPrev = spreadInst.history[1];
-      const sChip = trendChip(sCurr.rate, sPrev ? sPrev.rate : undefined);
-      spreadHTML = `<div><span class="rate-value" style="font-size:16px">${fmtRate(sCurr.rate)}</span>${sChip}</div>`;
-      cardSpreadHTML = `<div><span class="rate-value" style="font-size:16px">${fmtRate(sCurr.rate)}</span>${sChip}</div>`;
+      const sIndex = spreadInst.history.findIndex(h => h.date === curr.date);
+      if (sIndex !== -1) {
+        const sCurr = spreadInst.history[sIndex];
+        const sPrev = spreadInst.history[sIndex + 1];
+        const sChip = trendChip(sCurr.rate, sPrev ? sPrev.rate : undefined);
+        spreadHTML = `<div><span class="rate-value" style="font-size:16px">${fmtRate(sCurr.rate)}</span>${sChip}</div>`;
+        cardSpreadHTML = `<div><span class="rate-value" style="font-size:16px">${fmtRate(sCurr.rate)}</span>${sChip}</div>`;
+      }
     }
 
     const tr = document.createElement('tr');
@@ -1279,8 +1300,11 @@ function navigateTo(page, opts = {}) {
   if (page === 'dashboard') {
     renderDashboard();
   } else if (isDataPage) {
+    document.getElementById('historyView').classList.remove('active');
+    document.getElementById('listViews').style.display = 'block';
+    document.getElementById('subNav').style.display = '';
     applyIndicatorUI(page);
-    document.getElementById('subNav').style.display = histActive ? 'none' : '';
+    setActiveSubTab(activeSubTab || 'commercial_banks', { pushState: false });
   } else if (isComingSoon) {
     const labels = { npl: 'NPL (Non-Performing Loan) data', capital_adequacy: 'Capital Adequacy data' };
     document.getElementById('comingSoonTitle').textContent = page === 'npl' ? 'NPL' : 'Capital Adequacy';
@@ -1426,11 +1450,28 @@ window.addEventListener('resize', () => {
   }, 150);
 });
 
-/* ---- Data fetch ---- */
+/* ---- Data fetch with resilient failovers for localhost & GitHub Pages ---- */
+async function fetchJSON(file) {
+  const candidateUrls = [
+    `/data/${file}`,
+    `./data/${file}`,
+    `../../data/${file}`
+  ];
+  for (const url of candidateUrls) {
+    try {
+      const res = await fetch(url);
+      if (res.ok) return await res.json();
+    } catch (e) {
+      // continue to next URL candidate
+    }
+  }
+  throw new Error(`Failed to load data/${file}`);
+}
+
 Promise.all([
-  fetch('/data/base-rates.json').then(r => r.json()),
-  fetch('/data/interest-spread.json').then(r => r.json()),
-  fetch('/data/reference.json').then(r => r.json()).catch(() => ({}))
+  fetchJSON('base-rates.json'),
+  fetchJSON('interest-spread.json'),
+  fetchJSON('reference.json').catch(() => ({}))
 ]).then(([baseData, spreadData, refData]) => {
   DATA = baseData;
   SPREAD_DATA = spreadData;
@@ -1438,5 +1479,5 @@ Promise.all([
   init();
 }).catch(err => {
   document.querySelector('main').innerHTML = `<div class="empty-state">Could not load data. Make sure data files are present and the page is served over HTTP (not opened directly as a file).</div>`;
-  console.error(err);
+  console.error('Data loading error:', err);
 });

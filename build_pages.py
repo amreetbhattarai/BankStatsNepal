@@ -84,9 +84,12 @@ def unified_row(inst, spread_inst, category):
     spread_html = '<span style="color:var(--slate)">—</span>'
     if spread_inst and spread_inst.get('history'):
         shist = spread_inst['history']
-        scurr, sprev = shist[0], (shist[1] if len(shist) > 1 else None)
-        schip = trend_chip(scurr['rate'], sprev['rate'] if sprev else None)
-        spread_html = f'<div><span class="rate-value" style="font-size:16px">{fmt_rate(scurr["rate"])}</span>{schip}</div>'
+        smatch_idx = next((idx for idx, h in enumerate(shist) if h['date'] == curr['date']), None)
+        if smatch_idx is not None:
+            scurr = shist[smatch_idx]
+            sprev = shist[smatch_idx + 1] if len(shist) > smatch_idx + 1 else None
+            schip = trend_chip(scurr['rate'], sprev['rate'] if sprev else None)
+            spread_html = f'<div><span class="rate-value" style="font-size:16px">{fmt_rate(scurr["rate"])}</span>{schip}</div>'
 
     return (
         f'<tr data-name="{esc(inst["name"].lower())}">'
