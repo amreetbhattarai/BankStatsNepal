@@ -24,7 +24,12 @@ const CATEGORY_SLUG = {
 };
 const SLUG_CATEGORY = Object.fromEntries(Object.entries(CATEGORY_SLUG).map(([k, v]) => [v, k]));
 
-const INDICATOR_SLUG = { base_rate: 'base-rate', interest_spread: 'interest-spread', base_rate_spread: 'base-rate-spread' };
+const INDICATOR_SLUG = { 
+  base_rate: 'base-rate', 
+  interest_spread: 'interest-spread', 
+  base_rate_spread: 'base-rate-spread',
+  quarterly_indicators: 'quarterly-indicators'
+};
 const SLUG_INDICATOR = Object.fromEntries(Object.entries(INDICATOR_SLUG).map(([k, v]) => [v, k]));
 
 function getBasePath() {
@@ -38,7 +43,7 @@ function getBasePath() {
 
 function urlForPage(page, category) {
   const base = getBasePath();
-  if (page === 'base_rate' || page === 'interest_spread' || page === 'base_rate_spread') {
+  if (page === 'base_rate' || page === 'interest_spread' || page === 'base_rate_spread' || page === 'quarterly_indicators') {
     const slug = INDICATOR_SLUG[page] || 'base-rate-spread';
     return `${base}${slug}/${CATEGORY_SLUG[category]}/`;
   }
@@ -60,6 +65,7 @@ function parseLocationPath() {
 
 let DATA = null;
 let SPREAD_DATA = null;
+let QUARTERLY_DATA = null;
 let GLOBAL_LATEST_DATE = null;
 
 /* Interest Rate Corridor data — loaded from data/reference.json */
@@ -72,19 +78,30 @@ let activeHistoryIndicator = 'base_rate';
 let currentDevCat = 'cb';
 let currentScatCat = 'cb';
 let activeSubTab = _initialLoc.category;
+let activeQCat = _initialLoc.category || 'commercial_banks';
+let activeQMetric = 'npl';
+let activeQView = 'data';
 let sortState = { col: null, dir: null };
+let qSortState = { col: null, dir: null };
+let qChartSortDir = 'desc'; // 'desc', 'asc', 'name'
 
 const BS_MONTHS = ['Baisakh','Jestha','Ashadh','Shrawan','Bhadra','Ashwin','Kartik','Mangsir','Poush','Magh','Falgun','Chaitra'];
 const BS_MONTHS_SHORT = ['Bai','Jes','Asa','Shr','Bha','Asw','Kar','Man','Pou','Mag','Fal','Cha'];
 
 function fmtDate(d) {
-  const [year, month] = d.split('-');
-  return `${BS_MONTHS[parseInt(month,10)-1]} ${year}`;
+  if (!d) return '—';
+  const parts = String(d).split('-');
+  if (parts.length < 2) return d;
+  const mIndex = parseInt(parts[1], 10) - 1;
+  return `${BS_MONTHS[mIndex] || parts[1]} ${parts[0]}`;
 }
 
 function fmtDateShort(d) {
-  const [year, month] = d.split('-');
-  return `${BS_MONTHS_SHORT[parseInt(month,10)-1]} ${year.slice(2)}`;
+  if (!d) return '—';
+  const parts = String(d).split('-');
+  if (parts.length < 2) return d;
+  const mIndex = parseInt(parts[1], 10) - 1;
+  return `${BS_MONTHS_SHORT[mIndex] || parts[1]} ${parts[0].slice(2)}`;
 }
 
 function fmtRate(r) { return r.toFixed(2) + '%'; }
@@ -201,14 +218,14 @@ function sortItems(category) {
   return combined.sort((a,b) => {
     let va, vb;
     if (sortState.col === 'rate') {
-      va = a.base.history[0].rate;
-      vb = b.base.history[0].rate;
+      va = (a.base.history && a.base.history[0]) ? a.base.history[0].rate : -999;
+      vb = (b.base.history && b.base.history[0]) ? b.base.history[0].rate : -999;
     } else if (sortState.col === 'avg3') {
       va = avg3Month(a.base.history);
       vb = avg3Month(b.base.history);
     } else if (sortState.col === 'spread') {
-      const aCurr = a.base.history[0];
-      const bCurr = b.base.history[0];
+      const aCurr = (a.base.history && a.base.history[0]) || {};
+      const bCurr = (b.base.history && b.base.history[0]) || {};
       const aSMatch = a.spread && a.spread.history ? a.spread.history.find(h => h.date === aCurr.date) : null;
       const bSMatch = b.spread && b.spread.history ? b.spread.history.find(h => h.date === bCurr.date) : null;
       va = aSMatch ? aSMatch.rate : -999;
@@ -257,6 +274,7 @@ function renderUnifiedList(category) {
 
   items.forEach(item => {
     const inst = item.base;
+    if (!inst || !inst.history || !inst.history.length) return;
     const spreadInst = item.spread;
     const curr = inst.history[0];
     const prev = inst.history[1];
@@ -265,7 +283,9 @@ function renderUnifiedList(category) {
     const avgChg = avg3Change(inst.history);
     const avgChip = avgChg !== undefined ? trendChip(avg3, avg3 - avgChg) : '';
     const isPending = curr.date < GLOBAL_LATEST_DATE;
-    const pendingBadge = isPending ? `<span class="pending-badge" title="No rate reported yet for ${fmtDate(GLOBAL_LATEST_DATE)}">Pending update</span>` : '';
+    const statusDot = isPending 
+      ? `<span class="status-dot-indicator yellow" title="${fmtDate(GLOBAL_LATEST_DATE)} pending — displaying ${fmtDate(curr.date)} disclosure"></span><span class="stale-month-badge">${fmtDate(curr.date)}</span>` 
+      : `<span class="status-dot-indicator green" title="${fmtDate(GLOBAL_LATEST_DATE)} disclosure up to date"></span>`;
 
     let spreadHTML = `<span style="color:var(--slate)">—</span>`;
     let cardSpreadHTML = `<span style="color:var(--slate)">—</span>`;
@@ -282,8 +302,9 @@ function renderUnifiedList(category) {
 
     const tr = document.createElement('tr');
     tr.dataset.name = inst.name.toLowerCase();
+    if (isPending) tr.className = 'stale-row';
     tr.innerHTML = `
-      <td><div class="inst-name">${inst.name}${pendingBadge}</div></td>
+      <td><div class="inst-name">${inst.name}${statusDot}</div></td>
       <td class="num">
         <div><span class="rate-value">${fmtRate(curr.rate)}</span>${chip}</div>
       </td>
@@ -296,11 +317,11 @@ function renderUnifiedList(category) {
     tbody.appendChild(tr);
 
     const card = document.createElement('div');
-    card.className = 'rate-card';
+    card.className = 'rate-card' + (isPending ? ' stale-card' : '');
     card.dataset.name = inst.name.toLowerCase();
     card.innerHTML = `
       <div class="rate-card-top">
-        <div class="inst-name">${inst.name}${pendingBadge}</div>
+        <div class="inst-name">${inst.name}${statusDot}</div>
         <button class="history-btn" data-cat="${category}" data-id="${inst.id}">History</button>
       </div>
       <div style="display:flex;gap:16px;margin-top:10px;flex-wrap:wrap">
@@ -459,8 +480,11 @@ function renderScatter(scatCat) {
   const unmatched = [];
   base.forEach(b => {
     const s = spread.find(v => v.id === b.id) || spread.find(v => v.name === b.name);
-    if (s) pts.push({ name: b.name, bx: b.history[0].rate, sy: s.history[0].rate });
-    else unmatched.push(b.name);
+    if (s && s.history && s.history.length > 0 && b.history && b.history.length > 0) {
+      pts.push({ name: b.name, bx: b.history[0].rate, sy: s.history[0].rate });
+    } else {
+      unmatched.push(b.name);
+    }
   });
   if (spread.length && unmatched.length) console.warn('Scatter: no spread data matched for:', unmatched.join(', '));
 
@@ -663,39 +687,48 @@ function renderDashboardStats() {
 
   // Category averages with month-over-month delta
   cats.forEach(cat => {
-    const curr = avg(DATA[cat].map(i => i.history[0].rate));
-    const prevArr = DATA[cat].filter(i => i.history[1]).map(i => i.history[1].rate);
+    const validInsts = (DATA[cat] || []).filter(i => i.history && i.history.length > 0);
+    if (!validInsts.length) return;
+    const curr = avg(validInsts.map(i => i.history[0].rate));
+    const prevArr = validInsts.filter(i => i.history[1]).map(i => i.history[1].rate);
     const prev = prevArr.length ? avg(prevArr) : null;
-    document.getElementById('stat' + SHORT[cat] + 'Avg').innerHTML =
-      curr.toFixed(2) + '%' + (prev != null ? deltaHTML(curr - prev) : '');
+    const el = document.getElementById('stat' + SHORT[cat] + 'Avg');
+    if (el) el.innerHTML = curr.toFixed(2) + '%' + (prev != null ? deltaHTML(curr - prev) : '');
   });
 
   // Breadth: how many BFIs cut / raised / held vs their previous month
   let cut = 0, raised = 0, flat = 0;
   cats.forEach(cat => {
-    DATA[cat].forEach(i => {
-      if (!i.history[1]) return;
+    (DATA[cat] || []).forEach(i => {
+      if (!i.history || i.history.length < 2) return;
       const d = i.history[0].rate - i.history[1].rate;
       if (d < -0.001) cut++;
       else if (d > 0.001) raised++;
       else flat++;
     });
   });
-  document.getElementById('statMoves').innerHTML =
-    `<span style="color:var(--down)">▼${cut}</span> <span style="color:var(--up)">▲${raised}</span>`;
-  document.getElementById('statMovesSub').textContent = `cut / raised · ${flat} unchanged`;
+  const movesEl = document.getElementById('statMoves');
+  if (movesEl) movesEl.innerHTML = `<span style="color:var(--down)">▼${cut}</span> <span style="color:var(--up)">▲${raised}</span>`;
+  const movesSubEl = document.getElementById('statMovesSub');
+  if (movesSubEl) movesSubEl.textContent = `cut / raised · ${flat} unchanged`;
 
   // Average interest spread with month-over-month delta (categories with data)
   const spreadCats = cats.filter(c => SPREAD_DATA && SPREAD_DATA[c] && SPREAD_DATA[c].length);
   if (spreadCats.length) {
     const currAll = [], prevAll = [];
     spreadCats.forEach(c => SPREAD_DATA[c].forEach(i => {
-      currAll.push(i.history[0].rate);
-      if (i.history[1]) prevAll.push(i.history[1].rate);
+      if (i.history && i.history.length > 0) {
+        currAll.push(i.history[0].rate);
+        if (i.history[1]) prevAll.push(i.history[1].rate);
+      }
     }));
-    const sc = avg(currAll), sp = prevAll.length ? avg(prevAll) : null;
-    document.getElementById('statSpread').innerHTML = sc.toFixed(2) + '%' + (sp != null ? deltaHTML(sc - sp) : '');
-    document.getElementById('statSpreadSub').textContent = `avg spread · ${spreadCats.map(c => SHORT[c]).join(' & ')}`;
+    if (currAll.length) {
+      const sc = avg(currAll), sp = prevAll.length ? avg(prevAll) : null;
+      const spreadEl = document.getElementById('statSpread');
+      if (spreadEl) spreadEl.innerHTML = sc.toFixed(2) + '%' + (sp != null ? deltaHTML(sc - sp) : '');
+      const spreadSubEl = document.getElementById('statSpreadSub');
+      if (spreadSubEl) spreadSubEl.textContent = `avg spread · ${spreadCats.map(c => SHORT[c]).join(' & ')}`;
+    }
   }
 }
 
@@ -710,8 +743,10 @@ function renderBeeswarm() {
 
   const allInsts = [];
   ['commercial_banks', 'development_banks', 'finance_companies'].forEach(cat => {
-    DATA[cat].forEach(inst => {
-      allInsts.push({ name: inst.name, rate: inst.history[0].rate, cat, color: CAT_COLORS[cat] });
+    (DATA[cat] || []).forEach(inst => {
+      if (inst.history && inst.history.length > 0) {
+        allInsts.push({ name: inst.name, rate: inst.history[0].rate, cat, color: CAT_COLORS[cat] });
+      }
     });
   });
 
@@ -785,11 +820,12 @@ function renderBeeswarm() {
 function renderDeviationChart(devCat) {
   currentDevCat = devCat;
   const catKey = DEV_CAT_MAP[devCat];
-  const group = DATA[catKey];
+  const group = (DATA[catKey] || []).filter(i => i.history && i.history.length > 0);
+  if (!group.length) return;
   const avg = group.reduce((s, i) => s + i.history[0].rate, 0) / group.length;
 
-  document.getElementById('dashAvgLabel').textContent =
-    `${CATEGORY_LABELS[catKey]}s · avg ${avg.toFixed(2)}% · ${fmtDate(GLOBAL_LATEST_DATE)}`;
+  const lblEl = document.getElementById('dashAvgLabel');
+  if (lblEl) lblEl.textContent = `${CATEGORY_LABELS[catKey]}s · avg ${avg.toFixed(2)}% · ${fmtDate(GLOBAL_LATEST_DATE)}`;
 
   const svg = document.getElementById('deviationChart');
   const W = chartWidth(svg);
@@ -1271,10 +1307,469 @@ function applyIndicatorUI(page) {
     <option value="commercial_banks">Commercial Banks</option>
     <option value="development_banks">Development Banks</option>
     <option value="finance_companies">Finance Companies</option>`;
-  document.getElementById('sub-commercial_banks').textContent = "Base rates & interest spreads of commercial banks in Nepal — 'A' class institutions, updated monthly from official disclosures";
-  document.getElementById('sub-development_banks').textContent = "Base rates & interest spreads of development banks in Nepal — 'B' class institutions, updated monthly from official disclosures";
-  document.getElementById('sub-finance_companies').textContent = "Base rates & interest spreads of finance companies in Nepal — 'C' class institutions, updated monthly from official disclosures";
+  document.getElementById('sub-commercial_banks').textContent = "Base rates & interest spreads of commercial banks in Nepal, updated monthly";
+  document.getElementById('sub-development_banks').textContent = "Base rates & interest spreads of development banks in Nepal, updated monthly";
+  document.getElementById('sub-finance_companies').textContent = "Base rates & interest spreads of finance companies in Nepal, updated monthly";
   ['commercial_banks','development_banks','finance_companies'].forEach(renderUnifiedList);
+}
+
+/* ---- Quarterly Indicators Rendering ---- */
+const Q_METRIC_CONFIG = {
+  npl: {
+    label: 'NPL %',
+    fullName: 'Non-Performing Loans (NPL %)',
+    threshold: 5.00,
+    thresholdLabel: '5.00%',
+    isHigherBad: true,
+    description: 'NPL ratios & asset quality statistics of Nepali BFIs, updated quarterly'
+  },
+  car: {
+    label: 'Capital Adequacy',
+    fullName: 'Capital Adequacy Ratios (CAR, Tier 1, CET 1)',
+    threshold: null,
+    thresholdLabel: null,
+    isHigherBad: false,
+    multiColumn: true,
+    description: 'Capital Fund to RWA (CAR), Tier 1 Capital, and CET 1 Capital ratios of Nepali BFIs'
+  },
+  cd_ratio: {
+    label: 'CD Ratio %',
+    fullName: 'Credit-to-Deposit Ratio (CD %)',
+    threshold: 90.00,
+    thresholdLabel: '90.00%',
+    isHigherBad: true,
+    description: 'Credit-to-deposit ratios & liquidity statistics of Nepali BFIs, updated quarterly'
+  },
+  cost_of_fund: {
+    label: 'Cost of Funds %',
+    fullName: 'Cost of Funds (%)',
+    threshold: null,
+    thresholdLabel: null,
+    isHigherBad: true,
+    description: 'Cost of funds statistics of Nepali BFIs, updated quarterly'
+  },
+  llp_npl: {
+    label: 'LLP to NPL %',
+    fullName: 'Total LLP to Total NPL Ratio (%)',
+    threshold: null,
+    thresholdLabel: null,
+    isHigherBad: false,
+    description: 'Total loan loss provision (LLP) to NPL coverage ratios of Nepali BFIs'
+  },
+  roe: {
+    label: 'ROE %',
+    fullName: 'Return on Equity (ROE Annualized %)',
+    threshold: null,
+    thresholdLabel: null,
+    isHigherBad: false,
+    description: 'Annualized Return on Equity (ROE) statistics of Nepali BFIs'
+  },
+  roa: {
+    label: 'ROA %',
+    fullName: 'Return on Assets (ROA Annualized %)',
+    threshold: null,
+    thresholdLabel: null,
+    isHigherBad: false,
+    description: 'Annualized Return on Assets (ROA) statistics of Nepali BFIs'
+  }
+};
+
+function parseQuarterKey(qStr) {
+  if (!qStr) return 0;
+  const match = qStr.match(/(Q[1-4])\s*(\d{4})/i) || qStr.match(/(\d{4})\s*(Q[1-4])/i);
+  if (match) {
+    let qNum = parseInt(match[1].replace(/Q/i, ''));
+    let year = parseInt(match[2]);
+    if (/^\d{4}$/.test(match[1])) {
+      year = parseInt(match[1]);
+      qNum = parseInt(match[2].replace(/Q/i, ''));
+    }
+    return year * 10 + qNum;
+  }
+  return 0;
+}
+
+function fmtQuarterLabel(q) {
+  if (!q) return '—';
+  const match = q.match(/(Q[1-4])\s*(\d{4})/i) || q.match(/(\d{4})\s*(Q[1-4])/i);
+  if (match) {
+    let qNum = match[1].toUpperCase();
+    let year = match[2];
+    if (/^\d{4}$/.test(match[1])) {
+      year = match[1];
+      qNum = match[2].toUpperCase();
+    }
+    const qMonths = {
+      'Q1': 'Ashwin',
+      'Q2': 'Poush',
+      'Q3': 'Chaitra',
+      'Q4': 'Ashadh'
+    };
+    return `${year} ${qMonths[qNum] || ''} (${qNum})`;
+  }
+  return q;
+}
+
+function calcQuarterDeltaBadge(diff, metric) {
+  if (Math.abs(diff) < 0.005) {
+    return `<span class="trend-chip flat">0.00%</span>`;
+  }
+  const isUp = diff > 0;
+  const formatted = (isUp ? '+' : '') + diff.toFixed(2) + '%';
+  const isGood = (metric === 'roe' || metric === 'roa' || metric === 'llp_npl') ? isUp : !isUp;
+  const cls = isGood ? 'up' : 'down';
+  return `<span class="trend-chip ${cls}">${formatted}</span>`;
+}
+
+function renderQuarterlyView(category = activeQCat) {
+  activeQCat = category;
+  hideQuarterlyHistory();
+
+  const qData = (QUARTERLY_DATA && QUARTERLY_DATA[category]) || [];
+  const cfg = Q_METRIC_CONFIG[activeQMetric] || Q_METRIC_CONFIG.npl;
+
+  // Update counts
+  ['commercial_banks','development_banks','finance_companies'].forEach(c => {
+    const el = document.getElementById('qcount-' + c);
+    if (el && QUARTERLY_DATA && QUARTERLY_DATA[c]) el.textContent = QUARTERLY_DATA[c].length;
+  });
+
+  // Update category buttons & view buttons
+  document.querySelectorAll('#subNavQuarterly .cat-pill-btn').forEach(b => b.classList.toggle('active', b.dataset.qcat === category));
+  document.querySelectorAll('.q-metric-pill').forEach(b => b.classList.toggle('active', b.dataset.qmetric === activeQMetric));
+  document.querySelectorAll('.q-view-btn').forEach(b => b.classList.toggle('active', b.dataset.qview === activeQView));
+
+  // Compute status pill (chronologically resolve absolute latest quarter)
+  const allLatestQuarters = qData.map(i => i.history[0]?.quarter).filter(Boolean);
+  allLatestQuarters.sort((a, b) => parseQuarterKey(b) - parseQuarterKey(a));
+  const latestQ = allLatestQuarters[0] || 'Q3 2082';
+  const updatedCount = qData.filter(i => i.history[0]?.quarter === latestQ).length;
+  const pendingCount = qData.length - updatedCount;
+
+  const dot = pendingCount > 0 ? '<span class="asof-dot blinking"></span>' : '<span class="asof-dot"></span>';
+  const statusEl = document.getElementById('dataAsOfQuarterly');
+  if (statusEl) statusEl.innerHTML = `${dot}${fmtQuarterLabel(latestQ)} Disclosures · ${updatedCount} Updated, ${pendingCount} Pending`;
+
+  // Toggle Data View vs Chart View
+  const tableContainer = document.getElementById('qTableView');
+  const chartContainer = document.getElementById('qChartView');
+
+  if (activeQView === 'data') {
+    if (tableContainer) tableContainer.style.display = 'block';
+    if (chartContainer) chartContainer.style.display = 'none';
+    renderQuarterlyTable(category, qData, cfg, latestQ);
+  } else {
+    if (tableContainer) tableContainer.style.display = 'none';
+    if (chartContainer) chartContainer.style.display = 'block';
+    renderQuarterlyChart(category, qData, cfg, latestQ);
+  }
+}
+
+function cycleQSortDir(col) {
+  if (qSortState.col !== col) {
+    qSortState.col = col;
+    qSortState.dir = 'desc';
+  } else if (qSortState.dir === 'desc') {
+    qSortState.dir = 'asc';
+  } else {
+    qSortState.col = null;
+    qSortState.dir = null;
+  }
+}
+
+function qSortArrow(col) {
+  if (qSortState.col !== col) return '<span class="sort-arrow">↕</span>';
+  return `<span class="sort-arrow">${qSortState.dir === 'desc' ? '↓' : '↑'}</span>`;
+}
+
+function renderQuarterlyTable(category, qData, cfg, latestQ) {
+  const container = document.getElementById('qTableView');
+  if (!container) return;
+
+  let items = [...qData];
+
+  if (qSortState.col) {
+    items.sort((a, b) => {
+      const aCurr = a.history[0] || {};
+      const bCurr = b.history[0] || {};
+      let va = 0, vb = 0;
+
+      if (qSortState.col === 'name') {
+        va = a.name.toLowerCase();
+        vb = b.name.toLowerCase();
+        if (va < vb) return qSortState.dir === 'asc' ? -1 : 1;
+        if (va > vb) return qSortState.dir === 'asc' ? 1 : -1;
+        return 0;
+      } else if (qSortState.col === 'quarter') {
+        va = parseQuarterKey(aCurr.quarter);
+        vb = parseQuarterKey(bCurr.quarter);
+        return qSortState.dir === 'desc' ? vb - va : va - vb;
+      } else {
+        va = aCurr[qSortState.col] !== undefined ? aCurr[qSortState.col] : -9999;
+        vb = bCurr[qSortState.col] !== undefined ? bCurr[qSortState.col] : -9999;
+        return qSortState.dir === 'desc' ? vb - va : va - vb;
+      }
+    });
+  } else {
+    items.sort((a,b) => a.name.localeCompare(b.name));
+  }
+
+  const isMultiCap = (activeQMetric === 'car');
+
+  let rowsHTML = '';
+  items.forEach(inst => {
+    const curr = inst.history[0] || {};
+    const prev = inst.history[1] || {};
+
+    const isStale = curr.quarter && curr.quarter !== latestQ;
+    const statusDot = isStale 
+      ? `<span class="status-dot-indicator yellow" title="${fmtQuarterLabel(latestQ)} pending — displaying ${fmtQuarterLabel(curr.quarter)}"></span>` 
+      : `<span class="status-dot-indicator green" title="${fmtQuarterLabel(latestQ)} disclosure up to date"></span>`;
+    const rowClass = isStale ? ' class="stale-row"' : '';
+    const dateClass = isStale ? 'rate-date stale-date' : 'rate-date latest-date';
+
+    let auditBadge = '';
+    if (curr.audited === true) {
+      auditBadge = ` <span class="stale-month-badge" style="background:#E8F5E9;color:#2E7D32;border-color:rgba(46,125,50,0.3)">Audited</span>`;
+    }
+
+    if (isMultiCap) {
+      const carVal = curr.car !== undefined ? fmtRate(curr.car) : '—';
+      const tier1Val = curr.tier1 !== undefined ? fmtRate(curr.tier1) : '—';
+      const cet1Val = curr.cet1 !== undefined ? fmtRate(curr.cet1) : '—';
+
+      rowsHTML += `
+        <tr${rowClass}>
+          <td><div class="inst-name">${inst.name}${statusDot}</div></td>
+          <td class="num"><span class="rate-value">${carVal}</span></td>
+          <td class="num"><span class="rate-value">${tier1Val}</span></td>
+          <td class="num"><span class="rate-value">${cet1Val}</span></td>
+          <td class="num"><span class="${dateClass}">${fmtQuarterLabel(curr.quarter)}${auditBadge}</span></td>
+          <td style="text-align:right"><button class="history-btn" data-qhist-cat="${category}" data-qhist-id="${inst.id}">History</button></td>
+        </tr>`;
+    } else {
+      const val = curr[activeQMetric] !== undefined ? curr[activeQMetric] : null;
+
+      // QoQ calculation
+      let qoqHTML = '<span style="color:var(--slate)">—</span>';
+      if (val !== null && prev && prev[activeQMetric] !== undefined && prev[activeQMetric] !== null) {
+        const diff = val - prev[activeQMetric];
+        qoqHTML = calcQuarterDeltaBadge(diff, activeQMetric);
+      }
+
+      // YoY calculation
+      let yoyHTML = '<span style="color:var(--slate)">—</span>';
+      const qMatch = (curr.quarter || '').match(/(Q[1-4])\s*(\d{4})/i) || (curr.quarter || '').match(/(\d{4})\s*(Q[1-4])/i);
+      if (val !== null && qMatch) {
+        let qNum = qMatch[1].toUpperCase();
+        let year = parseInt(qMatch[2]);
+        if (/^\d{4}$/.test(qMatch[1])) {
+          year = parseInt(qMatch[1]);
+          qNum = qMatch[2].toUpperCase();
+        }
+        const yoyRecord = inst.history.find(h => {
+          if (!h.quarter) return false;
+          const hm = h.quarter.match(/(Q[1-4])\s*(\d{4})/i) || h.quarter.match(/(\d{4})\s*(Q[1-4])/i);
+          if (!hm) return false;
+          let hQNum = hm[1].toUpperCase();
+          let hYear = parseInt(hm[2]);
+          if (/^\d{4}$/.test(hm[1])) {
+            hYear = parseInt(hm[1]);
+            hQNum = hm[2].toUpperCase();
+          }
+          return hQNum === qNum && hYear === year - 1;
+        });
+
+        if (yoyRecord && yoyRecord[activeQMetric] !== undefined && yoyRecord[activeQMetric] !== null) {
+          const diff = val - yoyRecord[activeQMetric];
+          yoyHTML = calcQuarterDeltaBadge(diff, activeQMetric);
+        }
+      }
+
+      rowsHTML += `
+        <tr${rowClass}>
+          <td><div class="inst-name">${inst.name}${statusDot}</div></td>
+          <td class="num"><span class="rate-value">${val !== null ? fmtRate(val) : '—'}</span></td>
+          <td class="num">${qoqHTML}</td>
+          <td class="num">${yoyHTML}</td>
+          <td class="num"><span class="${dateClass}">${fmtQuarterLabel(curr.quarter)}${auditBadge}</span></td>
+          <td style="text-align:right"><button class="history-btn" data-qhist-cat="${category}" data-qhist-id="${inst.id}">History</button></td>
+        </tr>`;
+    }
+  });
+
+  const theadHTML = isMultiCap ? `
+    <tr>
+      <th class="sortable-th${qSortState.col==='name'?' sort-active':''}" data-qsort="name">Institution ${qSortArrow('name')}</th>
+      <th class="num sortable-th${qSortState.col==='car'?' sort-active':''}" data-qsort="car">Capital Fund (CAR) ${qSortArrow('car')}</th>
+      <th class="num sortable-th${qSortState.col==='tier1'?' sort-active':''}" data-qsort="tier1">Tier 1 Capital ${qSortArrow('tier1')}</th>
+      <th class="num sortable-th${qSortState.col==='cet1'?' sort-active':''}" data-qsort="cet1">CET 1 Capital ${qSortArrow('cet1')}</th>
+      <th class="num sortable-th${qSortState.col==='quarter'?' sort-active':''}" data-qsort="quarter">Reporting Quarter ${qSortArrow('quarter')}</th>
+      <th></th>
+    </tr>` : `
+    <tr>
+      <th class="sortable-th${qSortState.col==='name'?' sort-active':''}" data-qsort="name">Institution ${qSortArrow('name')}</th>
+      <th class="num sortable-th${qSortState.col===activeQMetric?' sort-active':''}" data-qsort="${activeQMetric}">${cfg.label} ${qSortArrow(activeQMetric)}</th>
+      <th class="num">QoQ Change</th>
+      <th class="num">YoY Change</th>
+      <th class="num sortable-th${qSortState.col==='quarter'?' sort-active':''}" data-qsort="quarter">Reporting Quarter ${qSortArrow('quarter')}</th>
+      <th></th>
+    </tr>`;
+
+  container.innerHTML = `
+    <div class="section-head">
+      <div>
+        <h1>${CATEGORY_LABELS[category]}s — ${cfg.fullName}</h1>
+        <div class="section-sub">${cfg.description}</div>
+      </div>
+      <div class="search-box"><input type="text" placeholder="Search bank…" data-search-q="${category}"></div>
+    </div>
+    <div class="rate-table-wrap">
+      <table class="rate-table">
+        <thead>${theadHTML}</thead>
+        <tbody>${rowsHTML}</tbody>
+      </table>
+    </div>`;
+
+  const searchInput = container.querySelector('[data-search-q]');
+  if (searchInput) {
+    searchInput.addEventListener('input', e => {
+      const q = e.target.value.trim().toLowerCase();
+      container.querySelectorAll('tbody tr').forEach(r => {
+        const name = r.querySelector('.inst-name').textContent.toLowerCase();
+        r.style.display = name.includes(q) ? '' : 'none';
+      });
+    });
+  }
+
+  // Attach column sort handlers
+  container.querySelectorAll('[data-qsort]').forEach(th => {
+    th.addEventListener('click', () => {
+      cycleQSortDir(th.dataset.qsort);
+      renderQuarterlyTable(category, qData, cfg, latestQ);
+    });
+  });
+
+  // Attach History button click handlers
+  container.querySelectorAll('[data-qhist-id]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      showQuarterlyHistory(btn.dataset.qhistCat, btn.dataset.qhistId);
+    });
+  });
+}
+
+function showQuarterlyHistory(category, instId) {
+  const qData = (QUARTERLY_DATA && QUARTERLY_DATA[category]) || [];
+  const inst = qData.find(i => i.id === instId);
+  if (!inst) return;
+
+  const dataContainer = document.getElementById('qDataContainer');
+  const controlsHeader = document.getElementById('qControlsHeader');
+  const historyView = document.getElementById('qHistoryView');
+
+  if (dataContainer) dataContainer.style.display = 'none';
+  if (controlsHeader) controlsHeader.style.display = 'none';
+  if (historyView) historyView.style.display = 'block';
+
+  document.getElementById('qHistBankName').textContent = inst.name;
+  document.getElementById('qHistBankCat').textContent = `${CATEGORY_LABELS[category]} — Quarterly Financial History across Key Indicators`;
+
+  const latestQ = inst.history[0]?.quarter || 'Q3 2082';
+  document.getElementById('qHistLatestQuarter').textContent = `${fmtQuarterLabel(latestQ)} Disclosures`;
+
+  const tbody = document.getElementById('qHistTbody');
+  if (!tbody) return;
+
+  let rowsHTML = '';
+  inst.history.forEach(curr => {
+    let auditBadge = '';
+    if (curr.audited === true) {
+      auditBadge = ` <span class="stale-month-badge" style="background:#E8F5E9;color:#2E7D32;border-color:rgba(46,125,50,0.3)">Audited</span>`;
+    }
+
+    rowsHTML += `
+      <tr>
+        <td><strong style="font-family:'Space Mono',monospace;font-size:13.5px">${fmtQuarterLabel(curr.quarter)}</strong>${auditBadge}</td>
+        <td class="num"><span class="rate-value">${curr.npl !== undefined ? fmtRate(curr.npl) : '—'}</span></td>
+        <td class="num"><span class="rate-value">${curr.car !== undefined ? fmtRate(curr.car) : '—'}</span></td>
+        <td class="num"><span class="rate-value">${curr.tier1 !== undefined ? fmtRate(curr.tier1) : '—'}</span></td>
+        <td class="num"><span class="rate-value">${curr.cet1 !== undefined ? fmtRate(curr.cet1) : '—'}</span></td>
+        <td class="num"><span class="rate-value">${curr.cd_ratio !== undefined ? fmtRate(curr.cd_ratio) : '—'}</span></td>
+        <td class="num"><span class="rate-value">${curr.cost_of_fund !== undefined ? fmtRate(curr.cost_of_fund) : '—'}</span></td>
+        <td class="num"><span class="rate-value">${curr.llp_npl !== undefined ? fmtRate(curr.llp_npl) : '—'}</span></td>
+        <td class="num"><span class="rate-value">${curr.roe !== undefined ? fmtRate(curr.roe) : '—'}</span></td>
+        <td class="num"><span class="rate-value">${curr.roa !== undefined ? fmtRate(curr.roa) : '—'}</span></td>
+      </tr>`;
+  });
+
+  tbody.innerHTML = rowsHTML;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function hideQuarterlyHistory() {
+  const dataContainer = document.getElementById('qDataContainer');
+  const controlsHeader = document.getElementById('qControlsHeader');
+  const historyView = document.getElementById('qHistoryView');
+
+  if (historyView) historyView.style.display = 'none';
+  if (dataContainer) dataContainer.style.display = 'block';
+  if (controlsHeader) controlsHeader.style.display = 'flex';
+}
+
+function renderQuarterlyChart(category, qData, cfg, latestQ) {
+  const titleEl = document.getElementById('qChartTitle');
+  const subEl = document.getElementById('qChartSub');
+  if (titleEl) titleEl.textContent = `${CATEGORY_LABELS[category]}s — ${cfg.fullName}`;
+  if (subEl) subEl.textContent = `Institutional ${cfg.label} comparison`;
+
+  // Sync active chart sort button
+  document.querySelectorAll('[data-qchart-sort]').forEach(b => b.classList.toggle('active', b.dataset.qchartSort === qChartSortDir));
+
+  const svg = document.getElementById('qChartSvg');
+  if (!svg) return;
+
+  const validItems = qData.filter(i => i.history[0] && i.history[0][activeQMetric] !== undefined);
+
+  if (qChartSortDir === 'asc') {
+    validItems.sort((a,b) => (a.history[0][activeQMetric] || 0) - (b.history[0][activeQMetric] || 0));
+  } else if (qChartSortDir === 'name') {
+    validItems.sort((a,b) => a.name.localeCompare(b.name));
+  } else {
+    validItems.sort((a,b) => (b.history[0][activeQMetric] || 0) - (a.history[0][activeQMetric] || 0));
+  }
+
+  const rowHeight = 36;
+  const padding = { top: 35, right: 90, bottom: 30, left: 220 };
+  const chartW = chartWidth(svg);
+  const innerW = chartW - padding.left - padding.right;
+  const chartH = Math.max(validItems.length * rowHeight + padding.top + padding.bottom, 200);
+
+  svg.setAttribute('width', chartW);
+  svg.setAttribute('height', chartH);
+  svg.style.height = chartH + 'px';
+
+  const maxVal = Math.max(...validItems.map(i => i.history[0][activeQMetric]), (cfg.threshold || 0) * 1.2, 10);
+  const xScale = val => padding.left + (val / maxVal) * innerW;
+
+  let elements = '';
+
+  if (cfg.threshold != null) {
+    const threshX = xScale(cfg.threshold);
+    elements += `<line x1="${threshX}" y1="${padding.top - 10}" x2="${threshX}" y2="${chartH - padding.bottom}" stroke="var(--slate)" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.6"/>`;
+    elements += `<text x="${threshX}" y="${padding.top - 16}" fill="var(--slate)" font-size="11" font-weight="600" text-anchor="middle" font-family="Space Mono, monospace">${cfg.thresholdLabel}</text>`;
+  }
+
+  validItems.forEach((inst, idx) => {
+    const y = padding.top + idx * rowHeight + 16;
+    const val = inst.history[0][activeQMetric];
+    const barW = (val / maxVal) * innerW;
+
+    elements += `<text x="${padding.left - 12}" y="${y + 5}" fill="var(--ink)" font-size="12" font-weight="600" text-anchor="end" font-family="Fraunces, serif">${inst.name}</text>`;
+    elements += `<rect x="${padding.left}" y="${y - 8}" width="${barW}" height="14" rx="4" fill="var(--cb)" opacity="0.85"/>`;
+    elements += `<text x="${padding.left + barW + 8}" y="${y + 4}" fill="var(--ink)" font-size="12" font-weight="700" font-family="Space Mono, monospace">${fmtRate(val)}</text>`;
+  });
+
+  svg.innerHTML = elements;
 }
 
 /* ---- Page navigation ---- */
@@ -1288,11 +1783,15 @@ function navigateTo(page, opts = {}) {
   });
 
   const isDataPage = page === 'base_rate' || page === 'interest_spread' || page === 'base_rate_spread';
-  const isComingSoon = page === 'npl' || page === 'capital_adequacy';
-  const histActive = document.getElementById('historyView').classList.contains('active');
+  const isQuarterlyPage = page === 'quarterly_indicators';
+  const isComingSoon = page === 'npl' || page === 'capital_adequacy' || page === 'loans_deposits';
+  const histActive = document.getElementById('historyView') ? document.getElementById('historyView').classList.contains('active') : false;
 
   document.getElementById('pageDashboard').classList.toggle('active', page === 'dashboard');
   document.getElementById('pageData').classList.toggle('active', isDataPage);
+  if (document.getElementById('pageQuarterly')) {
+    document.getElementById('pageQuarterly').classList.toggle('active', isQuarterlyPage);
+  }
   document.getElementById('pageComingSoon').classList.toggle('active', isComingSoon);
 
   document.getElementById('subNav').style.display = (isDataPage && !histActive) ? '' : 'none';
@@ -1305,14 +1804,16 @@ function navigateTo(page, opts = {}) {
     document.getElementById('subNav').style.display = '';
     applyIndicatorUI(page);
     setActiveSubTab(activeSubTab || 'commercial_banks', { pushState: false });
+  } else if (isQuarterlyPage) {
+    renderQuarterlyView(activeQCat || 'commercial_banks');
   } else if (isComingSoon) {
-    const labels = { npl: 'NPL (Non-Performing Loan) data', capital_adequacy: 'Capital Adequacy data' };
-    document.getElementById('comingSoonTitle').textContent = page === 'npl' ? 'NPL' : 'Capital Adequacy';
-    document.getElementById('comingSoonLabel').textContent = labels[page];
+    const labels = { npl: 'NPL data', capital_adequacy: 'Capital Adequacy data', loans_deposits: 'Loans & Deposits data' };
+    document.getElementById('comingSoonTitle').textContent = page === 'loans_deposits' ? 'Loans & Deposits' : 'Coming Soon';
+    document.getElementById('comingSoonLabel').textContent = labels[page] || 'this data';
   }
 
-  if (opts.pushState !== false && (page === 'dashboard' || isDataPage)) {
-    const url = urlForPage(page, activeSubTab);
+  if (opts.pushState !== false && (page === 'dashboard' || isDataPage || isQuarterlyPage)) {
+    const url = urlForPage(page, page === 'quarterly_indicators' ? activeQCat : activeSubTab);
     if (location.pathname !== url) history.pushState(null, '', url);
   }
 
@@ -1414,9 +1915,52 @@ function init() {
     });
   });
 
+  // Quarterly sub-nav category pills
+  document.querySelectorAll('[data-qcat]').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      activeQCat = btn.dataset.qcat;
+      renderQuarterlyView(activeQCat);
+      const url = urlForPage('quarterly_indicators', activeQCat);
+      if (location.pathname !== url) history.pushState(null, '', url);
+    });
+  });
+
+  // Quarterly metric pills (NPL, CAR, CD Ratio)
+  document.querySelectorAll('[data-qmetric]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeQMetric = btn.dataset.qmetric;
+      renderQuarterlyView(activeQCat);
+    });
+  });
+
+  // Quarterly view switcher (Data View vs Chart View)
+  document.querySelectorAll('[data-qview]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeQView = btn.dataset.qview;
+      renderQuarterlyView(activeQCat);
+    });
+  });
+
+  const qBackBtn = document.getElementById('qBackBtn');
+  if (qBackBtn) {
+    qBackBtn.addEventListener('click', hideQuarterlyHistory);
+  }
+
+  // Quarterly chart sorting pills (High to Low, Low to High, A-Z)
+  document.querySelectorAll('[data-qchart-sort]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      qChartSortDir = btn.dataset.qchartSort;
+      const qData = (QUARTERLY_DATA && QUARTERLY_DATA[activeQCat]) || [];
+      const cfg = Q_METRIC_CONFIG[activeQMetric] || Q_METRIC_CONFIG.npl;
+      renderQuarterlyChart(activeQCat, qData, cfg, 'Q3 2082');
+    });
+  });
+
   applyIndicatorUI(currentIndicator);
   navigateTo(currentPage, { pushState: false });
-  if (currentPage !== 'dashboard') setActiveSubTab(activeSubTab, { pushState: false });
+  if (currentPage === 'quarterly_indicators') renderQuarterlyView(activeQCat);
+  else if (currentPage !== 'dashboard') setActiveSubTab(activeSubTab, { pushState: false });
 }
 
 /* ---- Browser back/forward across indicator + category URLs ---- */
@@ -1424,7 +1968,8 @@ window.addEventListener('popstate', () => {
   if (!DATA) return;
   const loc = parseLocationPath();
   navigateTo(loc.page, { pushState: false });
-  if (loc.page !== 'dashboard') setActiveSubTab(loc.category, { pushState: false });
+  if (loc.page === 'quarterly_indicators') renderQuarterlyView(loc.category);
+  else if (loc.page !== 'dashboard') setActiveSubTab(loc.category, { pushState: false });
 });
 
 /* ---- Debounced re-render on resize (width changes only, so mobile
@@ -1439,7 +1984,9 @@ window.addEventListener('resize', () => {
 
     if (currentPage === 'dashboard') {
       renderDashboard();
-    } else if (document.getElementById('historyView').classList.contains('active') && activeInstId) {
+    } else if (currentPage === 'quarterly_indicators') {
+      renderQuarterlyView(activeQCat);
+    } else if (document.getElementById('historyView') && document.getElementById('historyView').classList.contains('active') && activeInstId) {
       const source = currentIndicator === 'interest_spread' ? SPREAD_DATA : DATA;
       const inst = source[activeCategory]?.find(i => i.id === activeInstId);
       if (inst) {
@@ -1450,9 +1997,25 @@ window.addEventListener('resize', () => {
   }, 150);
 });
 
+function getRelativeDataPath() {
+  const parts = location.pathname.split('/').filter(p => p && !p.endsWith('.html'));
+  const slugs = new Set(['base-rate-spread', 'quarterly-indicators', 'base-rate', 'interest-spread']);
+  const idx = parts.findIndex(p => slugs.has(p));
+  if (idx >= 0) {
+    const stepsBack = parts.length - idx;
+    return '../'.repeat(stepsBack) + 'data/';
+  }
+  return 'data/';
+}
+
 /* ---- Data fetch with resilient failovers for localhost & GitHub Pages ---- */
 async function fetchJSON(file) {
+  const relPath = getRelativeDataPath();
+  const base = typeof getBasePath === 'function' ? getBasePath() : '/';
   const candidateUrls = [
+    `${relPath}${file}`,
+    `${base}data/${file}`,
+    `data/${file}`,
     `/data/${file}`,
     `./data/${file}`,
     `../../data/${file}`
@@ -1468,16 +2031,70 @@ async function fetchJSON(file) {
   throw new Error(`Failed to load data/${file}`);
 }
 
+async function fetchMonthlyData() {
+  try {
+    return await fetchJSON('monthly-indicators.json');
+  } catch (e) {
+    return await fetchJSON('base-rates.json');
+  }
+}
+
 Promise.all([
-  fetchJSON('base-rates.json'),
-  fetchJSON('interest-spread.json'),
-  fetchJSON('reference.json').catch(() => ({}))
-]).then(([baseData, spreadData, refData]) => {
+  fetchMonthlyData().catch(() => ({})),
+  fetchJSON('reference.json').catch(() => ({})),
+  fetchJSON('quarterly-indicators.json').catch(() => ({}))
+]).then(([monthlyData, refData, qData]) => {
+  const baseData = { commercial_banks: [], development_banks: [], finance_companies: [] };
+  const spreadData = { commercial_banks: [], development_banks: [], finance_companies: [] };
+
+  ['commercial_banks', 'development_banks', 'finance_companies'].forEach(cat => {
+    ((monthlyData && monthlyData[cat]) || []).forEach(inst => {
+      const bHistory = [];
+      const sHistory = [];
+      (inst.history || []).forEach(h => {
+        if (h.base_rate !== undefined && h.base_rate !== null) {
+          bHistory.push({ date: h.date, rate: h.base_rate });
+        }
+        if (h.interest_spread !== undefined && h.interest_spread !== null) {
+          sHistory.push({ date: h.date, rate: h.interest_spread });
+        }
+      });
+      baseData[cat].push({ id: inst.id, name: inst.name, history: bHistory });
+      spreadData[cat].push({ id: inst.id, name: inst.name, history: sHistory });
+    });
+  });
+
   DATA = baseData;
   SPREAD_DATA = spreadData;
-  IRC_DATA = refData.interest_rate_corridor || [];
-  init();
+  IRC_DATA = (refData && refData.interest_rate_corridor) || [];
+  QUARTERLY_DATA = qData || {};
+
+  GLOBAL_LATEST_DATE = getMostRecentDate();
+
+  try {
+    init();
+  } catch (initErr) {
+    console.error('App initialization error:', initErr);
+  }
 }).catch(err => {
-  document.querySelector('main').innerHTML = `<div class="empty-state">Could not load data. Make sure data files are present and the page is served over HTTP (not opened directly as a file).</div>`;
+  const isFileProtocol = window.location.protocol === 'file:';
+  const mainEl = document.querySelector('main');
+  if (mainEl) {
+    if (isFileProtocol) {
+      mainEl.innerHTML = `
+        <div class="empty-state" style="padding: 40px 24px; text-align: center;">
+          <h2 style="font-family:'Fraunces',serif; font-size: 22px; color: var(--ink); margin-bottom: 12px;">Local HTTP Web Server Required</h2>
+          <p style="font-size: 15px; color: var(--slate); max-width: 540px; margin: 0 auto 20px;">
+            You opened this file directly via <code>file://</code> protocol. Web browsers block local JSON data fetching over <code>file://</code> due to CORS security policies.
+          </p>
+          <div style="background: var(--paper-dim); border: 1px solid var(--line); border-radius: 8px; padding: 14px 20px; font-family:'Space Mono',monospace; font-size: 13px; color: var(--ink); max-width: 480px; margin: 0 auto 16px; text-align: left;">
+            $ python3 -m http.server 8000
+          </div>
+          <p style="font-size: 14px; color: var(--slate);">Then open <strong style="color:var(--ink)">http://localhost:8000</strong> in your web browser.</p>
+        </div>`;
+    } else {
+      mainEl.innerHTML = `<div class="empty-state">Could not load data files. Please ensure <code>data/monthly-indicators.json</code> and <code>data/quarterly-indicators.json</code> are present in your website directory.</div>`;
+    }
+  }
   console.error('Data loading error:', err);
 });

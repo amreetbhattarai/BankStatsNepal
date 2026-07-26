@@ -1,0 +1,2206 @@
+{
+  "commercial_banks": [
+    {
+      "id": "ebl",
+      "name": "Everest Bank",
+      "history": [
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 12.18,
+          "tier1": 9.58,
+          "cet1": 9.58,
+          "npl": 0.61,
+          "llp_npl": 253.51,
+          "cost_of_fund": 3.31,
+          "cd_ratio": 85.88,
+          "roe": 13.56,
+          "roa": 1.2
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 12.27,
+          "tier1": 9.6,
+          "cet1": 9.6,
+          "npl": 0.68,
+          "llp_npl": 229.5,
+          "cost_of_fund": 3.45,
+          "cd_ratio": 80.19,
+          "roe": 13.19,
+          "roa": 1.15
+        },
+        {
+          "quarter": "Q1 2082",
+          "date": "2082-06",
+          "audited": false,
+          "car": 12.77,
+          "tier1": 10.07,
+          "cet1": 10.07,
+          "npl": 0.74,
+          "llp_npl": 210.8,
+          "cost_of_fund": 3.61,
+          "cd_ratio": 75.83,
+          "roe": 14.51,
+          "roa": 1.27
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 13.28,
+          "tier1": 10.42,
+          "cet1": 10.42,
+          "npl": 0.38,
+          "llp_npl": 383.32,
+          "cost_of_fund": 3.87,
+          "cd_ratio": 77.48,
+          "roe": 16.44,
+          "roa": 20
+        }
+      ]
+    },
+    {
+      "id": "ctzn",
+      "name": "Citizens Bank International",
+      "history": [
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 12.45,
+          "tier1": 8.93,
+          "cet1": 8.93,
+          "npl": 6.82,
+          "llp_npl": 88.26,
+          "cost_of_fund": 3.54,
+          "cd_ratio": 82.18,
+          "roe": 7.39,
+          "roa": 0.71
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 12.43,
+          "tier1": 8.69,
+          "cet1": 8.69,
+          "npl": 6.86,
+          "llp_npl": 91.48,
+          "cost_of_fund": 3.78,
+          "cd_ratio": 82.66,
+          "roe": 3.11,
+          "roa": 0.29
+        },
+        {
+          "quarter": "Q1 2082",
+          "date": "2082-06",
+          "audited": false,
+          "car": 12.31,
+          "tier1": 8.53,
+          "cet1": 8.53,
+          "npl": 6.84,
+          "llp_npl": 90.65,
+          "cost_of_fund": 4.05,
+          "cd_ratio": 81.9,
+          "roe": -3.87,
+          "roa": -36
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 12.45,
+          "tier1": 8.94,
+          "cet1": 8.94,
+          "npl": 4.94,
+          "llp_npl": 105.98,
+          "cost_of_fund": 4.49,
+          "cd_ratio": 81.91,
+          "roe": 5.81,
+          "roa": 0.55
+        }
+      ]
+    },
+    {
+      "id": "hbl",
+      "name": "Himalayan Bank",
+      "history": [
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 11.26,
+          "tier1": 7.7,
+          "cet1": 7.7,
+          "npl": 7.98,
+          "llp_npl": 121.61,
+          "cost_of_fund": 3.92,
+          "cd_ratio": 75.01,
+          "roe": 2.69,
+          "roa": 0.26
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 11.73,
+          "tier1": 8.19,
+          "cet1": 8.19,
+          "npl": 7.96,
+          "llp_npl": 112.01,
+          "cost_of_fund": 4.04,
+          "cd_ratio": 74.89,
+          "roe": 6.81,
+          "roa": 67
+        },
+        {
+          "quarter": "Q1 2082",
+          "date": "2082-06",
+          "audited": false,
+          "car": 12.29,
+          "tier1": 8.68,
+          "cet1": 8.68,
+          "npl": 7.39,
+          "llp_npl": 108.37,
+          "cost_of_fund": 4.26,
+          "cd_ratio": 76.15,
+          "roe": 7.2,
+          "roa": 74
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 11.64,
+          "tier1": 8.79,
+          "cet1": 8.79,
+          "npl": 7.28,
+          "llp_npl": 107.1,
+          "cost_of_fund": 4.84,
+          "cd_ratio": 81.35,
+          "roe": 4.06,
+          "roa": 42
+        }
+      ]
+    },
+    {
+      "id": "adbl",
+      "name": "Agriculture Development Bank",
+      "history": [
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 13.42,
+          "tier1": 11.65,
+          "cet1": 9.64,
+          "npl": 4.98,
+          "llp_npl": 96.52,
+          "cost_of_fund": 3.35,
+          "cd_ratio": 65.44,
+          "roe": 4.63,
+          "roa": 0.49
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 13.12,
+          "tier1": 11.04,
+          "cet1": 9.54,
+          "npl": 4.65,
+          "llp_npl": 111.18,
+          "cost_of_fund": 3.31,
+          "cd_ratio": 64.33,
+          "roe": 4.33,
+          "roa": 38
+        },
+        {
+          "quarter": "Q1 2082",
+          "date": "2082-06",
+          "audited": false,
+          "car": 13.63,
+          "tier1": 11.54,
+          "cet1": 10.04,
+          "npl": 4.78,
+          "llp_npl": 109.66,
+          "cost_of_fund": 3.68,
+          "cd_ratio": 65.13,
+          "roe": 0.07,
+          "roa": 0.01
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 13.36,
+          "tier1": 11.93,
+          "cet1": 9.96,
+          "npl": 3.26,
+          "llp_npl": 132.66,
+          "cost_of_fund": 3.81,
+          "cd_ratio": 68.68,
+          "roe": 11.88,
+          "roa": 1.23
+        }
+      ]
+    },
+    {
+      "id": "rbb",
+      "name": "Rastriya Banijya Bank",
+      "history": [
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 11.6,
+          "tier1": 9.21,
+          "cet1": 9.21,
+          "npl": 4.48,
+          "llp_npl": 99.89,
+          "cost_of_fund": 2.97,
+          "cd_ratio": 57.24,
+          "roe": 6.87,
+          "roa": 0.58
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 11.33,
+          "tier1": 8.94,
+          "cet1": 8.94,
+          "npl": 4.36,
+          "llp_npl": 106.74,
+          "cost_of_fund": 3.04,
+          "cd_ratio": 59.49,
+          "roe": 6.67,
+          "roa": 0.57
+        },
+        {
+          "quarter": "Q1 2082",
+          "date": "2082-06",
+          "audited": false,
+          "car": 11.64,
+          "tier1": 9.22,
+          "cet1": 9.22,
+          "npl": 3.83,
+          "llp_npl": 108.56,
+          "cost_of_fund": 3.16,
+          "cd_ratio": 60.79,
+          "roe": 4.46,
+          "roa": 0.4
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 11.84,
+          "tier1": 9.46,
+          "cet1": 9.46,
+          "npl": 3.59,
+          "llp_npl": 110.28,
+          "cost_of_fund": 3.33,
+          "cd_ratio": 62.39,
+          "roe": 7.6,
+          "roa": 0.75
+        }
+      ]
+    },
+    {
+      "id": "nabil",
+      "name": "Nabil Bank",
+      "history": [
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 12.51,
+          "tier1": 9.69,
+          "cet1": 8.85,
+          "npl": 4.37,
+          "llp_npl": 108.2,
+          "cost_of_fund": 3.25,
+          "cd_ratio": 79.5,
+          "roe": 13.66,
+          "roa": 1.34
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 12.77,
+          "tier1": 9.76,
+          "cet1": 8.89,
+          "npl": 4.25,
+          "llp_npl": 111.97,
+          "cost_of_fund": 3.62,
+          "cd_ratio": 78.12,
+          "roe": 14.54,
+          "roa": 1.43
+        },
+        {
+          "quarter": "Q1 2082",
+          "date": "2082-06",
+          "audited": false,
+          "car": 12.67,
+          "tier1": 9.55,
+          "cet1": 9.55,
+          "npl": 4.31,
+          "llp_npl": 108.71,
+          "cost_of_fund": 4.13,
+          "cd_ratio": 78.14,
+          "roe": 10.7,
+          "roa": 1.05
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 11.94,
+          "tier1": 9.52,
+          "cet1": 9.52,
+          "npl": 4.27,
+          "llp_npl": 108.6,
+          "cost_of_fund": 4.41,
+          "cd_ratio": 82.48,
+          "roe": 11.64,
+          "roa": 1.19
+        }
+      ]
+    },
+    {
+      "id": "kbl",
+      "name": "Kumari Bank",
+      "history": [
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 12.82,
+          "tier1": 9.12,
+          "cet1": 9.12,
+          "npl": 6.94,
+          "llp_npl": 133.07,
+          "cost_of_fund": 3.88,
+          "cd_ratio": 77.14,
+          "roe": 13.4,
+          "roa": 1.17
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 12.81,
+          "tier1": 8.93,
+          "cet1": 8.93,
+          "npl": 6.92,
+          "llp_npl": 136.36,
+          "cost_of_fund": 4.04,
+          "cd_ratio": 76.4,
+          "roe": 13.72,
+          "roa": 1.2
+        },
+        {
+          "quarter": "Q1 2082",
+          "date": "2082-06",
+          "audited": false,
+          "car": 12.54,
+          "tier1": 8.54,
+          "cet1": 8.54,
+          "npl": 6.98,
+          "llp_npl": 129.63,
+          "cost_of_fund": 5.75,
+          "cd_ratio": 82.88,
+          "roe": 11.25,
+          "roa": 0.97
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 12.98,
+          "tier1": 8.94,
+          "cet1": 8.94,
+          "npl": 6.42,
+          "llp_npl": 138.43,
+          "cost_of_fund": 4.74,
+          "cd_ratio": 75.73,
+          "roe": 5.36,
+          "roa": 0.48
+        }
+      ]
+    },
+    {
+      "id": "lsbl",
+      "name": "Laxmi Sunrise Bank",
+      "history": [
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 11.9,
+          "tier1": 9.59,
+          "cet1": 9.59,
+          "npl": 5.29,
+          "llp_npl": 99.36,
+          "cost_of_fund": 3.45,
+          "cd_ratio": 77.04,
+          "roe": 5.89,
+          "roa": 0.58
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 11.79,
+          "tier1": 9.47,
+          "cet1": 9.47,
+          "npl": 5.5,
+          "llp_npl": 108.6,
+          "cost_of_fund": 3.64,
+          "cd_ratio": 77.44,
+          "roe": -1.22,
+          "roa": -0.12
+        },
+        {
+          "quarter": "Q1 2082",
+          "date": "2082-06",
+          "audited": false,
+          "car": 12.49,
+          "tier1": 9.9,
+          "cet1": 9.9,
+          "npl": 5.42,
+          "llp_npl": 97.38,
+          "cost_of_fund": 4.05,
+          "cd_ratio": 77.09,
+          "roe": 2.94,
+          "roa": 0.3
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 12.73,
+          "tier1": 10.12,
+          "cet1": 10.12,
+          "npl": 4.25,
+          "llp_npl": 110.21,
+          "cost_of_fund": 4.47,
+          "cd_ratio": 77.15,
+          "roe": 9.58,
+          "roa": 0.98
+        }
+      ]
+    },
+    {
+      "id": "pcbl",
+      "name": "Prime Commercial Bank",
+      "history": [
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 11.72,
+          "tier1": 9.69,
+          "cet1": 9.69,
+          "npl": 6.39,
+          "llp_npl": 95.29,
+          "cost_of_fund": 4.1,
+          "cd_ratio": 83.12,
+          "roe": 11.98,
+          "roa": 1.28
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 11.68,
+          "tier1": 9.66,
+          "cet1": 9.66,
+          "npl": 6.38,
+          "llp_npl": 95.04,
+          "cost_of_fund": 4.46,
+          "cd_ratio": 82.86,
+          "roe": 12.09,
+          "roa": 1.28
+        },
+        {
+          "quarter": "Q1 2082",
+          "date": "2082-06",
+          "audited": false,
+          "car": 12.17,
+          "tier1": 10.18,
+          "cet1": 10.18,
+          "npl": 5.86,
+          "llp_npl": 90.49,
+          "cost_of_fund": 4.79,
+          "cd_ratio": 82.65,
+          "roe": 14.7,
+          "roa": 1.59
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 11.74,
+          "tier1": 10.39,
+          "cet1": 10.39,
+          "npl": 5.56,
+          "llp_npl": 93.09,
+          "cost_of_fund": 5.21,
+          "cd_ratio": 83.39,
+          "roe": 12.51,
+          "roa": 1.38
+        }
+      ]
+    },
+    {
+      "id": "prabhu",
+      "name": "Prabhu Bank",
+      "history": [
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 12.25,
+          "tier1": 8.57,
+          "cet1": 8.57,
+          "npl": 8.84,
+          "llp_npl": 109.08,
+          "cost_of_fund": 3.37,
+          "cd_ratio": 70.61,
+          "roe": 3.3,
+          "roa": 0.28
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 12.38,
+          "tier1": 8.68,
+          "cet1": 8.68,
+          "npl": 7.94,
+          "llp_npl": 111.71,
+          "cost_of_fund": 3.58,
+          "cd_ratio": 70.91,
+          "roe": 5.56,
+          "roa": 0.49
+        },
+        {
+          "quarter": "Q1 2082",
+          "date": "2082-06",
+          "audited": false,
+          "car": 13.6,
+          "tier1": 9.86,
+          "cet1": 9.86,
+          "npl": 5.78,
+          "llp_npl": 115.71,
+          "cost_of_fund": 3.86,
+          "cd_ratio": 69.46,
+          "roe": 5.83,
+          "roa": 0.54
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 13.9,
+          "tier1": 10.19,
+          "cet1": 10.19,
+          "npl": 4.96,
+          "llp_npl": 126.65,
+          "cost_of_fund": 4.36,
+          "cd_ratio": 70.78,
+          "roe": 14.95,
+          "roa": 1.37
+        }
+      ]
+    },
+    {
+      "id": "mbl",
+      "name": "Machhapuchhre Bank",
+      "history": [
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 13.4,
+          "tier1": 10.17,
+          "cet1": 8.69,
+          "npl": 4.01,
+          "llp_npl": 100.21,
+          "cost_of_fund": 3.4,
+          "cd_ratio": 77.67,
+          "roe": 10.9,
+          "roa": 0.95
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 12.16,
+          "tier1": 8.82,
+          "cet1": 8.82,
+          "npl": 4.25,
+          "llp_npl": 96.29,
+          "cost_of_fund": 3.56,
+          "cd_ratio": 77.99,
+          "roe": 10.52,
+          "roa": 0.89
+        },
+        {
+          "quarter": "Q1 2082",
+          "date": "2082-06",
+          "audited": false,
+          "car": 12.17,
+          "tier1": 8.73,
+          "cet1": 8.73,
+          "npl": 4.13,
+          "llp_npl": 100.87,
+          "cost_of_fund": 4.03,
+          "cd_ratio": 79.44,
+          "roe": 8.89,
+          "roa": 0.75
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 13.32,
+          "tier1": 9.41,
+          "cet1": 9.41,
+          "npl": 3.83,
+          "llp_npl": 102,
+          "cost_of_fund": 4.23,
+          "cd_ratio": 80.62,
+          "roe": 11.13,
+          "roa": 0.99
+        }
+      ]
+    },
+    {
+      "id": "gbime",
+      "name": "Global IME Bank",
+      "history": [
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 12.06,
+          "tier1": 9.71,
+          "cet1": 9.71,
+          "npl": 4.97,
+          "llp_npl": 117.07,
+          "cost_of_fund": 3.58,
+          "cd_ratio": 71.13,
+          "roe": 8.71,
+          "roa": 0.8
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 12.17,
+          "tier1": 9.71,
+          "cet1": 9.71,
+          "npl": 4.91,
+          "llp_npl": 114.12,
+          "cost_of_fund": 3.73,
+          "cd_ratio": 71.55,
+          "roe": 9.75,
+          "roa": 0.91
+        },
+        {
+          "quarter": "Q1 2082",
+          "date": "2082-06",
+          "audited": false,
+          "car": 12.98,
+          "tier1": 10.41,
+          "cet1": 10.41,
+          "npl": 4.98,
+          "llp_npl": 109.63,
+          "cost_of_fund": 3.92,
+          "cd_ratio": 73.34,
+          "roe": 11.01,
+          "roa": 1.05
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 13.39,
+          "tier1": 10.66,
+          "cet1": 10.66,
+          "npl": 4.87,
+          "llp_npl": 102.76,
+          "cost_of_fund": 4.3,
+          "cd_ratio": 76.07,
+          "roe": 9.61,
+          "roa": 0.96
+        }
+      ]
+    },
+    {
+      "id": "nbl",
+      "name": "Nepal Bank",
+      "history": [
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 13.05,
+          "tier1": 10.37,
+          "cet1": 10.37,
+          "npl": 4.96,
+          "llp_npl": 101.32,
+          "cost_of_fund": 3.13,
+          "cd_ratio": 66.07,
+          "roe": 9.59,
+          "roa": 0.88
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 12.15,
+          "tier1": 9.49,
+          "cet1": 9.49,
+          "npl": 6.85,
+          "llp_npl": 103.94,
+          "cost_of_fund": 3.32,
+          "cd_ratio": 67.48,
+          "roe": 4.96,
+          "roa": 3.8
+        },
+        {
+          "quarter": "Q1 2082",
+          "date": "2082-06",
+          "audited": false,
+          "car": 13.02,
+          "tier1": 10.1,
+          "cet1": 10.1,
+          "npl": 5.49,
+          "llp_npl": 98.03,
+          "cost_of_fund": 3.46,
+          "cd_ratio": 69.42,
+          "roe": 6.16,
+          "roa": 0.59
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 13.06,
+          "tier1": 10.05,
+          "cet1": 10.05,
+          "npl": 4.47,
+          "llp_npl": 114.8,
+          "cost_of_fund": 3.74,
+          "cd_ratio": 70.72,
+          "roe": 10.22,
+          "roa": 1.02
+        }
+      ]
+    },
+    {
+      "id": "nimb",
+      "name": "Nepal Investment Mega Bank",
+      "history": [
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 12.41,
+          "tier1": 9.7,
+          "cet1": 9.7,
+          "npl": 8.41,
+          "llp_npl": 93.56,
+          "cost_of_fund": 3.37,
+          "cd_ratio": 68.37,
+          "roe": 6.3,
+          "roa": 0.71
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 12.56,
+          "tier1": 9.72,
+          "cet1": 9.72,
+          "npl": 7.9,
+          "llp_npl": 99.17,
+          "cost_of_fund": 3.63,
+          "cd_ratio": 69.63,
+          "roe": 4.91,
+          "roa": 0.55
+        },
+        {
+          "quarter": "Q1 2082",
+          "date": "2082-06",
+          "audited": false,
+          "car": 13.48,
+          "tier1": 10.55,
+          "cet1": 10.55,
+          "npl": 6.63,
+          "llp_npl": 101.57,
+          "cost_of_fund": 3.92,
+          "cd_ratio": 72.86,
+          "roe": 0.27,
+          "roa": 0.03
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 13.73,
+          "tier1": 11.09,
+          "cet1": 11.09,
+          "npl": 5.85,
+          "llp_npl": 108.87,
+          "cost_of_fund": 4.25,
+          "cd_ratio": 74.44,
+          "roe": 10.6,
+          "roa": 1.28
+        }
+      ]
+    },
+    {
+      "id": "sbi",
+      "name": "Nepal SBI Bank",
+      "history": [
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 13.76,
+          "tier1": 9.25,
+          "cet1": 9.25,
+          "npl": 2.53,
+          "llp_npl": 168.19,
+          "cost_of_fund": 4.11,
+          "cd_ratio": 68.57,
+          "roe": 9.27,
+          "roa": 0.8
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 14.12,
+          "tier1": 9.42,
+          "cet1": 9.42,
+          "npl": 2.64,
+          "llp_npl": 154.89,
+          "cost_of_fund": 4.23,
+          "cd_ratio": 68.68,
+          "roe": 9.91,
+          "roa": 0.85
+        },
+        {
+          "quarter": "Q1 2082",
+          "date": "2082-06",
+          "audited": false,
+          "car": 14.32,
+          "tier1": 9.58,
+          "cet1": 9.58,
+          "npl": 3.01,
+          "llp_npl": 133.32,
+          "cost_of_fund": 4.42,
+          "cd_ratio": 67.87,
+          "roe": 9.64,
+          "roa": 0.83
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 13.03,
+          "tier1": 9.74,
+          "cet1": 9.74,
+          "npl": 3.35,
+          "llp_npl": 116.47,
+          "cost_of_fund": 5.18,
+          "cd_ratio": 70.75,
+          "roe": 9.01,
+          "roa": 0.82
+        }
+      ]
+    },
+    {
+      "id": "nicasia",
+      "name": "NIC Asia Bank",
+      "history": [
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 11.45,
+          "tier1": 6.48,
+          "cet1": 6.48,
+          "npl": 8.85,
+          "llp_npl": 114.59,
+          "cost_of_fund": 4.25,
+          "cd_ratio": 65.39,
+          "roe": 0.73,
+          "roa": 0.05
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 14.07,
+          "tier1": 8.74,
+          "cet1": 8.74,
+          "npl": 7.47,
+          "llp_npl": 97.21,
+          "cost_of_fund": 4.36,
+          "cd_ratio": 67.1,
+          "roe": 0.9,
+          "roa": 0.07
+        },
+        {
+          "quarter": "Q1 2082",
+          "date": "2082-06",
+          "audited": false,
+          "car": 14.03,
+          "tier1": 9.03,
+          "cet1": 9.03,
+          "npl": 6.99,
+          "llp_npl": 94.83,
+          "cost_of_fund": 4.6,
+          "cd_ratio": 66.08,
+          "roe": 1.62,
+          "roa": 0.12
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 13.43,
+          "tier1": 8.87,
+          "cet1": 8.87,
+          "npl": 6.28,
+          "llp_npl": 92.01,
+          "cost_of_fund": 4.92,
+          "cd_ratio": 73.97,
+          "roe": 0.55,
+          "roa": 0.04
+        }
+      ]
+    },
+    {
+      "id": "nmb",
+      "name": "NMB Bank",
+      "history": [
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 12.77,
+          "tier1": 9.76,
+          "cet1": 8.83,
+          "npl": 4.95,
+          "llp_npl": 93.62,
+          "cost_of_fund": 3.62,
+          "cd_ratio": 84.68,
+          "roe": 10.48,
+          "roa": 0.95
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 11.81,
+          "tier1": 8.79,
+          "cet1": 8.79,
+          "npl": 4.56,
+          "llp_npl": 97.39,
+          "cost_of_fund": 3.89,
+          "cd_ratio": 85.09,
+          "roe": 10.17,
+          "roa": 0.93
+        },
+        {
+          "quarter": "Q1 2082",
+          "date": "2082-06",
+          "audited": false,
+          "car": 12.07,
+          "tier1": 9.01,
+          "cet1": 9.01,
+          "npl": 4.58,
+          "llp_npl": 92.33,
+          "cost_of_fund": 4.05,
+          "cd_ratio": 81.88,
+          "roe": 11.26,
+          "roa": 1.03
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 12.03,
+          "tier1": 9.18,
+          "cet1": 9.18,
+          "npl": 3.72,
+          "llp_npl": 101.14,
+          "cost_of_fund": 5.06,
+          "cd_ratio": 84.33,
+          "roe": 10.66,
+          "roa": 1.01
+        }
+      ]
+    },
+    {
+      "id": "sanima",
+      "name": "Sanima Bank",
+      "history": [
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 13.16,
+          "tier1": 10.03,
+          "cet1": 9.15,
+          "npl": 3.99,
+          "llp_npl": 101.44,
+          "cost_of_fund": 3.75,
+          "cd_ratio": 82.76,
+          "roe": 13.13,
+          "roa": 1.18
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 12.57,
+          "tier1": 9.32,
+          "cet1": 9.32,
+          "npl": 3.63,
+          "llp_npl": 111.52,
+          "cost_of_fund": 4.02,
+          "cd_ratio": 79.42,
+          "roe": 12.01,
+          "roa": 1.04
+        },
+        {
+          "quarter": "Q1 2082",
+          "date": "2082-06",
+          "audited": false,
+          "car": 12.76,
+          "tier1": 9.51,
+          "cet1": 9.51,
+          "npl": 3.91,
+          "llp_npl": 105.46,
+          "cost_of_fund": 4.32,
+          "cd_ratio": 79.23,
+          "roe": 7.68,
+          "roa": 0.67
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 13.01,
+          "tier1": 9.86,
+          "cet1": 9.86,
+          "npl": 3.01,
+          "llp_npl": 121.8,
+          "cost_of_fund": 4.7,
+          "cd_ratio": 81.03,
+          "roe": 11.73,
+          "roa": 1.03
+        }
+      ]
+    },
+    {
+      "id": "sbl",
+      "name": "Siddhartha Bank",
+      "history": [
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 13.11,
+          "tier1": 10.66,
+          "cet1": 9.45,
+          "npl": 3.71,
+          "llp_npl": 104.09,
+          "cost_of_fund": 3.64,
+          "cd_ratio": 77.92,
+          "roe": 8.27,
+          "roa": 0.74
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 12.18,
+          "tier1": 9.66,
+          "cet1": 9.66,
+          "npl": 3.45,
+          "llp_npl": 107.58,
+          "cost_of_fund": 3.9,
+          "cd_ratio": 79.05,
+          "roe": 8.55,
+          "roa": 0.77
+        },
+        {
+          "quarter": "Q1 2082",
+          "date": "2082-06",
+          "audited": false,
+          "car": 12.21,
+          "tier1": 9.67,
+          "cet1": 9.67,
+          "npl": 3.8,
+          "llp_npl": 100.51,
+          "cost_of_fund": 4.12,
+          "cd_ratio": 81.23,
+          "roe": 4.12,
+          "roa": 0.38
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 11.77,
+          "tier1": 9.88,
+          "cet1": 9.88,
+          "npl": 2.62,
+          "llp_npl": 124.3,
+          "cost_of_fund": 4.39,
+          "cd_ratio": 76.92,
+          "roe": 11.5,
+          "roa": 1.07
+        }
+      ]
+    },
+    {
+      "id": "scb",
+      "name": "Standard Chartered Bank Nepal",
+      "history": [
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 17.82,
+          "tier1": 16.14,
+          "cet1": 16.14,
+          "npl": 1.81,
+          "llp_npl": 143.01,
+          "cost_of_fund": 2.61,
+          "cd_ratio": 52.95,
+          "roe": 12.87,
+          "roa": 1.61
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 17.72,
+          "tier1": 15.88,
+          "cet1": 15.88,
+          "npl": 1.88,
+          "llp_npl": 135.19,
+          "cost_of_fund": 2.71,
+          "cd_ratio": 59.99,
+          "roe": 12.61,
+          "roa": 1.66
+        },
+        {
+          "quarter": "Q1 2082",
+          "date": "2082-06",
+          "audited": false,
+          "car": 18.6,
+          "tier1": 16.58,
+          "cet1": 16.58,
+          "npl": 1.71,
+          "llp_npl": 154.38,
+          "cost_of_fund": 2.89,
+          "cd_ratio": 65.15,
+          "roe": 12.57,
+          "roa": 1.74
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 17.82,
+          "tier1": 15.8,
+          "cet1": 15.8,
+          "npl": 1.47,
+          "llp_npl": 160.08,
+          "cost_of_fund": 3.22,
+          "cd_ratio": 69.48,
+          "roe": 14.18,
+          "roa": 1.98
+        }
+      ]
+    }
+  ],
+  "development_banks": [
+    {
+      "id": "corporate",
+      "name": "Corporate Development Bank",
+      "history": [
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 37.43,
+          "npl": 6.36,
+          "llp_npl": 108.42,
+          "cost_of_fund": 6.07,
+          "cd_ratio": 58.82
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 37.7,
+          "npl": 9.79,
+          "llp_npl": 109.82,
+          "cost_of_fund": 6.44,
+          "cd_ratio": 70.07
+        },
+        {
+          "quarter": "Q1 2082",
+          "date": "2082-06",
+          "audited": false,
+          "car": 35.81,
+          "npl": 11.77,
+          "llp_npl": 107.83,
+          "cost_of_fund": 6.69,
+          "cd_ratio": 67.05
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 28.54,
+          "npl": 12.36,
+          "llp_npl": 95.18,
+          "cost_of_fund": 6.61,
+          "cd_ratio": 63.04
+        }
+      ]
+    },
+    {
+      "id": "excel",
+      "name": "Excel Development Bank",
+      "history": [
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 14,
+          "tier1": 12.3,
+          "npl": 6.59,
+          "llp_npl": 94.97,
+          "cost_of_fund": 3.12,
+          "cd_ratio": 76.86,
+          "roe": 7.19,
+          "roa": 0.82
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 13.68,
+          "tier1": 11.97,
+          "npl": 7.07,
+          "llp_npl": 92.77,
+          "cost_of_fund": 3.42,
+          "cd_ratio": 75.87,
+          "roe": 4.1,
+          "roa": 0.45
+        },
+        {
+          "quarter": "Q1 2082",
+          "date": "2082-06",
+          "audited": false,
+          "car": 12.55,
+          "tier1": 10.76,
+          "npl": 9.68,
+          "llp_npl": 81.65,
+          "cost_of_fund": 3.72,
+          "cd_ratio": 78.07,
+          "roe": -4.45,
+          "roa": -0.47
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 12.84,
+          "tier1": 11.56,
+          "npl": 6.71,
+          "llp_npl": 99.29,
+          "cost_of_fund": 3.87,
+          "cd_ratio": 76.66,
+          "roe": 2.03,
+          "roa": 0.22
+        }
+      ]
+    },
+    {
+      "id": "garima",
+      "name": "Garima Bikas Bank",
+      "history": [
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 13,
+          "tier1": 10.93,
+          "cet1": 10.93,
+          "npl": 4.77,
+          "llp_npl": 111.05,
+          "cost_of_fund": 3.61,
+          "cd_ratio": 87.15,
+          "roe": 14.44,
+          "roa": 1.31
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 13.3,
+          "tier1": 10.91,
+          "cet1": 10.91,
+          "npl": 4.78,
+          "llp_npl": 114.97,
+          "cost_of_fund": 3.76,
+          "cd_ratio": 85.16,
+          "roe": 13.46,
+          "roa": 1.21
+        },
+        {
+          "quarter": "Q1 2082",
+          "date": "2082-06",
+          "audited": false,
+          "car": 13.57,
+          "tier1": 11.29,
+          "cet1": 11.29,
+          "npl": 4.73,
+          "llp_npl": 120.72,
+          "cost_of_fund": 4.42,
+          "cd_ratio": 82.43,
+          "roe": 10.71,
+          "roa": 0.96
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 13.47,
+          "tier1": 11.45,
+          "cet1": 11.45,
+          "npl": 4.72,
+          "llp_npl": 107.58,
+          "cost_of_fund": 4.84,
+          "cd_ratio": 85.13,
+          "roe": 14.9,
+          "roa": 1.3
+        }
+      ]
+    },
+    {
+      "id": "green",
+      "name": "Green Development Bank",
+      "history": [
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 14.83,
+          "tier1": 13.58,
+          "npl": 4.32,
+          "llp_npl": 86.87,
+          "cost_of_fund": 4.61,
+          "cd_ratio": 85.44,
+          "roe": 4.9,
+          "roa": 0.52
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 14.33,
+          "tier1": 13.08,
+          "npl": 4.2,
+          "llp_npl": 89.46,
+          "cost_of_fund": 4.88,
+          "cd_ratio": 83.15,
+          "roe": 1.58,
+          "roa": 0.16
+        },
+        {
+          "quarter": "Q1 2082",
+          "date": "2082-06",
+          "audited": false,
+          "car": 13.85,
+          "tier1": 12.6,
+          "npl": 4.93,
+          "llp_npl": 78.16,
+          "cost_of_fund": 4.79,
+          "cd_ratio": 78.16,
+          "roe": -4.51,
+          "roa": -0.42
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 14.77,
+          "tier1": 13.49,
+          "npl": 3.33,
+          "llp_npl": 85.72,
+          "cost_of_fund": 5.32,
+          "cd_ratio": 76.32,
+          "roe": 10.01,
+          "roa": 0.97
+        }
+      ]
+    },
+    {
+      "id": "jbbl",
+      "name": "Jyoti Bikash Bank",
+      "history": [
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 13.69,
+          "tier1": 8.86,
+          "cet1": 8.86,
+          "npl": 7.83,
+          "llp_npl": 90.26,
+          "cost_of_fund": 3.88,
+          "cd_ratio": 81.45,
+          "roe": 11.68,
+          "roa": 1.1
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 13.45,
+          "tier1": 8.54,
+          "cet1": 8.54,
+          "npl": 7.82,
+          "llp_npl": 136.55,
+          "cost_of_fund": 4.25,
+          "cd_ratio": 82.04,
+          "roe": 9.13,
+          "roa": 0.84
+        },
+        {
+          "quarter": "Q1 2082",
+          "date": "2082-06",
+          "audited": false,
+          "car": 13.62,
+          "tier1": 8.56,
+          "cet1": 8.56,
+          "npl": 7.97,
+          "llp_npl": 106.63,
+          "cost_of_fund": 4.58,
+          "cd_ratio": 83.57,
+          "roe": 4.3,
+          "roa": 0.38
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 13.61,
+          "tier1": 8.51,
+          "cet1": 8.51,
+          "npl": 7.98,
+          "llp_npl": 100.92,
+          "cost_of_fund": 4.99,
+          "cd_ratio": 83.13,
+          "roe": 0.19,
+          "roa": 0.02
+        }
+      ]
+    },
+    {
+      "id": "kamana",
+      "name": "Kamana Sewa Bikas Bank",
+      "history": [
+        {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "npl": 3.77,
+          "car": 14.16,
+          "tier1": 11.66,
+          "cet1": 11,
+          "cd_ratio": 86.34,
+          "cost_of_fund": 3.69,
+          "llp_npl": 121.54,
+          "roe": 13.87,
+          "roa": 1.22
+        },
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 13.47,
+          "tier1": 10.97,
+          "cet1": 10.97,
+          "npl": 4.4,
+          "llp_npl": 111.12,
+          "cost_of_fund": 3.9,
+          "cd_ratio": 87.33,
+          "roe": 12.45,
+          "roa": 1.08
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 12.57,
+          "tier1": 10.02,
+          "cet1": 10.02,
+          "npl": 4.1,
+          "llp_npl": 118.2,
+          "cost_of_fund": 4.25,
+          "cd_ratio": 86.77,
+          "roe": 13.11,
+          "roa": 1.1
+        },
+        {
+          "quarter": "Q1 2082",
+          "date": "2082-06",
+          "audited": false,
+          "car": 12.26,
+          "tier1": 9.61,
+          "cet1": 9.61,
+          "npl": 4.41,
+          "llp_npl": 107.69,
+          "cost_of_fund": 4.59,
+          "cd_ratio": 86.35,
+          "roe": 13.37,
+          "roa": 1.1
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 13.2,
+          "tier1": 10.55,
+          "cet1": 10.55,
+          "npl": 3.38,
+          "llp_npl": 136.72,
+          "cost_of_fund": 5.09,
+          "cd_ratio": 85.37,
+          "roe": 11.26,
+          "roa": 0.92
+        }
+      ]
+    },
+    {
+      "id": "lumbini",
+      "name": "Lumbini Bikas Bank",
+      "history": [
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 14.61,
+          "tier1": 11.1,
+          "npl": 6.49,
+          "llp_npl": 90.4,
+          "cost_of_fund": 4.21,
+          "cd_ratio": 87.11,
+          "roe": 10.06,
+          "roa": 1.12
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 14.03,
+          "tier1": 10.48,
+          "npl": 6.78,
+          "llp_npl": 88.94,
+          "cost_of_fund": 4.55,
+          "cd_ratio": 85.98,
+          "roe": 8,
+          "roa": 0.85
+        },
+        {
+          "quarter": "Q1 2082",
+          "date": "2082-06",
+          "audited": false,
+          "car": 12.74,
+          "tier1": 9.18,
+          "cet1": 9.18,
+          "npl": 7.78,
+          "llp_npl": 84.52,
+          "cost_of_fund": 4.91,
+          "cd_ratio": 86.23,
+          "roe": -20.65,
+          "roa": -2.08
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 13.5,
+          "tier1": 10.11,
+          "cet1": 10.11,
+          "npl": 4.55,
+          "llp_npl": 112.8,
+          "cost_of_fund": 5.35,
+          "cd_ratio": 84.42,
+          "roe": 5.44,
+          "roa": 0.56
+        }
+      ]
+    },
+    {
+      "id": "miteri",
+      "name": "Miteri Development Bank",
+      "history": [
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 24.71,
+          "tier1": 23.21,
+          "npl": 0.48,
+          "llp_npl": 275,
+          "cost_of_fund": 4.52,
+          "cd_ratio": 85.76,
+          "roe": 7.51,
+          "roa": 1.37
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 16.81,
+          "tier1": 15.61,
+          "npl": 0.45,
+          "llp_npl": 311,
+          "cost_of_fund": 4.74,
+          "cd_ratio": 84.37,
+          "roe": 6.75,
+          "roa": 1.23
+        },
+        {
+          "quarter": "Q1 2082",
+          "date": "2082-06",
+          "audited": false,
+          "car": 27.43,
+          "tier1": 26.23,
+          "npl": 0.55,
+          "llp_npl": 262,
+          "cost_of_fund": 4.92,
+          "cd_ratio": 83.44,
+          "roe": 5.82,
+          "roa": 1.14
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 31.54,
+          "tier1": 30.27,
+          "npl": 0.28,
+          "llp_npl": 459,
+          "cost_of_fund": 5.12,
+          "cd_ratio": 89.62,
+          "roe": 7.88,
+          "roa": 1.59
+        }
+      ]
+    },
+    {
+      "id": "mahalaxmi",
+      "name": "Mahalaxmi Development Bank",
+      "history": [
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 17.24,
+          "tier1": 13.64,
+          "cet1": 13.64,
+          "npl": 6.59,
+          "llp_npl": 95.92,
+          "cost_of_fund": 3.78,
+          "cd_ratio": 87.89,
+          "roe": 8.52,
+          "roa": 0.96
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 17.32,
+          "tier1": 13.75,
+          "cet1": 13.75,
+          "npl": 6.1,
+          "llp_npl": 101.58,
+          "cost_of_fund": 3.91,
+          "cd_ratio": 85.3,
+          "roe": 8.62,
+          "roa": 0.95
+        },
+        {
+          "quarter": "Q1 2082",
+          "date": "2082-06",
+          "audited": false,
+          "car": 17.6,
+          "tier1": 13.86,
+          "cet1": 13.86,
+          "npl": 5.5,
+          "llp_npl": 112.21,
+          "cost_of_fund": 4.3,
+          "cd_ratio": 82.98,
+          "roe": 5.48,
+          "roa": 0.6
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 17.49,
+          "tier1": 13.9,
+          "cet1": 13.9,
+          "npl": 4.86,
+          "llp_npl": 112.82,
+          "cost_of_fund": 4.56,
+          "cd_ratio": 83.98,
+          "roe": 7.3,
+          "roa": 0.78
+        }
+      ]
+    },
+    {
+      "id": "muktinath",
+      "name": "Muktinath Bikash Bank",
+      "history": [
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 13.1,
+          "tier1": 11.16,
+          "cet1": 11.16,
+          "npl": 4.88,
+          "llp_npl": 90.49,
+          "cost_of_fund": 3.68,
+          "cd_ratio": 85.21,
+          "roe": 10.38,
+          "roa": 0.93
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 12.59,
+          "tier1": 10.79,
+          "cet1": 10.79,
+          "npl": 3.75,
+          "llp_npl": 110.09,
+          "cost_of_fund": 4.13,
+          "cd_ratio": 86.59,
+          "roe": 11.24,
+          "roa": 1
+        },
+        {
+          "quarter": "Q1 2082",
+          "date": "2082-06",
+          "audited": false,
+          "car": 12.92,
+          "tier1": 11.05,
+          "cet1": 11.05,
+          "npl": 4.03,
+          "llp_npl": 102.38,
+          "cost_of_fund": 4.46,
+          "cd_ratio": 85.66,
+          "roe": 7.56,
+          "roa": 0.67
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 12.99,
+          "tier1": 10.95,
+          "cet1": 10.95,
+          "npl": 2.75,
+          "llp_npl": 120.58,
+          "cost_of_fund": 4.9,
+          "cd_ratio": 85.72,
+          "roe": 13.72,
+          "roa": 1.17
+        }
+      ]
+    },
+    {
+      "id": "narayani",
+      "name": "Narayani Development Bank",
+      "history": [
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 37.11,
+          "npl": 59.37,
+          "llp_npl": 86.47,
+          "cost_of_fund": 5.58,
+          "cd_ratio": 56.77
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 35.36,
+          "npl": 57.48,
+          "llp_npl": 83.91,
+          "cost_of_fund": 6.49,
+          "cd_ratio": 65.88
+        },
+        {
+          "quarter": "Q1 2082",
+          "date": "2082-06",
+          "audited": false,
+          "car": 10.35,
+          "npl": 57.04,
+          "llp_npl": 79.5,
+          "cost_of_fund": 7.93,
+          "cd_ratio": 78.97
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": -7.84,
+          "npl": 50.97,
+          "llp_npl": 79.55,
+          "cost_of_fund": 6.25,
+          "cd_ratio": 74.07
+        }
+      ]
+    },
+    {
+      "id": "saptakoshi",
+      "name": "Saptakoshi Development Bank",
+      "history": [
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 39.8,
+          "tier1": 38.63,
+          "cet1": 38.63,
+          "npl": 3.35,
+          "llp_npl": 96.86,
+          "cost_of_fund": 4.83,
+          "cd_ratio": 71.21,
+          "roe": -0.59,
+          "roa": -0.15
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 37.07,
+          "tier1": 36.1,
+          "cet1": 36.1,
+          "npl": 4.92,
+          "llp_npl": 74.63,
+          "cost_of_fund": 5.22,
+          "cd_ratio": 66.45,
+          "roe": -1.97,
+          "roa": -0.5
+        },
+        {
+          "quarter": "Q1 2082",
+          "date": "2082-06",
+          "audited": false,
+          "car": 30.79,
+          "npl": 7.61,
+          "llp_npl": 57.19,
+          "cost_of_fund": 5.62,
+          "cd_ratio": 69.72
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 28.57,
+          "npl": 2.62,
+          "llp_npl": 99.7,
+          "cost_of_fund": 6.04,
+          "cd_ratio": 68.42
+        }
+      ]
+    },
+    {
+      "id": "salapa",
+      "name": "Salapa Bikash Bank",
+      "history": [
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 8.83,
+          "tier1": 4.71,
+          "npl": 7.6,
+          "llp_npl": 113.1,
+          "cost_of_fund": 4.04,
+          "cd_ratio": 71.87,
+          "roe": 12.94,
+          "roa": 0.83
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 9,
+          "tier1": 4.9,
+          "npl": 8.29,
+          "llp_npl": 113.29,
+          "cost_of_fund": 4.07,
+          "cd_ratio": 77,
+          "roe": 8.47,
+          "roa": 0.61
+        },
+        {
+          "quarter": "Q1 2082",
+          "date": "2082-06",
+          "audited": false,
+          "car": 9.78,
+          "tier1": 5.7,
+          "npl": 11.5,
+          "llp_npl": 87.47,
+          "cost_of_fund": 4.22,
+          "cd_ratio": 80.44,
+          "roe": -0.81,
+          "roa": -0.06
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 9.06,
+          "tier1": 5.53,
+          "npl": 9.1,
+          "llp_npl": 111.62,
+          "cost_of_fund": 4.3,
+          "cd_ratio": 79.01,
+          "roe": 14.22,
+          "roa": 0.91
+        }
+      ]
+    },
+    {
+      "id": "shangrila",
+      "name": "Shangrila Development Bank",
+      "history": [
+        {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "npl": 6.87,
+          "car": 14.63,
+          "tier1": 11.59,
+          "cet1": 11.59,
+          "cd_ratio": 83.37,
+          "cost_of_fund": 3.54,
+          "llp_npl": 67.78,
+          "roe": 14.52,
+          "roa": 1.37
+        },
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 14.22,
+          "tier1": 10.94,
+          "cet1": 10.94,
+          "npl": 7.87,
+          "llp_npl": 62.95,
+          "cost_of_fund": 3.74,
+          "cd_ratio": 83.84,
+          "roe": 11.09,
+          "roa": 1.01
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 13.91,
+          "tier1": 10.7,
+          "cet1": 10.7,
+          "npl": 6.87,
+          "llp_npl": 72.74,
+          "cost_of_fund": 4.11,
+          "cd_ratio": 83.55,
+          "roe": 10.68,
+          "roa": 0.96
+        },
+        {
+          "quarter": "Q1 2082",
+          "date": "2082-06",
+          "audited": false,
+          "car": 14.4,
+          "tier1": 10.99,
+          "cet1": 10.99,
+          "npl": 6.86,
+          "llp_npl": 76.21,
+          "cost_of_fund": 4.49,
+          "cd_ratio": 82.71,
+          "roe": 6.31,
+          "roa": 0.56
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 14.41,
+          "tier1": 11.03,
+          "cet1": 11.03,
+          "npl": 5.64,
+          "llp_npl": 81.98,
+          "cost_of_fund": 5.01,
+          "cd_ratio": 83.07,
+          "roe": 9.77,
+          "roa": 0.85
+        }
+      ]
+    },
+    {
+      "id": "shine",
+      "name": "Shine Resunga Development Bank",
+      "history": [
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 13.12,
+          "tier1": 10.22,
+          "cet1": 10.22,
+          "npl": 4.92,
+          "llp_npl": 89.87,
+          "cost_of_fund": 3.97,
+          "cd_ratio": 85.75,
+          "roe": 13.95,
+          "roa": 1.27
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 13.08,
+          "tier1": 10.09,
+          "cet1": 10.09,
+          "npl": 4.75,
+          "llp_npl": 95.9,
+          "cost_of_fund": 4.23,
+          "cd_ratio": 84.77,
+          "roe": 10.97,
+          "roa": 0.99
+        },
+        {
+          "quarter": "Q1 2082",
+          "date": "2082-06",
+          "audited": false,
+          "car": 14.22,
+          "tier1": 11.15,
+          "cet1": 11.15,
+          "npl": 4.61,
+          "llp_npl": 95.25,
+          "cost_of_fund": 4.55,
+          "cd_ratio": 84.31,
+          "roe": 10.89,
+          "roa": 1
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 12.58,
+          "tier1": 11.33,
+          "cet1": 11.33,
+          "npl": 4.24,
+          "llp_npl": 97.83,
+          "cost_of_fund": 4.85,
+          "cd_ratio": 82.6,
+          "roe": 9.65,
+          "roa": 0.89
+        }
+      ]
+    },
+    {
+      "id": "sindu",
+      "name": "Sindhu Bikash Bank",
+      "history": [
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 11.44,
+          "tier1": 9.53,
+          "npl": 7.92,
+          "llp_npl": 84.87,
+          "cost_of_fund": 4.31,
+          "cd_ratio": 66.04,
+          "roe": -8.66,
+          "roa": -0.71
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 12.51,
+          "cet1": 11.01,
+          "npl": 6.39,
+          "llp_npl": 102.15,
+          "cost_of_fund": 4.59,
+          "cd_ratio": 64.35,
+          "roe": -5.89,
+          "roa": -0.49
+        },
+        {
+          "quarter": "Q1 2082",
+          "date": "2082-06",
+          "audited": false,
+          "car": 10.83,
+          "cet1": 9.35,
+          "npl": 8.84,
+          "llp_npl": 84.95,
+          "cost_of_fund": 5.05,
+          "cd_ratio": 64.68,
+          "roe": 0,
+          "roa": 0
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 12.8,
+          "tier1": 11.44,
+          "cet1": 11.31,
+          "npl": 6.03,
+          "llp_npl": 106.14,
+          "cost_of_fund": 5.41,
+          "cd_ratio": 62.87,
+          "roe": 24.39,
+          "roa": 1.85
+        }
+      ]
+    }
+  ],
+  "finance_companies": []
+}

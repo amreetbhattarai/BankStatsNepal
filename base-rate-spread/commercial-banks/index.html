@@ -90,7 +90,8 @@
 {
   "@context": "https://schema.org",
   "@type": "ItemList",
-  "name": "Commercial Bank Base Rates & Interest Spreads in Nepal",
+  "name": "Commercial Banks \u2014 Base Rate & Spread Rate",
+  "url": "https://bankstatsnepal.com/base-rate-spread/commercial-banks/",
   "itemListElement": [
     {
       "@type": "ListItem",
@@ -218,7 +219,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/styles.css">
+<link rel="stylesheet" href="/css/styles.css?v=6.1">
 </head>
 <body>
 
@@ -234,8 +235,8 @@
       <div class="nav-links">
         <a class="nav-link" data-page="dashboard" href="/">Dashboard</a>
         <a class="nav-link active" data-page="base_rate_spread" href="/base-rate-spread/commercial-banks/">Base Rate &amp; Spread Rate</a>
-        <button class="nav-link coming-soon" data-page="npl" title="Coming soon">NPL <span class="cs-badge">Soon</span></button>
-        <button class="nav-link coming-soon" data-page="capital_adequacy" title="Coming soon">Capital Adequacy <span class="cs-badge">Soon</span></button>
+        <a class="nav-link" data-page="quarterly_indicators" href="/quarterly-indicators/commercial-banks/">Quarterly Indicators</a>
+        <button class="nav-link coming-soon" data-page="loans_deposits" title="Coming soon">Loans &amp; Deposits <span class="cs-badge">Soon</span></button>
       </div>
     </div>
   </nav>
@@ -247,7 +248,7 @@
   <!-- ========= DASHBOARD PAGE ========= -->
   <div id="pageDashboard" class="page">
 
-    <div class="data-asof" id="dataAsOf"><span class="asof-dot blinking"></span>Ashadh 2083 Rates · 16 Updated, 35 Pending</div>
+    <div class="data-asof" id="dataAsOf"><span class="asof-dot blinking"></span>As of Ashadh 2083 Rates · 16 Updated, 35 Pending</div>
 
     <div class="dash-stat-grid">
       <div class="stat-card stat-card-combined">
@@ -387,73 +388,108 @@
     <!-- Category segmented control + data freshness — shown only on list views -->
     <div class="sub-nav-row" id="subNav">
       <div class="sub-nav">
-        <a class="cat-pill-btn active" data-cat="commercial_banks" href="/base-rate-spread/commercial-banks/">Commercial Banks <span class="cat-count" id="count-commercial_banks">20</span></a>
-        <a class="cat-pill-btn" data-cat="development_banks" href="/base-rate-spread/development-banks/">Development Banks <span class="cat-count" id="count-development_banks">16</span></a>
-        <a class="cat-pill-btn" data-cat="finance_companies" href="/base-rate-spread/finance-companies/">Finance Companies <span class="cat-count" id="count-finance_companies">15</span></a>
+        <button class="cat-pill-btn active" data-cat="commercial_banks">Commercial Banks <span class="cat-count">20</span></button>
+        <button class="cat-pill-btn" data-cat="development_banks">Development Banks <span class="cat-count">16</span></button>
+        <button class="cat-pill-btn" data-cat="finance_companies">Finance Companies <span class="cat-count">15</span></button>
       </div>
-      <div class="data-asof" id="dataAsOfData"><span class="asof-dot blinking"></span>Ashadh 2083 Rates · 16 Updated, 4 Pending</div>
+      <div class="data-asof" id="dataAsOfData"><span class="asof-dot blinking"></span>As of Ashadh 2083 Rates · 16 Updated, 4 Pending</div>
     </div>
 
-    <div id="listViews">
-      <div class="tab-view active" data-tab-view="commercial_banks">
+          <div class="tab-view active" data-tab-view="commercial_banks">
         <div class="section-head">
           <div>
             <h1>Commercial Banks</h1>
-            <div class="section-sub" id="sub-commercial_banks">Base rates and interest spreads of commercial banks in Nepal — 'A' class institutions, updated monthly from official disclosures</div>
+            <div class="section-sub" id="sub-commercial_banks">Base rates & interest spreads of commercial banks in Nepal, updated monthly</div>
           </div>
           <div class="search-box"><input type="text" placeholder="Search bank…" data-search="commercial_banks"></div>
         </div>
         <div class="rate-table-wrap"><table class="rate-table"><thead><tr id="thead-commercial_banks">
           <th>Institution</th><th class="num">Base Rate</th><th class="num">3M Avg Rate</th><th class="num">Spread Rate</th><th></th>
-        </tr></thead><tbody id="tbody-commercial_banks"><tr data-name="agriculture development bank"><td><div class="inst-name">Agriculture Development Bank</div></td><td class="num"><div><span class="rate-value">4.56%</span><span class="trend-chip down">▼ 0.30</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.79%</span></div></td><td class="num"><span style="color:var(--slate)">—</span></td><td style="text-align:right"><button class="history-btn" data-cat="commercial_banks" data-id="adbl">View History</button></td></tr>
-<tr data-name="citizens bank international"><td><div class="inst-name">Citizens Bank International</div></td><td class="num"><div><span class="rate-value">5.04%</span><span class="trend-chip down">▼ 0.07</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">5.13%</span></div></td><td class="num"><span style="color:var(--slate)">—</span></td><td style="text-align:right"><button class="history-btn" data-cat="commercial_banks" data-id="ctzn">View History</button></td></tr>
-<tr data-name="everest bank"><td><div class="inst-name">Everest Bank</div></td><td class="num"><div><span class="rate-value">4.32%</span><span class="trend-chip down">▼ 0.03</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.38%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">3.04%</span><span class="trend-chip down">▼ 0.04</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="commercial_banks" data-id="ebl">View History</button></td></tr>
-<tr data-name="global ime bank"><td><div class="inst-name">Global IME Bank</div></td><td class="num"><div><span class="rate-value">4.67%</span><span class="trend-chip down">▼ 0.08</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.75%</span></div></td><td class="num"><span style="color:var(--slate)">—</span></td><td style="text-align:right"><button class="history-btn" data-cat="commercial_banks" data-id="gbime">View History</button></td></tr>
-<tr data-name="himalayan bank"><td><div class="inst-name">Himalayan Bank</div></td><td class="num"><div><span class="rate-value">5.19%</span><span class="trend-chip down">▼ 0.12</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">5.31%</span></div></td><td class="num"><span style="color:var(--slate)">—</span></td><td style="text-align:right"><button class="history-btn" data-cat="commercial_banks" data-id="hbl">View History</button></td></tr>
-<tr data-name="kumari bank"><td><div class="inst-name">Kumari Bank</div></td><td class="num"><div><span class="rate-value">5.08%</span><span class="trend-chip down">▼ 0.10</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">5.18%</span></div></td><td class="num"><span style="color:var(--slate)">—</span></td><td style="text-align:right"><button class="history-btn" data-cat="commercial_banks" data-id="kbl">View History</button></td></tr>
-<tr data-name="laxmi sunrise bank"><td><div class="inst-name">Laxmi Sunrise Bank</div></td><td class="num"><div><span class="rate-value">5.05%</span><span class="trend-chip down">▼ 0.05</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">5.11%</span></div></td><td class="num"><span style="color:var(--slate)">—</span></td><td style="text-align:right"><button class="history-btn" data-cat="commercial_banks" data-id="lsbl">View History</button></td></tr>
-<tr data-name="machhapuchhre bank"><td><div class="inst-name">Machhapuchhre Bank</div></td><td class="num"><div><span class="rate-value">5.02%</span><span class="trend-chip up">▲ 0.01</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">5.04%</span></div></td><td class="num"><span style="color:var(--slate)">—</span></td><td style="text-align:right"><button class="history-btn" data-cat="commercial_banks" data-id="mbl">View History</button></td></tr>
-<tr data-name="nic asia bank"><td><div class="inst-name">NIC Asia Bank</div></td><td class="num"><div><span class="rate-value">5.83%</span><span class="trend-chip down">▼ 0.07</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">5.91%</span></div></td><td class="num"><span style="color:var(--slate)">—</span></td><td style="text-align:right"><button class="history-btn" data-cat="commercial_banks" data-id="nicasia">View History</button></td></tr>
-<tr data-name="nmb bank"><td><div class="inst-name">NMB Bank</div></td><td class="num"><div><span class="rate-value">5.01%</span><span class="trend-chip down">▼ 0.11</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">5.11%</span></div></td><td class="num"><span style="color:var(--slate)">—</span></td><td style="text-align:right"><button class="history-btn" data-cat="commercial_banks" data-id="nmb">View History</button></td></tr>
-<tr data-name="nabil bank"><td><div class="inst-name">Nabil Bank</div></td><td class="num"><div><span class="rate-value">4.32%</span><span class="trend-chip down">▼ 0.15</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.44%</span></div></td><td class="num"><span style="color:var(--slate)">—</span></td><td style="text-align:right"><button class="history-btn" data-cat="commercial_banks" data-id="nabil">View History</button></td></tr>
-<tr data-name="nepal bank"><td><div class="inst-name">Nepal Bank</div></td><td class="num"><div><span class="rate-value">4.45%</span><span class="trend-chip down">▼ 0.02</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.50%</span></div></td><td class="num"><span style="color:var(--slate)">—</span></td><td style="text-align:right"><button class="history-btn" data-cat="commercial_banks" data-id="nbl">View History</button></td></tr>
-<tr data-name="nepal investment mega bank"><td><div class="inst-name">Nepal Investment Mega Bank</div></td><td class="num"><div><span class="rate-value">4.70%</span><span class="trend-chip up">▲ 0.01</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.75%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">3.13%</span><span class="trend-chip down">▼ 0.08</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="commercial_banks" data-id="nimb">View History</button></td></tr>
-<tr data-name="nepal sbi bank"><td><div class="inst-name">Nepal SBI Bank</div></td><td class="num"><div><span class="rate-value">5.19%</span><span class="trend-chip flat">— 0.00</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">5.21%</span></div></td><td class="num"><span style="color:var(--slate)">—</span></td><td style="text-align:right"><button class="history-btn" data-cat="commercial_banks" data-id="sbi">View History</button></td></tr>
-<tr data-name="prabhu bank"><td><div class="inst-name">Prabhu Bank</div></td><td class="num"><div><span class="rate-value">4.99%</span><span class="trend-chip down">▼ 0.10</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">5.07%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">3.35%</span><span class="trend-chip flat">— 0.00</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="commercial_banks" data-id="prabhu">View History</button></td></tr>
-<tr data-name="prime commercial bank"><td><div class="inst-name">Prime Commercial Bank</div></td><td class="num"><div><span class="rate-value">4.95%</span><span class="trend-chip down">▼ 0.11</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">5.07%</span></div></td><td class="num"><span style="color:var(--slate)">—</span></td><td style="text-align:right"><button class="history-btn" data-cat="commercial_banks" data-id="pcbl">View History</button></td></tr>
-<tr data-name="rastriya banijya bank"><td><div class="inst-name">Rastriya Banijya Bank</div></td><td class="num"><div><span class="rate-value">4.06%</span><span class="trend-chip down">▼ 0.14</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.17%</span></div></td><td class="num"><span style="color:var(--slate)">—</span></td><td style="text-align:right"><button class="history-btn" data-cat="commercial_banks" data-id="rbb">View History</button></td></tr>
-<tr data-name="sanima bank"><td><div class="inst-name">Sanima Bank</div></td><td class="num"><div><span class="rate-value">4.91%</span><span class="trend-chip up">▲ 0.03</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.92%</span></div></td><td class="num"><span style="color:var(--slate)">—</span></td><td style="text-align:right"><button class="history-btn" data-cat="commercial_banks" data-id="sanima">View History</button></td></tr>
-<tr data-name="siddhartha bank"><td><div class="inst-name">Siddhartha Bank</div></td><td class="num"><div><span class="rate-value">5.02%</span><span class="trend-chip down">▼ 0.01</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">5.06%</span></div></td><td class="num"><span style="color:var(--slate)">—</span></td><td style="text-align:right"><button class="history-btn" data-cat="commercial_banks" data-id="sbl">View History</button></td></tr>
-<tr data-name="standard chartered bank nepal"><td><div class="inst-name">Standard Chartered Bank Nepal</div></td><td class="num"><div><span class="rate-value">4.04%</span><span class="trend-chip down">▼ 0.19</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.21%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.00%</span><span class="trend-chip up">▲ 0.12</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="commercial_banks" data-id="scb">View History</button></td></tr></tbody></table></div>
+        </tr></thead><tbody id="tbody-commercial_banks">
+<tr data-name="agriculture development bank"><td><div class="inst-name">Agriculture Development Bank<span class="status-dot-indicator green" title="Ashadh 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">4.56%</span><span class="trend-chip down">▼ 0.30</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.79%</span></div></td><td class="num"><span style="color:var(--slate)">—</span></td><td style="text-align:right"><button class="history-btn" data-cat="commercial_banks" data-id="adbl">View History</button></td></tr>
+<tr data-name="citizens bank international"><td><div class="inst-name">Citizens Bank International<span class="status-dot-indicator green" title="Ashadh 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">5.04%</span><span class="trend-chip down">▼ 0.07</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">5.13%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">3.48%</span><span class="trend-chip down">▼ 0.02</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="commercial_banks" data-id="ctzn">View History</button></td></tr>
+<tr data-name="everest bank" class="stale-row"><td><div class="inst-name">Everest Bank<span class="status-dot-indicator yellow" title="Ashadh 2083 pending — displaying Jestha 2083 disclosure"></span><span class="stale-month-badge">Jestha 2083</span></div></td><td class="num"><div><span class="rate-value">4.32%</span><span class="trend-chip down">▼ 0.03</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.38%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">3.04%</span><span class="trend-chip down">▼ 0.04</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="commercial_banks" data-id="ebl">View History</button></td></tr>
+<tr data-name="global ime bank"><td><div class="inst-name">Global IME Bank<span class="status-dot-indicator green" title="Ashadh 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">4.67%</span><span class="trend-chip down">▼ 0.08</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.75%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">3.29%</span><span class="trend-chip up">▲ 0.01</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="commercial_banks" data-id="gbime">View History</button></td></tr>
+<tr data-name="himalayan bank"><td><div class="inst-name">Himalayan Bank<span class="status-dot-indicator green" title="Ashadh 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">5.19%</span><span class="trend-chip down">▼ 0.12</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">5.31%</span></div></td><td class="num"><span style="color:var(--slate)">—</span></td><td style="text-align:right"><button class="history-btn" data-cat="commercial_banks" data-id="hbl">View History</button></td></tr>
+<tr data-name="kumari bank"><td><div class="inst-name">Kumari Bank<span class="status-dot-indicator green" title="Ashadh 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">5.08%</span><span class="trend-chip down">▼ 0.10</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">5.18%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">3.11%</span><span class="trend-chip up">▲ 0.02</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="commercial_banks" data-id="kbl">View History</button></td></tr>
+<tr data-name="laxmi sunrise bank"><td><div class="inst-name">Laxmi Sunrise Bank<span class="status-dot-indicator green" title="Ashadh 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">5.05%</span><span class="trend-chip down">▼ 0.05</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">5.11%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">3.22%</span><span class="trend-chip down">▼ 0.06</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="commercial_banks" data-id="lsbl">View History</button></td></tr>
+<tr data-name="machhapuchhre bank"><td><div class="inst-name">Machhapuchhre Bank<span class="status-dot-indicator green" title="Ashadh 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">5.02%</span><span class="trend-chip up">▲ 0.01</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">5.04%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">3.48%</span><span class="trend-chip down">▼ 0.02</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="commercial_banks" data-id="mbl">View History</button></td></tr>
+<tr data-name="nic asia bank"><td><div class="inst-name">NIC Asia Bank<span class="status-dot-indicator green" title="Ashadh 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">5.83%</span><span class="trend-chip down">▼ 0.07</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">5.91%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">3.50%</span><span class="trend-chip up">▲ 0.06</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="commercial_banks" data-id="nicasia">View History</button></td></tr>
+<tr data-name="nmb bank"><td><div class="inst-name">NMB Bank<span class="status-dot-indicator green" title="Ashadh 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">5.01%</span><span class="trend-chip down">▼ 0.11</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">5.11%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">3.43%</span><span class="trend-chip down">▼ 0.01</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="commercial_banks" data-id="nmb">View History</button></td></tr>
+<tr data-name="nabil bank"><td><div class="inst-name">Nabil Bank<span class="status-dot-indicator green" title="Ashadh 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">4.32%</span><span class="trend-chip down">▼ 0.15</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.44%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">3.18%</span><span class="trend-chip down">▼ 0.02</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="commercial_banks" data-id="nabil">View History</button></td></tr>
+<tr data-name="nepal bank"><td><div class="inst-name">Nepal Bank<span class="status-dot-indicator green" title="Ashadh 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">4.45%</span><span class="trend-chip down">▼ 0.02</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.50%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">3.54%</span><span class="trend-chip down">▼ 0.04</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="commercial_banks" data-id="nbl">View History</button></td></tr>
+<tr data-name="nepal investment mega bank" class="stale-row"><td><div class="inst-name">Nepal Investment Mega Bank<span class="status-dot-indicator yellow" title="Ashadh 2083 pending — displaying Jestha 2083 disclosure"></span><span class="stale-month-badge">Jestha 2083</span></div></td><td class="num"><div><span class="rate-value">4.70%</span><span class="trend-chip up">▲ 0.01</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.75%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">3.13%</span><span class="trend-chip down">▼ 0.08</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="commercial_banks" data-id="nimb">View History</button></td></tr>
+<tr data-name="nepal sbi bank"><td><div class="inst-name">Nepal SBI Bank<span class="status-dot-indicator green" title="Ashadh 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">5.19%</span><span class="trend-chip flat">— 0.00</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">5.21%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">3.21%</span><span class="trend-chip down">▼ 0.10</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="commercial_banks" data-id="sbi">View History</button></td></tr>
+<tr data-name="prabhu bank" class="stale-row"><td><div class="inst-name">Prabhu Bank<span class="status-dot-indicator yellow" title="Ashadh 2083 pending — displaying Jestha 2083 disclosure"></span><span class="stale-month-badge">Jestha 2083</span></div></td><td class="num"><div><span class="rate-value">4.99%</span><span class="trend-chip down">▼ 0.10</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">5.07%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">3.35%</span><span class="trend-chip flat">— 0.00</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="commercial_banks" data-id="prabhu">View History</button></td></tr>
+<tr data-name="prime commercial bank"><td><div class="inst-name">Prime Commercial Bank<span class="status-dot-indicator green" title="Ashadh 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">4.95%</span><span class="trend-chip down">▼ 0.11</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">5.07%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">3.66%</span><span class="trend-chip flat">— 0.00</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="commercial_banks" data-id="pcbl">View History</button></td></tr>
+<tr data-name="rastriya banijya bank"><td><div class="inst-name">Rastriya Banijya Bank<span class="status-dot-indicator green" title="Ashadh 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">4.06%</span><span class="trend-chip down">▼ 0.14</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.17%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">3.44%</span><span class="trend-chip up">▲ 0.07</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="commercial_banks" data-id="rbb">View History</button></td></tr>
+<tr data-name="sanima bank"><td><div class="inst-name">Sanima Bank<span class="status-dot-indicator green" title="Ashadh 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">4.91%</span><span class="trend-chip up">▲ 0.03</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.92%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">3.39%</span><span class="trend-chip down">▼ 0.10</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="commercial_banks" data-id="sanima">View History</button></td></tr>
+<tr data-name="siddhartha bank"><td><div class="inst-name">Siddhartha Bank<span class="status-dot-indicator green" title="Ashadh 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">5.02%</span><span class="trend-chip down">▼ 0.01</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">5.06%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">3.69%</span><span class="trend-chip up">▲ 0.07</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="commercial_banks" data-id="sbl">View History</button></td></tr>
+<tr data-name="standard chartered bank nepal" class="stale-row"><td><div class="inst-name">Standard Chartered Bank Nepal<span class="status-dot-indicator yellow" title="Ashadh 2083 pending — displaying Jestha 2083 disclosure"></span><span class="stale-month-badge">Jestha 2083</span></div></td><td class="num"><div><span class="rate-value">4.04%</span><span class="trend-chip down">▼ 0.19</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.21%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.00%</span><span class="trend-chip up">▲ 0.12</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="commercial_banks" data-id="scb">View History</button></td></tr>
+        </tbody></table></div>
         <div class="rate-cards" id="cards-commercial_banks"></div>
       </div>
-      <div class="tab-view" data-tab-view="development_banks">
+
+      <div class="tab-view" data-tab-view="development_banks" style="display:none">
         <div class="section-head">
           <div>
             <h1>Development Banks</h1>
-            <div class="section-sub" id="sub-development_banks">Base rates and interest spreads of development banks in Nepal — 'B' class institutions, updated monthly from official disclosures</div>
+            <div class="section-sub" id="sub-development_banks">Base rates & interest spreads of development banks in Nepal, updated monthly</div>
           </div>
           <div class="search-box"><input type="text" placeholder="Search bank…" data-search="development_banks"></div>
         </div>
         <div class="rate-table-wrap"><table class="rate-table"><thead><tr id="thead-development_banks">
           <th>Institution</th><th class="num">Base Rate</th><th class="num">3M Avg Rate</th><th class="num">Spread Rate</th><th></th>
-        </tr></thead><tbody id="tbody-development_banks"></tbody></table></div>
+        </tr></thead><tbody id="tbody-development_banks">
+<tr data-name="corporate development bank"><td><div class="inst-name">Corporate Development Bank<span class="status-dot-indicator green" title="Jestha 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">7.93%</span><span class="trend-chip down">▼ 0.14</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">8.13%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.58%</span><span class="trend-chip up">▲ 0.02</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="development_banks" data-id="corporate">View History</button></td></tr>
+<tr data-name="excel development bank"><td><div class="inst-name">Excel Development Bank<span class="status-dot-indicator green" title="Jestha 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">5.28%</span><span class="trend-chip down">▼ 0.08</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">5.44%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.57%</span><span class="trend-chip down">▼ 0.01</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="development_banks" data-id="excel">View History</button></td></tr>
+<tr data-name="garima bikas bank"><td><div class="inst-name">Garima Bikas Bank<span class="status-dot-indicator green" title="Jestha 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">5.24%</span><span class="trend-chip up">▲ 0.01</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">5.26%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.04%</span><span class="trend-chip down">▼ 0.05</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="development_banks" data-id="garima">View History</button></td></tr>
+<tr data-name="green development bank"><td><div class="inst-name">Green Development Bank<span class="status-dot-indicator green" title="Jestha 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">7.25%</span><span class="trend-chip up">▲ 0.01</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">7.28%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.41%</span><span class="trend-chip down">▼ 0.05</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="development_banks" data-id="green">View History</button></td></tr>
+<tr data-name="jyoti bikash bank"><td><div class="inst-name">Jyoti Bikash Bank<span class="status-dot-indicator green" title="Jestha 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">5.75%</span><span class="trend-chip up">▲ 0.05</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">5.81%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.18%</span><span class="trend-chip down">▼ 0.04</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="development_banks" data-id="jbbl">View History</button></td></tr>
+<tr data-name="kamana sewa bikas bank"><td><div class="inst-name">Kamana Sewa Bikas Bank<span class="status-dot-indicator green" title="Jestha 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">5.60%</span><span class="trend-chip down">▼ 0.06</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">5.67%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.00%</span><span class="trend-chip down">▼ 0.07</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="development_banks" data-id="kamana">View History</button></td></tr>
+<tr data-name="lumbini bikas bank"><td><div class="inst-name">Lumbini Bikas Bank<span class="status-dot-indicator green" title="Jestha 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">5.47%</span><span class="trend-chip down">▼ 0.15</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">5.61%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">3.56%</span><span class="trend-chip down">▼ 0.52</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="development_banks" data-id="lumbini">View History</button></td></tr>
+<tr data-name="mahalaxmi development bank"><td><div class="inst-name">Mahalaxmi Development Bank<span class="status-dot-indicator green" title="Jestha 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">5.63%</span><span class="trend-chip down">▼ 0.05</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">5.69%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.18%</span><span class="trend-chip down">▼ 0.02</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="development_banks" data-id="mahalaxmi">View History</button></td></tr>
+<tr data-name="miteri development bank"><td><div class="inst-name">Miteri Development Bank<span class="status-dot-indicator green" title="Jestha 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">5.60%</span><span class="trend-chip down">▼ 0.93</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">6.01%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.49%</span><span class="trend-chip up">▲ 0.37</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="development_banks" data-id="miteri">View History</button></td></tr>
+<tr data-name="muktinath bikash bank"><td><div class="inst-name">Muktinath Bikash Bank<span class="status-dot-indicator green" title="Jestha 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">5.56%</span><span class="trend-chip down">▼ 0.06</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">5.64%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.30%</span><span class="trend-chip up">▲ 0.06</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="development_banks" data-id="muktinath">View History</button></td></tr>
+<tr data-name="narayani development bank"><td><div class="inst-name">Narayani Development Bank<span class="status-dot-indicator green" title="Jestha 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">13.82%</span><span class="trend-chip up">▲ 0.29</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">15.44%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.10%</span><span class="trend-chip up">▲ 0.23</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="development_banks" data-id="narayani">View History</button></td></tr>
+<tr data-name="salapa bikash bank"><td><div class="inst-name">Salapa Bikash Bank<span class="status-dot-indicator green" title="Jestha 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">9.87%</span><span class="trend-chip down">▼ 0.02</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">9.89%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.58%</span><span class="trend-chip up">▲ 0.01</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="development_banks" data-id="salapa">View History</button></td></tr>
+<tr data-name="saptakoshi development bank"><td><div class="inst-name">Saptakoshi Development Bank<span class="status-dot-indicator green" title="Jestha 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">6.03%</span><span class="trend-chip down">▼ 0.05</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">6.13%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.21%</span><span class="trend-chip up">▲ 0.05</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="development_banks" data-id="saptakoshi">View History</button></td></tr>
+<tr data-name="shangrila development bank"><td><div class="inst-name">Shangrila Development Bank<span class="status-dot-indicator green" title="Jestha 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">5.57%</span><span class="trend-chip down">▼ 0.07</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">5.66%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.02%</span><span class="trend-chip down">▼ 0.40</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="development_banks" data-id="shangrila">View History</button></td></tr>
+<tr data-name="shine resunga development bank"><td><div class="inst-name">Shine Resunga Development Bank<span class="status-dot-indicator green" title="Jestha 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">5.51%</span><span class="trend-chip down">▼ 0.16</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">5.66%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.09%</span><span class="trend-chip up">▲ 0.05</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="development_banks" data-id="shine">View History</button></td></tr>
+<tr data-name="sindhu bikash bank"><td><div class="inst-name">Sindhu Bikash Bank<span class="status-dot-indicator green" title="Jestha 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">7.23%</span><span class="trend-chip down">▼ 0.03</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">7.33%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.59%</span><span class="trend-chip flat">— 0.00</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="development_banks" data-id="sindu">View History</button></td></tr>
+        </tbody></table></div>
         <div class="rate-cards" id="cards-development_banks"></div>
       </div>
-      <div class="tab-view" data-tab-view="finance_companies">
+
+      <div class="tab-view" data-tab-view="finance_companies" style="display:none">
         <div class="section-head">
           <div>
             <h1>Finance Companies</h1>
-            <div class="section-sub" id="sub-finance_companies">Base rates and interest spreads of finance companies in Nepal — 'C' class institutions, updated monthly from official disclosures</div>
+            <div class="section-sub" id="sub-finance_companies">Base rates & interest spreads of finance companies in Nepal, updated monthly</div>
           </div>
-          <div class="search-box"><input type="text" placeholder="Search company…" data-search="finance_companies"></div>
+          <div class="search-box"><input type="text" placeholder="Search bank…" data-search="finance_companies"></div>
         </div>
         <div class="rate-table-wrap"><table class="rate-table"><thead><tr id="thead-finance_companies">
           <th>Institution</th><th class="num">Base Rate</th><th class="num">3M Avg Rate</th><th class="num">Spread Rate</th><th></th>
-        </tr></thead><tbody id="tbody-finance_companies"></tbody></table></div>
+        </tr></thead><tbody id="tbody-finance_companies">
+<tr data-name="best finance"><td><div class="inst-name">Best Finance<span class="status-dot-indicator green" title="Jestha 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">8.04%</span><span class="trend-chip down">▼ 0.22</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">8.28%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.11%</span><span class="trend-chip down">▼ 0.10</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="finance_companies" data-id="best">View History</button></td></tr>
+<tr data-name="central finance"><td><div class="inst-name">Central Finance<span class="status-dot-indicator green" title="Jestha 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">6.47%</span><span class="trend-chip down">▼ 0.31</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">6.72%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.43%</span><span class="trend-chip up">▲ 0.01</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="finance_companies" data-id="central">View History</button></td></tr>
+<tr data-name="goodwill finance"><td><div class="inst-name">Goodwill Finance<span class="status-dot-indicator green" title="Jestha 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">6.31%</span><span class="trend-chip down">▼ 0.13</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">6.45%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.39%</span><span class="trend-chip down">▼ 0.11</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="finance_companies" data-id="goodwill">View History</button></td></tr>
+<tr data-name="guheshwori merchant banking &amp; finance"><td><div class="inst-name">Guheshwori Merchant Banking &amp; Finance<span class="status-dot-indicator green" title="Jestha 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">6.42%</span><span class="trend-chip down">▼ 0.08</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">6.54%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.57%</span><span class="trend-chip up">▲ 0.02</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="finance_companies" data-id="guheshwori">View History</button></td></tr>
+<tr data-name="gurkhas finance"><td><div class="inst-name">Gurkhas Finance<span class="status-dot-indicator green" title="Jestha 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">6.62%</span><span class="trend-chip down">▼ 0.09</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">6.77%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.38%</span><span class="trend-chip down">▼ 0.15</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="finance_companies" data-id="gurkhas">View History</button></td></tr>
+<tr data-name="icfc finance"><td><div class="inst-name">ICFC Finance<span class="status-dot-indicator green" title="Jestha 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">5.97%</span><span class="trend-chip down">▼ 0.11</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">6.10%</span></div></td><td class="num"><span style="color:var(--slate)">—</span></td><td style="text-align:right"><button class="history-btn" data-cat="finance_companies" data-id="icfc">View History</button></td></tr>
+<tr data-name="janaki finance"><td><div class="inst-name">Janaki Finance<span class="status-dot-indicator green" title="Jestha 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">9.79%</span><span class="trend-chip up">▲ 0.13</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">9.72%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.60%</span><span class="trend-chip flat">— 0.00</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="finance_companies" data-id="janaki">View History</button></td></tr>
+<tr data-name="manjushree finance"><td><div class="inst-name">Manjushree Finance<span class="status-dot-indicator green" title="Jestha 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">5.71%</span><span class="trend-chip up">▲ 0.07</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">5.69%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.59%</span><span class="trend-chip flat">— 0.00</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="finance_companies" data-id="manjushree">View History</button></td></tr>
+<tr data-name="multipurpose finance"><td><div class="inst-name">Multipurpose Finance<span class="status-dot-indicator green" title="Jestha 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">8.19%</span><span class="trend-chip down">▼ 0.04</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">8.26%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.58%</span><span class="trend-chip flat">— 0.00</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="finance_companies" data-id="multipurpose">View History</button></td></tr>
+<tr data-name="nepal finance"><td><div class="inst-name">Nepal Finance<span class="status-dot-indicator green" title="Jestha 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">7.69%</span><span class="trend-chip down">▼ 0.17</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">7.88%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.57%</span><span class="trend-chip down">▼ 0.01</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="finance_companies" data-id="nepalfinance">View History</button></td></tr>
+<tr data-name="pokhara finance"><td><div class="inst-name">Pokhara Finance<span class="status-dot-indicator green" title="Jestha 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">6.95%</span><span class="trend-chip down">▼ 0.19</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">7.21%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.20%</span><span class="trend-chip up">▲ 0.14</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="finance_companies" data-id="pokhara">View History</button></td></tr>
+<tr data-name="progressive finance"><td><div class="inst-name">Progressive Finance<span class="status-dot-indicator green" title="Jestha 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">7.32%</span><span class="trend-chip down">▼ 0.14</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">7.45%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.55%</span><span class="trend-chip up">▲ 0.08</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="finance_companies" data-id="progressive">View History</button></td></tr>
+<tr data-name="reliance finance"><td><div class="inst-name">Reliance Finance<span class="status-dot-indicator green" title="Jestha 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">6.74%</span><span class="trend-chip down">▼ 0.32</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">7.05%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.21%</span><span class="trend-chip down">▼ 0.02</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="finance_companies" data-id="reliance">View History</button></td></tr>
+<tr data-name="samriddhi finance"><td><div class="inst-name">Samriddhi Finance<span class="status-dot-indicator green" title="Jestha 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">8.66%</span><span class="trend-chip down">▼ 0.28</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">8.90%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">4.57%</span><span class="trend-chip flat">— 0.00</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="finance_companies" data-id="samriddhi">View History</button></td></tr>
+<tr data-name="shree investment &amp; finance"><td><div class="inst-name">Shree Investment &amp; Finance<span class="status-dot-indicator green" title="Jestha 2083 disclosure up to date"></span></div></td><td class="num"><div><span class="rate-value">6.55%</span><span class="trend-chip down">▼ 0.13</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">6.68%</span></div></td><td class="num"><div><span class="rate-value" style="font-size:16px">3.70%</span><span class="trend-chip down">▼ 0.03</span></div></td><td style="text-align:right"><button class="history-btn" data-cat="finance_companies" data-id="shreeinvestment">View History</button></td></tr>
+        </tbody></table></div>
         <div class="rate-cards" id="cards-finance_companies"></div>
       </div>
-    </div>
 
     <!-- HISTORY VIEW -->
     <div class="history-view" id="historyView">
@@ -513,6 +549,98 @@
 
   </div>
 
+  <!-- ========= QUARTERLY INDICATORS PAGE ========= -->
+  <div id="pageQuarterly" class="page">
+
+    <!-- Category segmented control + data freshness -->
+    <div class="sub-nav-row" id="subNavQuarterly">
+      <div class="sub-nav">
+        <button class="cat-pill-btn active" data-qcat="commercial_banks">Commercial Banks <span class="cat-count" id="qcount-commercial_banks"></span></button>
+        <button class="cat-pill-btn" data-qcat="development_banks">Development Banks <span class="cat-count" id="qcount-development_banks"></span></button>
+        <button class="cat-pill-btn" data-qcat="finance_companies">Finance Companies <span class="cat-count" id="qcount-finance_companies"></span></button>
+      </div>
+      <div class="data-asof" id="dataAsOfQuarterly"></div>
+    </div>
+
+    <div class="q-controls-header" id="qControlsHeader">
+      <div class="q-metric-pills">
+        <button class="q-metric-pill active" data-qmetric="npl">NPL %</button>
+        <button class="q-metric-pill" data-qmetric="car">Capital Adequacy</button>
+        <button class="q-metric-pill" data-qmetric="cd_ratio">CD Ratio %</button>
+        <button class="q-metric-pill" data-qmetric="cost_of_fund">Cost of Funds %</button>
+        <button class="q-metric-pill" data-qmetric="llp_npl">LLP to NPL %</button>
+        <button class="q-metric-pill" data-qmetric="roe">ROE %</button>
+        <button class="q-metric-pill" data-qmetric="roa">ROA %</button>
+      </div>
+      <div class="q-view-switcher">
+        <button class="q-view-btn active" data-qview="data">📋 Data View</button>
+        <button class="q-view-btn" data-qview="chart">📊 Chart View</button>
+      </div>
+    </div>
+
+    <div id="qDataContainer">
+      <!-- Data View Table rendered dynamically by app.js -->
+      <div id="qTableView"></div>
+      
+      <!-- Chart View SVG Threshold Chart rendered dynamically by app.js -->
+      <div id="qChartView" style="display:none">
+        <div class="dash-card">
+          <div class="dash-card-header" style="flex-wrap:wrap;gap:12px">
+            <div>
+              <div class="dash-card-title" id="qChartTitle">Quarterly Indicators Chart</div>
+              <div class="dash-card-sub" id="qChartSub">Institutional metric comparison</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+              <div class="q-view-switcher" id="qChartSortContainer">
+                <span style="font-size:12px;color:var(--slate);font-weight:600;padding:4px 8px 4px 10px;display:inline-flex;align-items:center">Sort:</span>
+                <button class="q-view-btn active" data-qchart-sort="desc">High to Low</button>
+                <button class="q-view-btn" data-qchart-sort="asc">Low to High</button>
+                <button class="q-view-btn" data-qchart-sort="name">A – Z</button>
+              </div>
+            </div>
+          </div>
+          <svg id="qChartSvg" width="100%" style="display:block;overflow:visible"></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quarterly Institution History Detail View -->
+    <div id="qHistoryView" style="display:none">
+      <button class="back-link" id="qBackBtn">Back to Quarterly Indicators</button>
+
+      <div class="dash-card" style="margin-bottom:24px">
+        <div class="dash-card-header">
+          <div>
+            <div class="dash-card-title" id="qHistBankName">Everest Bank</div>
+            <div class="dash-card-sub" id="qHistBankCat">Commercial Bank — Quarterly Performance History</div>
+          </div>
+          <div id="qHistLatestQuarter" class="stale-month-badge" style="background:#FFF8E7;color:#B78103;border:1.5px solid var(--gold);">Q3 2082 Disclosures</div>
+        </div>
+
+        <div class="rate-table-wrap" style="margin-top:16px;overflow-x:auto;">
+          <table class="rate-table" id="qHistTable">
+            <thead>
+              <tr>
+                <th>Quarter</th>
+                <th class="num">NPL %</th>
+                <th class="num">Capital Fund (CAR)</th>
+                <th class="num">Tier 1 Capital</th>
+                <th class="num">CET 1 Capital</th>
+                <th class="num">CD Ratio</th>
+                <th class="num">Cost of Funds</th>
+                <th class="num">LLP to NPL %</th>
+                <th class="num">ROE (Ann.)</th>
+                <th class="num">ROA (Ann.)</th>
+              </tr>
+            </thead>
+            <tbody id="qHistTbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
   <!-- ========= COMING SOON PAGE ========= -->
   <div id="pageComingSoon" class="page">
     <div class="coming-soon-page">
@@ -530,18 +658,21 @@
 
       <div>
         <div class="footer-title">About this data</div>
-        <div class="footer-sub">Common questions on base rates and spreads in Nepal</div>
+        <div class="footer-sub">Overview of tracked metrics, sources, update frequency & audit disclosures</div>
         <details class="faq-item">
-          <summary>What is the base rate of banks in Nepal?</summary>
-          <p>The base rate is the minimum lending rate a bank can charge, calculated from its cost of funds and operating costs under Nepal Rastra Bank rules. Every commercial bank, development bank and finance company publishes it monthly — the rates on this site come from those official disclosures.</p>
+          <summary>What financial metrics are tracked on BankStatsNepal?</summary>
+          <p>BankStatsNepal tracks comprehensive monthly and quarterly disclosures for Commercial Banks, Development Banks, and Finance Companies across Nepal:
+          <br>• <strong>Monthly Indicators</strong>: Base Rates (%) and Interest Spreads (%).
+          <br>• <strong>Quarterly Financial Indicators</strong>: Non-Performing Loans (NPL %), Capital Adequacy Ratios (CAR %, Tier 1 %, CET 1 %), CD Ratio (%), Cost of Funds (%), LLP to NPL Coverage (%), Return on Equity (ROE %), and Return on Assets (ROA %).</p>
         </details>
         <details class="faq-item">
-          <summary>What is interest rate spread?</summary>
-          <p>The interest rate spread is the difference between a bank's average lending rate and its average deposit rate — the margin it earns for intermediating money. Nepal Rastra Bank caps the spread that banks and financial institutions may maintain.</p>
+          <summary>How is this data collected & verified?</summary>
+          <p>All data is compiled directly from official monthly rate announcements and quarterly financial disclosure statements published by Nepal's Banks and Financial Institutions (BFIs) as mandated by Nepal Rastra Bank (NRB) regulations.</p>
         </details>
         <details class="faq-item">
-          <summary>How often is this data updated?</summary>
-          <p>Monthly. Institutions publish rates for each Nepali calendar month, and the site is updated as disclosures become available. The indicator at the top of the dashboard shows the latest covered month.</p>
+          <summary>How often is the data updated, and what is the audit status?</summary>
+          <p>• <strong>Monthly Rates</strong> are updated every Nepali calendar month as institutions release disclosures.
+          <br>• <strong>Quarterly Indicators</strong> are updated every fiscal quarter (Q1 Ashwin, Q2 Poush, Q3 Chaitra, Q4 Ashadh). Interim reports for Q1, Q2, and Q3 are unaudited, while verified annual financial statements are explicitly marked with an <strong>Audited</strong> badge.</p>
         </details>
       </div>
 
@@ -558,7 +689,7 @@
 
   <div class="footer-base">
     <div class="disclaimer">
-      Rates shown are indicative and sourced from publicly disclosed monthly statements of each institution. Always verify the current rate directly with the institution or Nepal Rastra Bank before making financial decisions.
+      Data shown is indicative and sourced from publicly disclosed monthly and quarterly statements of each institution. Always verify disclosures directly with the institution or Nepal Rastra Bank before making financial decisions.
     </div>
     <div>BankStatsNepal · Independent BFI data tracker for Nepal</div>
   </div>
@@ -570,7 +701,7 @@
 <div class="tip" id="scatTip"></div>
 <div class="tip" id="trendTip"></div>
 
-<script src="/js/app.js"></script>
+<script src="/js/app.js?v=6.4"></script>
 
 </body>
 </html>

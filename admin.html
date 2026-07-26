@@ -21,25 +21,25 @@
     --good: #4A7C59;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Inter', sans-serif; background: var(--paper); color: var(--ink); padding: 0 0 80px; }
+  body { font-family: 'Inter', sans-serif; background: var(--paper); color: var(--ink); padding-bottom: 80px; }
 
   header { background: var(--ink); color: var(--paper); padding: 28px; }
   header h1 { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 600; }
   header .accent { color: var(--gold); font-style: italic; }
-  header p { font-size: 13.5px; color: #C9C4B5; margin-top: 6px; max-width: 640px; line-height: 1.6; }
+  header p { font-size: 13.5px; color: #C9C4B5; margin-top: 6px; max-width: 680px; line-height: 1.6; }
 
-  .ind-toggle { display: flex; gap: 8px; margin-top: 18px; }
-  .ind-toggle button {
-    font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600;
-    padding: 8px 18px; border-radius: 8px; cursor: pointer;
+  .mode-toggle { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+  .mode-toggle button {
+    font-family: 'Inter', sans-serif; font-size: 13.5px; font-weight: 600;
+    padding: 10px 20px; border-radius: 8px; cursor: pointer;
     border: 1.5px solid rgba(228,213,172,0.3);
-    background: transparent; color: rgba(250,247,240,0.55);
+    background: transparent; color: rgba(250,247,240,0.65);
     transition: all 0.15s ease;
   }
-  .ind-toggle button.active { background: rgba(201,169,97,0.15); color: var(--gold); border-color: rgba(201,169,97,0.5); }
-  .ind-toggle button:hover:not(.active) { color: var(--paper); }
+  .mode-toggle button.active { background: rgba(201,169,97,0.18); color: var(--gold); border-color: var(--gold); }
+  .mode-toggle button:hover:not(.active) { color: var(--paper); border-color: rgba(250,247,240,0.5); }
 
-  main { max-width: 980px; margin: 0 auto; padding: 32px 24px; }
+  main { max-width: 1100px; margin: 0 auto; padding: 32px 24px; }
 
   .step {
     background: #fff;
@@ -73,12 +73,12 @@
   }
   .step .desc { font-size: 13px; color: var(--slate); margin-bottom: 16px; line-height: 1.6; }
 
-  input[type="file"], input[type="date"], select#effMonth, select#effYear {
+  input[type="file"], input[type="text"], input[type="number"], select {
     font-family: 'Inter', sans-serif;
-    font-size: 14px;
+    font-size: 13.5px;
     border: 1px solid var(--line);
     border-radius: 8px;
-    padding: 10px 14px;
+    padding: 9px 12px;
     background: var(--paper-dim);
     color: var(--ink);
   }
@@ -94,407 +94,253 @@
     border-radius: 10px;
   }
   .global-date-row label { font-size: 13px; font-weight: 600; }
-  .global-date-row .hint { font-size: 12px; color: var(--slate); }
 
-  .tabs {
-    display: flex;
-    gap: 6px;
-    margin-bottom: 16px;
-    border-bottom: 1px solid var(--line);
-  }
-  .tabs button {
-    background: none; border: none; cursor: pointer;
-    font-family: 'Inter', sans-serif; font-size: 13.5px; font-weight: 600;
-    color: var(--slate); padding: 10px 16px;
-    border-bottom: 2px solid transparent;
-  }
-  .tabs button.active { color: var(--ink); border-bottom-color: var(--gold); }
-
-  .inst-row {
-    display: grid;
-    grid-template-columns: 1fr 100px 120px 90px;
-    gap: 12px;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid var(--line);
-    font-size: 14px;
-  }
-  .inst-row:last-child { border-bottom: none; }
-  .inst-row .name { font-family: 'Fraunces', serif; font-weight: 600; font-size: 15px; }
-  .inst-row .prev-rate { font-family: 'Space Mono', monospace; font-size: 13px; color: var(--slate); }
-  .inst-row input[type="number"] {
-    font-family: 'Space Mono', monospace;
-    font-size: 14px;
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    padding: 8px 10px;
-    width: 100%;
-  }
-  .inst-row input[type="number"]:focus { outline: 2px solid var(--gold); border-color: var(--gold); }
-  .inst-row input[type="number"].changed { border-color: var(--good); background: #F0F7F2; }
-  .row-status { font-family: 'Space Mono', monospace; font-size: 11.5px; color: var(--slate); text-align: right; }
-  .row-status.changed { color: var(--good); font-weight: 700; }
-
-  .col-headers {
-    display: grid;
-    grid-template-columns: 1fr 100px 120px 90px;
-    gap: 12px;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--slate);
-    font-weight: 700;
-    padding-bottom: 8px;
-    border-bottom: 2px solid var(--line);
-    margin-bottom: 4px;
-  }
-
-  button.primary {
-    font-family: 'Inter', sans-serif;
-    font-weight: 700;
-    font-size: 14.5px;
-    background: var(--ink);
-    color: var(--gold);
-    border: none;
-    border-radius: 10px;
-    padding: 13px 26px;
-    cursor: pointer;
-    transition: opacity 0.15s ease;
-  }
-  button.primary:hover { opacity: 0.88; }
-  button.primary:disabled { opacity: 0.4; cursor: not-allowed; }
-
-  button.secondary {
-    font-family: 'Inter', sans-serif;
-    font-weight: 600;
-    font-size: 13.5px;
-    background: #fff;
-    color: var(--ink);
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    padding: 11px 20px;
-    cursor: pointer;
-  }
-
-  .actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 18px; }
-
-  .summary-pill {
-    font-family: 'Space Mono', monospace;
-    font-size: 13px;
-    background: var(--paper-dim);
-    border-radius: 999px;
-    padding: 8px 16px;
-  }
-  .summary-pill .num { font-weight: 700; color: var(--ink); }
-
-  textarea {
-    width: 100%;
-    font-family: 'Space Mono', monospace;
-    font-size: 12px;
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    padding: 14px;
-    min-height: 200px;
-    background: var(--paper-dim);
-    color: var(--ink);
-    resize: vertical;
-  }
-
-  .empty-msg { text-align: center; padding: 40px; color: var(--slate); font-size: 14px; }
-
-  .add-inst-toggle {
-    display: inline-flex; align-items: center; gap: 6px;
+  .tabs { display: flex; gap: 8px; margin-bottom: 16px; border-bottom: 1px solid var(--line); padding-bottom: 12px; }
+  .tab-btn {
     font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600;
-    color: var(--slate); background: var(--paper-dim);
-    border: 1px solid var(--line); border-radius: 8px;
-    padding: 8px 14px; cursor: pointer; margin-top: 16px;
-    transition: all 0.15s ease;
+    padding: 8px 16px; border-radius: 8px; cursor: pointer;
+    border: 1px solid var(--line); background: var(--paper); color: var(--slate);
   }
-  .add-inst-toggle:hover { color: var(--ink); border-color: var(--gold); }
+  .tab-btn.active { background: var(--ink); color: var(--gold); border-color: var(--ink); }
 
-  .add-inst-form {
-    display: none;
-    margin-top: 16px;
-    padding: 18px;
-    background: var(--paper-dim);
-    border: 1px solid var(--line);
-    border-radius: 10px;
-  }
-  .add-inst-form.open { display: block; }
+  .inst-table-wrap { overflow-x: auto; margin-top: 12px; }
+  table.admin-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  table.admin-table th { background: var(--paper-dim); color: var(--slate); font-weight: 600; text-align: left; padding: 10px 12px; border-bottom: 1.5px solid var(--line); }
+  table.admin-table td { padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+  table.admin-table input[type="number"] { width: 90px; text-align: right; font-family: 'Space Mono', monospace; font-weight: 700; }
+  table.admin-table input.changed { background: #E8F5E9; border-color: var(--good); color: var(--good); }
 
-  .add-inst-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 140px;
-    gap: 12px;
-    margin-bottom: 12px;
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600;
+    padding: 11px 22px; border-radius: 10px; cursor: pointer; border: none;
+    transition: all 0.15s ease; text-decoration: none;
   }
-
-  .field-group label {
-    display: block;
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--slate);
-    margin-bottom: 5px;
-  }
-
-  .field-group input, .field-group select {
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    padding: 9px 12px;
-    width: 100%;
-    background: #fff;
-    color: var(--ink);
-  }
-  .field-group input:focus, .field-group select:focus {
-    outline: 2px solid var(--gold); border-color: var(--gold);
-  }
-
-  .add-inst-rate-row {
-    display: grid;
-    grid-template-columns: 160px 100px 140px 1fr;
-    gap: 12px;
-    align-items: end;
-    margin-bottom: 12px;
-  }
-
-  .add-inst-note {
-    font-size: 12px; color: var(--slate); line-height: 1.5; padding-top: 4px;
-  }
-
-  @media (max-width: 640px) {
-    .add-inst-grid { grid-template-columns: 1fr; }
-    .add-inst-rate-row { grid-template-columns: 1fr 1fr; }
-  }
+  .btn-primary { background: var(--ink); color: var(--gold); }
+  .btn-primary:hover { background: #2A3E6A; }
+  .btn-secondary { background: var(--paper-dim); color: var(--ink); border: 1px solid var(--line); }
+  .btn-secondary:hover { background: #E4DEC5; }
 
   .toast {
-    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
-    background: var(--ink); color: var(--gold); padding: 12px 24px; border-radius: 10px;
-    font-size: 13.5px; font-weight: 600; box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-    opacity: 0; pointer-events: none; transition: opacity 0.25s ease, transform 0.25s ease;
+    position: fixed; bottom: 24px; right: 24px;
+    background: var(--ink); color: var(--gold);
+    padding: 14px 22px; border-radius: 10px; font-size: 13.5px; font-weight: 600;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2); display: none; z-index: 1000;
   }
-  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-  @media (max-width: 640px) {
-    .inst-row, .col-headers { grid-template-columns: 1fr 80px 90px; }
-    .col-headers span:last-child, .inst-row .row-status { display: none; }
-  }
+  .toast.show { display: block; animation: fadeIn 0.2s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 </style>
 </head>
 <body>
 
 <header>
-  <h1 id="headerTitle">Base Rate <span class="accent">Updater</span></h1>
-  <p id="headerDesc">Monthly workflow: load your current <code>base-rates.json</code>, enter the new month's base rate for each institution, then download the updated file and replace it in your <code>data/</code> folder. Only institutions with a new rate entered will get a new history entry — leave blank to skip.</p>
-  <div class="ind-toggle">
-    <button class="active" data-ind="base_rate">Base Rate</button>
-    <button data-ind="interest_spread">Interest Spread</button>
+  <h1>BankStatsNepal — <span class="accent">Admin Data Updater</span></h1>
+  <p>Update monthly base rates, interest spreads, and quarterly disclosures. Export clean JSON files ready to commit to <code>data/</code>.</p>
+  <div class="mode-toggle">
+    <button id="modeMonthly" class="active">📅 Monthly Indicators (Base Rate & Spread)</button>
+    <button id="modeQuarterly">📊 Quarterly Indicators (NPL, CAR, CD Ratio, etc.)</button>
   </div>
 </header>
 
 <main>
-
+  <!-- STEP 1: LOAD JSON -->
   <div class="step">
-    <h2><span class="step-num">1</span>Load current data file</h2>
-    <div class="desc">Select the existing <code>base-rates.json</code> from your site's <code>data/</code> folder.</div>
-    <input type="file" id="fileInput" accept="application/json">
+    <h2><span class="step-num">1</span> Load Dataset JSON</h2>
+    <div class="desc">Select your dataset file from <code>data/</code> or automatically load the latest live data from your server.</div>
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+      <input type="file" id="fileInput" accept=".json">
+      <button class="btn btn-secondary" id="loadServerBtn">🔄 Auto-Load Live JSON</button>
+      <span id="loadedStatus" style="font-size:13px;color:var(--good);font-weight:600"></span>
+    </div>
   </div>
 
-  <div id="updateSection" style="display:none;">
-
-    <div class="step">
-      <h2><span class="step-num">2</span>Set the effective Bikram Sambat month</h2>
-      <div class="global-date-row">
-        <label for="effMonth">New rate effective month:</label>
-        <select id="effMonth"></select>
-        <select id="effYear"></select>
-        <span class="hint">Applied to every rate you enter below.</span>
-      </div>
+  <!-- STEP 2: EFFECTIVE PERIOD -->
+  <div class="step">
+    <h2><span class="step-num">2</span> Select Reporting Period</h2>
+    <div class="desc" id="periodDesc">Set the target disclosure period for the data you are updating.</div>
+    
+    <div class="global-date-row" id="monthlyPeriodRow">
+      <label>Effective Month:</label>
+      <select id="effMonth"></select>
+      <select id="effYear"></select>
+      <span class="hint" id="monthlyPeriodHint">Target Date Code: <strong>2083-03</strong></span>
     </div>
 
-    <div class="step">
-      <h2><span class="step-num">3</span>Enter new base rates</h2>
-      <div class="desc" id="step3Desc">Previous rate is shown for reference. Enter the new rate (%) only for institutions that changed or that you're confirming for this month — fields left empty won't get a new entry.</div>
-
-      <div class="tabs">
-        <button class="tab-btn active" data-cat="commercial_banks">Commercial Banks</button>
-        <button class="tab-btn" data-cat="development_banks">Development Banks</button>
-        <button class="tab-btn" data-cat="finance_companies">Finance Companies</button>
-      </div>
-
-      <div class="col-headers">
-        <span>Institution</span>
-        <span>Previous</span>
-        <span>New Rate (%)</span>
-        <span>Status</span>
-      </div>
-
-      <div id="instContainer"></div>
-
-      <button class="add-inst-toggle" id="addInstToggle">+ Add New Institution</button>
-      <div class="add-inst-form" id="addInstForm">
-        <div class="add-inst-grid">
-          <div class="field-group">
-            <label>Institution Name</label>
-            <input type="text" id="newInstName" placeholder="e.g. Rastriya Banijya Bank">
-          </div>
-          <div class="field-group">
-            <label>Ticker / ID</label>
-            <input type="text" id="newInstId" placeholder="e.g. rbb" style="text-transform:lowercase">
-          </div>
-          <div class="field-group">
-            <label>Category</label>
-            <select id="newInstCat">
-              <option value="commercial_banks">Commercial Bank</option>
-              <option value="development_banks">Development Bank</option>
-              <option value="finance_companies">Finance Company</option>
-            </select>
-          </div>
-        </div>
-        <div class="add-inst-rate-row">
-          <div class="field-group">
-            <label>Initial Rate (%) — optional</label>
-            <input type="number" id="newInstRate" step="0.01" min="0" max="30" placeholder="e.g. 8.50">
-          </div>
-          <div class="field-group">
-            <label>Month</label>
-            <select id="newInstMonth"></select>
-          </div>
-          <div class="field-group">
-            <label>Year (BS)</label>
-            <select id="newInstYear"></select>
-          </div>
-          <div class="add-inst-note">Leave rate blank to add the institution with no history yet — you can enter rates in the update step above.</div>
-        </div>
-        <div class="actions" style="margin-top:4px">
-          <button class="primary" id="confirmAddInst">Add Institution</button>
-          <button class="secondary" id="cancelAddInst">Cancel</button>
-        </div>
-      </div>
+    <div class="global-date-row" id="quarterlyPeriodRow" style="display:none">
+      <label>Effective Quarter:</label>
+      <select id="effQuarter">
+        <option value="Q1">Q1 (Ashwin)</option>
+        <option value="Q2">Q2 (Poush)</option>
+        <option value="Q3">Q3 (Chaitra)</option>
+        <option value="Q4" selected>Q4 (Ashar)</option>
+      </select>
+      <select id="effQYear"></select>
+      <label style="margin-left:14px">Audit Status:</label>
+      <select id="effAudited">
+        <option value="false">Unaudited</option>
+        <option value="true">Audited</option>
+      </select>
+      <span class="hint" id="quarterlyPeriodHint">Quarter Label: <strong>Q4 2082</strong></span>
     </div>
-
-    <div class="step">
-      <h2><span class="step-num">4</span>Download updated file</h2>
-      <div class="desc" id="step4Desc">This generates a new <code>base-rates.json</code> with your changes added to the front of each institution's history. Replace the file in your <code>data/</code> folder with this one.</div>
-      <div class="actions">
-        <span class="summary-pill"><span class="num" id="changeCount">0</span> institution(s) updated</span>
-        <button class="primary" id="downloadBtn">Download base-rates.json</button>
-        <button class="secondary" id="previewBtn">Preview JSON</button>
-      </div>
-      <div id="previewWrap" style="display:none; margin-top:16px;">
-        <textarea id="previewArea" readonly></textarea>
-      </div>
-    </div>
-
   </div>
 
-  <div id="emptyMsg" class="empty-msg">Load a JSON file above to begin.</div>
+  <!-- STEP 3: UPDATE INSTITUTIONS -->
+  <div class="step">
+    <h2><span class="step-num">3</span> Update Financial Metrics</h2>
+    <div class="desc">Enter updated disclosures below. Fields left blank will retain previous historical data.</div>
 
+    <div class="tabs">
+      <button class="tab-btn active" data-cat="commercial_banks">Commercial Banks</button>
+      <button class="tab-btn" data-cat="development_banks">Development Banks</button>
+      <button class="tab-btn" data-cat="finance_companies">Finance Companies</button>
+    </div>
+
+    <div class="inst-table-wrap">
+      <table class="admin-table" id="adminTable">
+        <thead id="adminThead"></thead>
+        <tbody id="adminTbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- STEP 4: DOWNLOAD & SAVE -->
+  <div class="step">
+    <h2><span class="step-num">4</span> Export Updated JSON</h2>
+    <div class="desc">Download the updated dataset and place it inside your <code>data/</code> directory.</div>
+    <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+      <button class="btn btn-primary" id="downloadBtn">📥 Download Updated JSON</button>
+      <button class="btn btn-secondary" id="previewBtn">👁️ Toggle JSON Preview</button>
+      <span style="font-size:13px;color:var(--slate)">Pending Updates: <strong id="changeCount" style="color:var(--gold)">0</strong> institution(s)</span>
+    </div>
+
+    <div id="previewWrap" style="display:none;margin-top:16px">
+      <textarea id="previewArea" readonly style="width:100%;height:300px;font-family:'Space Mono',monospace;font-size:12px;padding:12px;background:var(--paper-dim);border:1px solid var(--line);border-radius:8px;"></textarea>
+    </div>
+  </div>
 </main>
 
 <div class="toast" id="toast"></div>
 
 <script>
-let DATA = null;
-let activeCat = 'commercial_banks';
-let currentIndicator = 'base_rate';
+const BS_MONTHS = ['Baisakh','Jestha','Ashadh','Shrawan','Bhadra','Ashwin','Kartik','Mangsir','Poush','Magh','Falgun','Chaitra'];
 const CATS = ['commercial_banks','development_banks','finance_companies'];
 
-const INDICATOR_CONFIG = {
-  base_rate: {
-    title: 'Base Rate <span class="accent">Updater</span>',
-    desc: 'Monthly workflow: load your current <code>base-rates.json</code>, enter the new month\'s base rate for each institution, then download the updated file and replace it in your <code>data/</code> folder. Only institutions with a new rate entered will get a new history entry — leave blank to skip.',
-    step3Desc: 'Previous rate is shown for reference. Enter the new base rate (%) only for institutions that changed — fields left empty won\'t get a new entry.',
-    step4Desc: 'This generates a new <code>base-rates.json</code> with your changes prepended to each institution\'s history.',
-    filename: 'base-rates.json',
-    downloadLabel: 'Download base-rates.json',
-  },
-  interest_spread: {
-    title: 'Interest Spread <span class="accent">Updater</span>',
-    desc: 'Monthly workflow: load your current <code>interest-spread.json</code>, enter the new month\'s interest spread for each institution, then download the updated file and replace it in your <code>data/</code> folder. Leave blank to skip an institution.',
-    step3Desc: 'Previous spread is shown for reference. Enter the new interest spread (%) only for institutions that have been updated — fields left empty won\'t get a new entry.',
-    step4Desc: 'This generates a new <code>interest-spread.json</code> with your changes prepended to each institution\'s history.',
-    filename: 'interest-spread.json',
-    downloadLabel: 'Download interest-spread.json',
-  }
-};
-
-function applyIndicator(ind) {
-  currentIndicator = ind;
-  const cfg = INDICATOR_CONFIG[ind];
-  document.getElementById('headerTitle').innerHTML = cfg.title;
-  document.getElementById('headerDesc').innerHTML = cfg.desc;
-  document.getElementById('step3Desc').innerHTML = cfg.step3Desc;
-  document.getElementById('step4Desc').innerHTML = cfg.step4Desc;
-  document.getElementById('downloadBtn').textContent = cfg.downloadLabel;
-  document.querySelectorAll('.ind-toggle button').forEach(b => b.classList.toggle('active', b.dataset.ind === ind));
-  // Reset state when switching indicator
-  DATA = null;
-  pendingChanges = {};
-  document.getElementById('fileInput').value = '';
-  updateSection.style.display = 'none';
-  emptyMsg.style.display = 'block';
-  instContainer.innerHTML = '';
-  changeCount.textContent = 0;
-}
-
-document.querySelectorAll('.ind-toggle button').forEach(btn => {
-  btn.addEventListener('click', () => applyIndicator(btn.dataset.ind));
-});
-
-const fileInput = document.getElementById('fileInput');
-const updateSection = document.getElementById('updateSection');
-const emptyMsg = document.getElementById('emptyMsg');
-const instContainer = document.getElementById('instContainer');
-const effMonthSelect = document.getElementById('effMonth');
-const effYearSelect = document.getElementById('effYear');
-const changeCount = document.getElementById('changeCount');
-
-const BS_MONTHS = ['Baisakh','Jestha','Ashadh','Shrawan','Bhadra','Ashwin','Kartik','Mangsir','Poush','Magh','Falgun','Chaitra'];
+let currentMode = 'monthly';
+let activeCat = 'commercial_banks';
+let DATA = null;
+let pendingChanges = {};
 
 BS_MONTHS.forEach((m, i) => {
   const opt = document.createElement('option');
-  opt.value = String(i+1).padStart(2,'0');
-  opt.textContent = m;
-  effMonthSelect.appendChild(opt);
+  opt.value = String(i + 1).padStart(2, '0');
+  opt.textContent = m + ' (' + String(i + 1).padStart(2, '0') + ')';
+  document.getElementById('effMonth').appendChild(opt);
+});
+document.getElementById('effMonth').value = '03';
+
+for (let y = 2078; y <= 2090; y++) {
+  const opt1 = document.createElement('option');
+  opt1.value = String(y); opt1.textContent = y;
+  document.getElementById('effYear').appendChild(opt1);
+
+  const opt2 = document.createElement('option');
+  opt2.value = String(y); opt2.textContent = y;
+  document.getElementById('effQYear').appendChild(opt2);
+}
+document.getElementById('effYear').value = '2083';
+document.getElementById('effQYear').value = '2082';
+
+function fmtQuarterLabel(q) {
+  if (!q) return '—';
+  const match = q.match(/(Q[1-4])\s*(\d{4})/i) || q.match(/(\d{4})\s*(Q[1-4])/i);
+  if (match) {
+    let qNum = match[1].toUpperCase();
+    let year = match[2];
+    if (/^\d{4}$/.test(match[1])) {
+      year = match[1];
+      qNum = match[2].toUpperCase();
+    }
+    const qMonths = {
+      'Q1': 'Ashwin',
+      'Q2': 'Poush',
+      'Q3': 'Chaitra',
+      'Q4': 'Ashadh'
+    };
+    return `${year} ${qMonths[qNum] || ''} (${qNum})`;
+  }
+  return q;
+}
+
+function updatePeriodHints() {
+  if (currentMode === 'monthly') {
+    const m = document.getElementById('effMonth').value;
+    const y = document.getElementById('effYear').value;
+    document.getElementById('monthlyPeriodHint').innerHTML = 'Target Date Code: <strong>' + y + '-' + m + '</strong> (' + BS_MONTHS[parseInt(m)-1] + ' ' + y + ')';
+  } else {
+    const q = document.getElementById('effQuarter').value;
+    const y = document.getElementById('effQYear').value;
+    const aud = document.getElementById('effAudited').value === 'true' ? 'Audited' : 'Unaudited';
+    document.getElementById('quarterlyPeriodHint').innerHTML = 'Quarter Label: <strong>' + fmtQuarterLabel(q + ' ' + y) + '</strong> (' + aud + ')';
+  }
+}
+['effMonth','effYear','effQuarter','effQYear','effAudited'].forEach(id => {
+  document.getElementById(id).addEventListener('change', updatePeriodHints);
 });
 
-// Populate a sensible BS year range (adjust as years pass)
-for (let y = 2078; y <= 2090; y++) {
-  const opt = document.createElement('option');
-  opt.value = String(y);
-  opt.textContent = y;
-  effYearSelect.appendChild(opt);
-}
-effYearSelect.value = '2083';
+document.getElementById('modeMonthly').addEventListener('click', () => setMode('monthly'));
+document.getElementById('modeQuarterly').addEventListener('click', () => setMode('quarterly'));
 
-function effDateValue() {
-  return `${effYearSelect.value}-${effMonthSelect.value}`;
+function setMode(mode) {
+  currentMode = mode;
+  document.getElementById('modeMonthly').classList.toggle('active', mode === 'monthly');
+  document.getElementById('modeQuarterly').classList.toggle('active', mode === 'quarterly');
+
+  document.getElementById('monthlyPeriodRow').style.display = mode === 'monthly' ? 'flex' : 'none';
+  document.getElementById('quarterlyPeriodRow').style.display = mode === 'quarterly' ? 'flex' : 'none';
+
+  pendingChanges = {};
+  DATA = null;
+  document.getElementById('loadedStatus').textContent = '';
+  document.getElementById('changeCount').textContent = '0';
+  document.getElementById('previewWrap').style.display = 'none';
+
+  updatePeriodHints();
+  autoLoadServer();
 }
 
-function fmtBSDate(d) {
-  const [year, month] = d.split('-');
-  const idx = parseInt(month, 10) - 1;
-  return `${BS_MONTHS[idx]} ${year}`;
+async function autoLoadServer() {
+  const fileName = currentMode === 'monthly' ? 'monthly-indicators.json' : 'quarterly-indicators.json';
+  try {
+    const res = await fetch('/data/' + fileName);
+    if (res.ok) {
+      DATA = await res.json();
+      document.getElementById('loadedStatus').textContent = '✓ Auto-loaded data/' + fileName;
+      renderTable();
+    }
+  } catch (e) {
+    document.getElementById('loadedStatus').textContent = 'Load data/' + fileName + ' or select file below';
+  }
 }
+document.getElementById('loadServerBtn').addEventListener('click', autoLoadServer);
 
-fileInput.addEventListener('change', e => {
+document.getElementById('fileInput').addEventListener('change', e => {
   const file = e.target.files[0];
   if (!file) return;
   const reader = new FileReader();
   reader.onload = ev => {
     try {
       DATA = JSON.parse(ev.target.result);
-      CATS.forEach(c => { if (!DATA[c]) DATA[c] = []; });
-      updateSection.style.display = 'block';
-      emptyMsg.style.display = 'none';
-      renderInstitutions();
-      showToast('File loaded successfully');
+      pendingChanges = {};
+      document.getElementById('loadedStatus').textContent = '✓ Loaded ' + file.name;
     } catch (err) {
-      alert('Invalid JSON file: ' + err.message);
+      alert('Invalid JSON file format: ' + err.message);
+      return;
+    }
+    try {
+      renderTable();
+    } catch (err) {
+      console.error('Error rendering table:', err);
+      alert('Error rendering dataset table: ' + err.message);
     }
   };
   reader.readAsText(file);
@@ -505,101 +351,193 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     activeCat = btn.dataset.cat;
-    renderInstitutions();
+    renderTable();
   });
 });
 
-function renderInstitutions() {
-  instContainer.innerHTML = '';
-  const items = [...DATA[activeCat]].sort((a,b) => a.name.localeCompare(b.name));
-  items.forEach(inst => {
-    const prev = inst.history && inst.history[0] ? inst.history[0] : null;
-    const row = document.createElement('div');
-    row.className = 'inst-row';
-    row.innerHTML = `
-      <div class="name">${inst.name}</div>
-      <div class="prev-rate">${prev ? prev.rate.toFixed(2) + '% (' + fmtBSDate(prev.date) + ')' : '—'}</div>
-      <div><input type="number" step="0.01" min="0" max="30" data-id="${inst.id}" placeholder="${prev ? prev.rate.toFixed(2) : '0.00'}"></div>
-      <div class="row-status" data-status="${inst.id}"></div>
-    `;
-    instContainer.appendChild(row);
-  });
-
-  instContainer.querySelectorAll('input[type="number"]').forEach(input => {
-    input.addEventListener('input', () => {
-      const status = instContainer.querySelector(`[data-status="${input.dataset.id}"]`);
-      if (input.value.trim() !== '') {
-        input.classList.add('changed');
-        status.textContent = '✓ pending';
-        status.classList.add('changed');
-      } else {
-        input.classList.remove('changed');
-        status.textContent = '';
-        status.classList.remove('changed');
-      }
-      updateChangeCount();
-    });
-  });
-  updateChangeCount();
-}
-
-function updateChangeCount() {
-  let count = 0;
-  CATS.forEach(cat => {
-    // We only track inputs currently rendered for activeCat in DOM,
-    // so we track via a global pendingChanges map instead.
-  });
-  count = Object.keys(pendingChanges).filter(id => pendingChanges[id] !== undefined && pendingChanges[id] !== '').length;
-  changeCount.textContent = count;
-}
-
-// Track changes across tab switches
-let pendingChanges = {};
-instContainer.addEventListener('input', e => {
-  if (e.target.matches('input[type="number"]')) {
-    const id = e.target.dataset.id;
-    if (e.target.value.trim() === '') {
-      delete pendingChanges[id];
-    } else {
-      pendingChanges[id] = parseFloat(e.target.value);
-    }
-    updateChangeCount();
+function renderTable() {
+  const thead = document.getElementById('adminThead');
+  const tbody = document.getElementById('adminTbody');
+  if (!DATA || !DATA[activeCat]) {
+    thead.innerHTML = '';
+    tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;color:var(--slate);padding:24px">No dataset loaded. Click Auto-Load or select a JSON file.</td></tr>';
+    return;
   }
-});
 
-// Restore values when switching tabs
-const origRender = renderInstitutions;
-renderInstitutions = function() {
-  origRender();
-  instContainer.querySelectorAll('input[type="number"]').forEach(input => {
-    const id = input.dataset.id;
-    if (pendingChanges[id] !== undefined) {
-      input.value = pendingChanges[id];
-      input.classList.add('changed');
-      const status = instContainer.querySelector(`[data-status="${id}"]`);
-      status.textContent = '✓ pending';
-      status.classList.add('changed');
-    }
-  });
-};
+  const items = [...DATA[activeCat]].sort((a,b) => a.name.localeCompare(b.name));
 
-function buildUpdatedData() {
-  const date = effDateValue();
-  const updated = JSON.parse(JSON.stringify(DATA));
-  CATS.forEach(cat => {
-    updated[cat].forEach(inst => {
-      if (pendingChanges[inst.id] !== undefined) {
-        inst.history.unshift({ date: date, rate: pendingChanges[inst.id] });
+  if (currentMode === 'monthly') {
+    thead.innerHTML = `
+      <tr>
+        <th>Institution</th>
+        <th>Latest Disclosed Date</th>
+        <th style="text-align:right">New Base Rate (%)</th>
+        <th style="text-align:right">New Interest Spread (%)</th>
+      </tr>`;
+
+    let rows = '';
+    items.forEach(inst => {
+      const curr = inst.history[0] || {};
+      const changes = pendingChanges[inst.id] || {};
+
+      const brVal = changes.base_rate !== undefined ? changes.base_rate : '';
+      const srVal = changes.interest_spread !== undefined ? changes.interest_spread : '';
+
+      const brChanged = brVal !== '' ? ' changed' : '';
+      const srChanged = srVal !== '' ? ' changed' : '';
+
+      const brPlaceholder = (typeof curr.base_rate === 'number') ? curr.base_rate.toFixed(2) : (typeof curr.rate === 'number' ? curr.rate.toFixed(2) : '0.00');
+      const srPlaceholder = (typeof curr.interest_spread === 'number') ? curr.interest_spread.toFixed(2) : '0.00';
+
+      rows += `
+        <tr>
+          <td><strong>` + inst.name + `</strong></td>
+          <td><span style="font-family:'Space Mono',monospace;color:var(--slate)">` + (curr.date || '—') + `</span></td>
+          <td style="text-align:right">
+            <input type="number" step="0.01" min="0" max="30" data-id="` + inst.id + `" data-field="base_rate" class="` + brChanged + `" placeholder="` + brPlaceholder + `" value="` + brVal + `">
+          </td>
+          <td style="text-align:right">
+            <input type="number" step="0.01" min="0" max="30" data-id="` + inst.id + `" data-field="interest_spread" class="` + srChanged + `" placeholder="` + srPlaceholder + `" value="` + srVal + `">
+          </td>
+        </tr>`;
+    });
+    tbody.innerHTML = rows;
+
+  } else {
+    thead.innerHTML = `
+      <tr>
+        <th>Institution</th>
+        <th>Latest Quarter</th>
+        <th style="text-align:right">NPL %</th>
+        <th style="text-align:right">CAR %</th>
+        <th style="text-align:right">Tier 1 %</th>
+        <th style="text-align:right">CET 1 %</th>
+        <th style="text-align:right">CD Ratio %</th>
+        <th style="text-align:right">Cost Fund %</th>
+        <th style="text-align:right">LLP/NPL %</th>
+        <th style="text-align:right">ROE %</th>
+        <th style="text-align:right">ROA %</th>
+      </tr>`;
+
+    let rows = '';
+    items.forEach(inst => {
+      const curr = inst.history[0] || {};
+      const changes = pendingChanges[inst.id] || {};
+
+      const fields = ['npl','car','tier1','cet1','cd_ratio','cost_of_fund','llp_npl','roe','roa'];
+      let fieldsHTML = '';
+
+      fields.forEach(f => {
+        const val = changes[f] !== undefined ? changes[f] : '';
+        const changedClass = val !== '' ? ' changed' : '';
+        const placeholder = (typeof curr[f] === 'number') ? curr[f].toFixed(2) : '0.00';
+        fieldsHTML += `<td style="text-align:right"><input type="number" step="0.01" min="0" max="500" data-id="` + inst.id + `" data-field="` + f + `" class="` + changedClass + `" placeholder="` + placeholder + `" value="` + val + `"></td>`;
+      });
+
+      rows += `
+        <tr>
+          <td><strong>` + inst.name + `</strong></td>
+          <td><span style="font-family:'Space Mono',monospace;color:var(--slate)">` + fmtQuarterLabel(curr.quarter) + `</span></td>
+          ` + fieldsHTML + `
+        </tr>`;
+    });
+    tbody.innerHTML = rows;
+  }
+
+  attachInputListeners();
+}
+
+function attachInputListeners() {
+  document.querySelectorAll('input[data-field]').forEach(input => {
+    input.addEventListener('input', e => {
+      const id = e.target.dataset.id;
+      const field = e.target.dataset.field;
+      const raw = e.target.value.trim();
+
+      if (!pendingChanges[id]) pendingChanges[id] = {};
+
+      if (raw === '') {
+        delete pendingChanges[id][field];
+        e.target.classList.remove('changed');
+        if (Object.keys(pendingChanges[id]).length === 0) delete pendingChanges[id];
+      } else {
+        pendingChanges[id][field] = parseFloat(raw);
+        e.target.classList.add('changed');
       }
+
+      document.getElementById('changeCount').textContent = Object.keys(pendingChanges).length;
     });
   });
-  if (!updated._meta) updated._meta = {};
-  updated._meta.last_site_update = date;
+}
+
+function buildUpdatedJSON() {
+  if (!DATA) return null;
+  const updated = JSON.parse(JSON.stringify(DATA));
+
+  if (currentMode === 'monthly') {
+    const m = document.getElementById('effMonth').value;
+    const y = document.getElementById('effYear').value;
+    const targetDate = y + '-' + m;
+
+    CATS.forEach(cat => {
+      (updated[cat] || []).forEach(inst => {
+        const changes = pendingChanges[inst.id];
+        if (changes && (changes.base_rate !== undefined || changes.interest_spread !== undefined)) {
+          const existingIdx = inst.history.findIndex(h => h.date === targetDate);
+          if (existingIdx !== -1) {
+            if (changes.base_rate !== undefined) inst.history[existingIdx].base_rate = changes.base_rate;
+            if (changes.interest_spread !== undefined) inst.history[existingIdx].interest_spread = changes.interest_spread;
+          } else {
+            inst.history.unshift({
+              date: targetDate,
+              base_rate: changes.base_rate !== undefined ? changes.base_rate : (inst.history[0]?.base_rate || null),
+              interest_spread: changes.interest_spread !== undefined ? changes.interest_spread : (inst.history[0]?.interest_spread || null)
+            });
+          }
+        }
+      });
+    });
+
+  } else {
+    const q = document.getElementById('effQuarter').value;
+    const y = document.getElementById('effQYear').value;
+    const aud = document.getElementById('effAudited').value === 'true';
+    const targetQuarter = q + ' ' + y;
+
+    CATS.forEach(cat => {
+      (updated[cat] || []).forEach(inst => {
+        const changes = pendingChanges[inst.id];
+        if (changes && Object.keys(changes).length > 0) {
+          const existingIdx = inst.history.findIndex(h => h.quarter === targetQuarter);
+          const fields = ['npl','car','tier1','cet1','cd_ratio','cost_of_fund','llp_npl','roe','roa'];
+
+          if (existingIdx !== -1) {
+            inst.history[existingIdx].audited = aud;
+            fields.forEach(f => {
+              if (changes[f] !== undefined) inst.history[existingIdx][f] = changes[f];
+            });
+          } else {
+            const newRec = {
+              quarter: targetQuarter,
+              date: y + '-' + (q === 'Q1' ? '06' : q === 'Q2' ? '09' : q === 'Q3' ? '12' : '03'),
+              audited: aud
+            };
+            fields.forEach(f => {
+              newRec[f] = changes[f] !== undefined ? changes[f] : (inst.history[0]?.[f] || 0);
+            });
+            inst.history.unshift(newRec);
+          }
+        }
+      });
+    });
+  }
+
   return updated;
 }
 
 document.getElementById('previewBtn').addEventListener('click', () => {
-  const updated = buildUpdatedData();
+  const updated = buildUpdatedJSON();
+  if (!updated) return;
   const wrap = document.getElementById('previewWrap');
   const area = document.getElementById('previewArea');
   area.value = JSON.stringify(updated, null, 2);
@@ -607,17 +545,19 @@ document.getElementById('previewBtn').addEventListener('click', () => {
 });
 
 document.getElementById('downloadBtn').addEventListener('click', () => {
-  const updated = buildUpdatedData();
+  const updated = buildUpdatedJSON();
+  if (!updated) { alert('No dataset loaded.'); return; }
+  const filename = currentMode === 'monthly' ? 'monthly-indicators.json' : 'quarterly-indicators.json';
   const blob = new Blob([JSON.stringify(updated, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = INDICATOR_CONFIG[currentIndicator].filename;
+  a.download = filename;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
-  showToast(`Downloaded — ${Object.keys(pendingChanges).length} institution(s) updated for ${fmtBSDate(effDateValue())}`);
+  showToast('Downloaded — ' + Object.keys(pendingChanges).length + ' institution(s) updated in ' + filename);
 });
 
 function showToast(msg) {
@@ -627,92 +567,8 @@ function showToast(msg) {
   setTimeout(() => toast.classList.remove('show'), 3000);
 }
 
-// ---------- Add Institution ----------
-// Populate month/year dropdowns for new institution
-BS_MONTHS.forEach((m, i) => {
-  const opt = document.createElement('option');
-  opt.value = String(i+1).padStart(2,'0');
-  opt.textContent = m;
-  document.getElementById('newInstMonth').appendChild(opt);
-});
-for (let y = 2078; y <= 2090; y++) {
-  const opt = document.createElement('option');
-  opt.value = String(y);
-  opt.textContent = y;
-  document.getElementById('newInstYear').appendChild(opt);
-}
-document.getElementById('newInstYear').value = '2083';
-
-// Auto-generate ticker ID from name
-document.getElementById('newInstName').addEventListener('input', e => {
-  const idField = document.getElementById('newInstId');
-  if (!idField.dataset.manuallyEdited) {
-    idField.value = e.target.value
-      .toLowerCase()
-      .replace(/[^a-z0-9\s]/g, '')
-      .trim()
-      .split(/\s+/)
-      .map(w => w[0])
-      .join('');
-  }
-});
-document.getElementById('newInstId').addEventListener('input', function() {
-  this.dataset.manuallyEdited = 'true';
-  this.value = this.value.toLowerCase().replace(/[^a-z0-9_]/g, '');
-});
-
-document.getElementById('addInstToggle').addEventListener('click', () => {
-  document.getElementById('addInstForm').classList.toggle('open');
-});
-
-document.getElementById('cancelAddInst').addEventListener('click', () => {
-  document.getElementById('addInstForm').classList.remove('open');
-  clearAddForm();
-});
-
-function clearAddForm() {
-  document.getElementById('newInstName').value = '';
-  document.getElementById('newInstId').value = '';
-  delete document.getElementById('newInstId').dataset.manuallyEdited;
-  document.getElementById('newInstRate').value = '';
-}
-
-document.getElementById('confirmAddInst').addEventListener('click', () => {
-  const name = document.getElementById('newInstName').value.trim();
-  const id = document.getElementById('newInstId').value.trim();
-  const cat = document.getElementById('newInstCat').value;
-  const rateVal = document.getElementById('newInstRate').value.trim();
-  const month = document.getElementById('newInstMonth').value;
-  const year = document.getElementById('newInstYear').value;
-
-  if (!name) { alert('Institution name is required.'); return; }
-  if (!id) { alert('Ticker / ID is required.'); return; }
-
-  // Check for duplicate ID
-  const allInsts = CATS.flatMap(c => DATA[c] || []);
-  if (allInsts.some(i => i.id === id)) {
-    alert(`ID "${id}" already exists. Please use a different ticker.`); return;
-  }
-
-  const newInst = {
-    id,
-    name,
-    history: rateVal !== '' ? [{ date: `${year}-${month}`, rate: parseFloat(rateVal) }] : []
-  };
-
-  if (!DATA[cat]) DATA[cat] = [];
-  DATA[cat].push(newInst);
-
-  // Switch to the added institution's tab and re-render
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === cat));
-  activeCat = cat;
-  renderInstitutions();
-
-  document.getElementById('addInstForm').classList.remove('open');
-  clearAddForm();
-  showToast(`"${name}" added to ${cat.replace('_', ' ')} — enter rate in the list above`);
-});
+autoLoadServer();
+updatePeriodHints();
 </script>
-
 </body>
 </html>
