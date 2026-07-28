@@ -1059,6 +1059,20 @@
       "name": "Sanima Bank",
       "history": [
         {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "npl": 2.87,
+          "car": 13.1,
+          "tier1": 10.07,
+          "cet1": 9.32,
+          "cd_ratio": 80.77,
+          "cost_of_fund": 3.51,
+          "llp_npl": 132.86,
+          "roe": 14.39,
+          "roa": 1.28
+        },
+        {
           "quarter": "Q3 2082",
           "date": "2082-12",
           "audited": false,
@@ -1103,16 +1117,16 @@
         {
           "quarter": "Q4 2082",
           "date": "2082-03",
-          "audited": false,
-          "car": 13.1,
-          "tier1": 10.17,
-          "cet1": 9.32,
-          "npl": 2.87,
-          "llp_npl": 132.86,
-          "cost_of_fund": 3.51,
-          "cd_ratio": 80.77,
-          "roe": 14.39,
-          "roa": 1.28
+          "audited": true,
+          "car": 13.01,
+          "tier1": 9.86,
+          "cet1": 9.86,
+          "npl": 3.01,
+          "llp_npl": 121.80,
+          "cost_of_fund": 4.70,
+          "cd_ratio": 81.36,
+          "roe": 11.70,
+          "roa": 1.03
         }
       ]
     },
