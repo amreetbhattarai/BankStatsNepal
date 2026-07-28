@@ -1683,6 +1683,19 @@
       "name": "Miteri Development Bank",
       "history": [
         {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "car": 25.75,
+          "tier1": 24.54,
+          "npl": 0.26,
+          "llp_npl": 489,
+          "cost_of_fund": 4.22,
+          "cd_ratio": 81.39,
+          "roe": 8.15,
+          "roa": 1.48
+        },
+        {
           "quarter": "Q3 2082",
           "date": "2082-12",
           "audited": false,
