@@ -4872,6 +4872,11 @@
       "name": "Corporate Development Bank",
       "history": [
         {
+          "date": "2083-03",
+          "base_rate": 7.75,
+          "interest_spread": 4.57
+        },
+        {
           "date": "2083-02",
           "base_rate": 7.93,
           "interest_spread": 4.58
