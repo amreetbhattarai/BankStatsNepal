@@ -7278,6 +7278,11 @@
       "name": "Saptakoshi Development Bank",
       "history": [
         {
+          "date": "2083-03",
+          "base_rate": 5.85,
+          "interest_spread": 4.20
+        },
+        {
           "date": "2083-02",
           "base_rate": 6.03,
           "interest_spread": 4.21
