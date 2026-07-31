@@ -7092,6 +7092,11 @@
       "name": "Salapa Bikash Bank",
       "history": [
         {
+          "date": "2083-03",
+          "base_rate": 9.90,
+          "interest_spread": 4.58
+        },
+        {
           "date": "2083-02",
           "base_rate": 9.87,
           "interest_spread": 4.58
