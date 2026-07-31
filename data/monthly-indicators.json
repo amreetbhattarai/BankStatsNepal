@@ -497,6 +497,11 @@
       "name": "Everest Bank",
       "history": [
         {
+          "date": "2083-03",
+          "base_rate": 4.25,
+          "interest_spread": 3.05
+        },
+        {
           "date": "2083-02",
           "base_rate": 4.32,
           "interest_spread": 3.04
