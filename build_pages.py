@@ -288,7 +288,7 @@ def build_quarterly_table_html(category, q_data):
                 qoq_str = '<span class="trend-chip flat">0.00%</span>'
             else:
                 formatted = f'{"+" if diff>0 else ""}{diff:.2f}%'
-                cls = 'down' if diff > 0 else 'up'
+                cls = 'up' if diff > 0 else 'down'
                 qoq_str = f'<span class="trend-chip {cls}">{formatted}</span>'
 
         # YoY
@@ -322,7 +322,7 @@ def build_quarterly_table_html(category, q_data):
                     yoy_str = '<span class="trend-chip flat">0.00%</span>'
                 else:
                     formatted = f'{"+" if diff>0 else ""}{diff:.2f}%'
-                    cls = 'down' if diff > 0 else 'up'
+                    cls = 'up' if diff > 0 else 'down'
                     yoy_str = f'<span class="trend-chip {cls}">{formatted}</span>'
 
         rows.append(
@@ -394,27 +394,29 @@ def build_extra_jsonld(indicator, category, base_data, canonical):
 
 
 def render_page(template, indicator, category, base_data, spread_data, q_data):
-    n = len(base_data.get(category, []))
     slug_ind, slug_cat = INDICATOR_SLUG.get(indicator, 'base-rate-spread'), CATEGORY_SLUG[category]
     canonical = f'{SITE}/{slug_ind}/{slug_cat}/'
 
+    cat_plural = CATEGORY_LABEL_PLURAL[category]
+    cat_lower = cat_plural.lower()
+
     if indicator == 'quarterly_indicators':
-        title = f'Quarterly Indicators of {CATEGORY_LABEL_PLURAL[category]} in Nepal — NPL, CAR, CD Ratio | BankStatsNepal'
-        description = QUARTERLY_DESC[category]
+        qn = len(q_data.get(category, []))
+        title = f'Quarterly Indicators of {cat_plural} in Nepal (NPL %, CAR, Cost of Funds, ROA, ROE, CD Ratio) — BankStatsNepal'
+        description = f'Compare NPL %, Capital Adequacy (CAR %), Cost of Funds %, CD Ratio, LLP to NPL %, ROE %, and ROA % of all {qn} {cat_lower} in Nepal from official NRB quarterly financial disclosures.'
     else:
-        title = f'{CATEGORY_LABEL[category]} Base Rates & Interest Rate Spreads in Nepal — BankStatsNepal'
-        cat_lower = CATEGORY_LABEL_PLURAL[category].lower()
-        description = (f'Live base rates and interest rate spreads for all {n} {cat_lower} in Nepal, updated monthly from official NRB '
-                       'disclosures. Compare current base rates, 3-month averages, and interest rate spreads.')
+        bn = len(base_data.get(category, []))
+        title = f'Base Rate & Interest Rate Spread of {cat_plural} in Nepal — BankStatsNepal'
+        description = f'Current Base Rate, 3-Month Average Base Rate, and Interest Rate Spread of all {bn} {cat_lower} in Nepal. Updated monthly from official NRB disclosures.'
 
     out = template
 
     # --- <head> meta ---
     out = out.replace(
-        '<title>BankStatsNepal — Banking Statistics of Nepal</title>',
+        '<title>Base Rate, Interest Spread &amp; Quarterly Indicators of Banks in Nepal (2026/2083) — BankStatsNepal</title>',
         f'<title>{esc(title)}</title>')
     out = out.replace(
-        '<meta name="description" content="Independent statistics tracker for Nepali banks and financial institutions — base rates, interest spreads, NRB policy rates, and more. Updated monthly from official disclosures.">',
+        '<meta name="description" content="Compare live base rates, 3-month averages, interest rate spreads, NPL %, CAR %, and quarterly financial indicators of all commercial banks, development banks, and finance companies in Nepal. Updated monthly from official NRB disclosures.">',
         f'<meta name="description" content="{esc(description)}">')
     out = out.replace(
         '<link rel="canonical" href="https://bankstatsnepal.com/">',
@@ -423,16 +425,16 @@ def render_page(template, indicator, category, base_data, spread_data, q_data):
         '<meta property="og:url" content="https://bankstatsnepal.com/">',
         f'<meta property="og:url" content="{canonical}">')
     out = out.replace(
-        '<meta property="og:title" content="BankStatsNepal — Banking Statistics of Nepal">',
+        '<meta property="og:title" content="Base Rate, Interest Spread &amp; Quarterly Indicators of Banks in Nepal (2026/2083) — BankStatsNepal">',
         f'<meta property="og:title" content="{esc(title)}">')
     out = out.replace(
-        '<meta property="og:description" content="Independent statistics tracker for Nepali banks and financial institutions — base rates, interest spreads, NRB policy rates, and more.">',
+        '<meta property="og:description" content="Compare live base rates, 3-month averages, interest rate spreads, NPL %, CAR %, and quarterly financial indicators of all commercial banks, development banks, and finance companies in Nepal. Updated monthly from official NRB disclosures.">',
         f'<meta property="og:description" content="{esc(description)}">')
     out = out.replace(
-        '<meta name="twitter:title" content="BankStatsNepal — Banking Statistics of Nepal">',
+        '<meta name="twitter:title" content="Base Rate, Interest Spread &amp; Quarterly Indicators of Banks in Nepal (2026/2083) — BankStatsNepal">',
         f'<meta name="twitter:title" content="{esc(title)}">')
     out = out.replace(
-        '<meta name="twitter:description" content="Independent statistics tracker for Nepali banks and financial institutions.">',
+        '<meta name="twitter:description" content="Compare live base rates, 3-month averages, interest rate spreads, NPL %, CAR %, and quarterly financial indicators of all commercial banks, development banks, and finance companies in Nepal. Updated monthly from official NRB disclosures.">',
         f'<meta name="twitter:description" content="{esc(description)}">')
 
     # --- extra JSON-LD ---

@@ -272,6 +272,7 @@ function renderUnifiedList(category) {
   if (theadRow) theadRow.innerHTML = unifiedTheadHTML();
   attachSortHandlers(category);
 
+  const catLatestDate = getLatestDateForCategory(category);
   items.forEach(item => {
     const inst = item.base;
     if (!inst || !inst.history || !inst.history.length) return;
@@ -282,10 +283,10 @@ function renderUnifiedList(category) {
     const avg3 = avg3Month(inst.history);
     const avgChg = avg3Change(inst.history);
     const avgChip = avgChg !== undefined ? trendChip(avg3, avg3 - avgChg) : '';
-    const isPending = curr.date < GLOBAL_LATEST_DATE;
+    const isPending = Boolean(catLatestDate && curr.date < catLatestDate);
     const statusDot = isPending 
-      ? `<span class="status-dot-indicator yellow" title="${fmtDate(GLOBAL_LATEST_DATE)} pending — displaying ${fmtDate(curr.date)} disclosure"></span><span class="stale-month-badge">${fmtDate(curr.date)}</span>` 
-      : `<span class="status-dot-indicator green" title="${fmtDate(GLOBAL_LATEST_DATE)} disclosure up to date"></span>`;
+      ? `<span class="status-dot-indicator yellow" title="${fmtDate(catLatestDate)} pending — displaying ${fmtDate(curr.date)} disclosure"></span><span class="stale-month-badge">${fmtDate(curr.date)}</span>` 
+      : `<span class="status-dot-indicator green" title="${fmtDate(catLatestDate)} disclosure up to date"></span>`;
 
     let spreadHTML = `<span style="color:var(--slate)">—</span>`;
     let cardSpreadHTML = `<span style="color:var(--slate)">—</span>`;
@@ -1277,11 +1278,12 @@ function updateAsofStatus(cat) {
   const targetCat = cat || activeSubTab || 'commercial_banks';
   const items = DATA[targetCat] || [];
   const totalInCat = items.length;
-  const updatedInCat = items.filter(i => i.history[0].date >= GLOBAL_LATEST_DATE).length;
+  const catLatestDate = getLatestDateForCategory(targetCat);
+  const updatedInCat = catLatestDate ? items.filter(i => i.history[0] && i.history[0].date >= catLatestDate).length : totalInCat;
   const pendingInCat = totalInCat - updatedInCat;
 
   const catDot = pendingInCat > 0 ? '<span class="asof-dot blinking"></span>' : '<span class="asof-dot"></span>';
-  const catText = `${fmtDate(GLOBAL_LATEST_DATE)} Rates · ${updatedInCat} Updated, ${pendingInCat} Pending`;
+  const catText = `${fmtDate(catLatestDate)} Rates · ${updatedInCat} Updated, ${pendingInCat} Pending`;
 
   const dataEl = document.getElementById('dataAsOfData');
   if (dataEl) dataEl.innerHTML = `${catDot}${catText}`;
@@ -1292,7 +1294,11 @@ function setActiveSubTab(tab, opts = {}) {
   sortState = { col: null, dir: null };
   activeSubTab = tab;
   document.querySelectorAll('.cat-pill-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === tab));
-  document.querySelectorAll('.tab-view').forEach(v => v.classList.toggle('active', v.dataset.tabView === tab));
+  document.querySelectorAll('.tab-view').forEach(v => {
+    const isMatch = v.dataset.tabView === tab;
+    v.classList.toggle('active', isMatch);
+    v.style.display = isMatch ? '' : 'none';
+  });
   updateAsofStatus(tab);
 
   if (opts.pushState !== false && (currentPage === 'base_rate_spread' || currentPage === 'base_rate' || currentPage === 'interest_spread')) {
@@ -1416,8 +1422,9 @@ function calcQuarterDeltaBadge(diff, metric) {
   }
   const isUp = diff > 0;
   const formatted = (isUp ? '+' : '') + diff.toFixed(2) + '%';
-  const isGood = (metric === 'roe' || metric === 'roa' || metric === 'llp_npl') ? isUp : !isUp;
-  const cls = isGood ? 'up' : 'down';
+  const goodWhenUp = ['car', 'capital_adequacy', 'cd_ratio', 'llp_npl', 'roe', 'roa'].includes(metric);
+  const isGood = goodWhenUp ? isUp : !isUp;
+  const cls = isGood ? 'down' : 'up';
   return `<span class="trend-chip ${cls}">${formatted}</span>`;
 }
 
@@ -1831,12 +1838,27 @@ function applySearch(category, query) {
   });
 }
 
+function getLatestDateForCategory(cat) {
+  let latest = null;
+  if (DATA && DATA[cat]) {
+    DATA[cat].forEach(inst => {
+      if (inst.history && inst.history[0]) {
+        const d = inst.history[0].date;
+        if (!latest || d > latest) latest = d;
+      }
+    });
+  }
+  return latest || GLOBAL_LATEST_DATE;
+}
+
 function getMostRecentDate() {
   let latest = null;
   ['commercial_banks','development_banks','finance_companies'].forEach(cat => {
-    DATA[cat].forEach(inst => {
-      const d = inst.history[0].date;
-      if (!latest || d > latest) latest = d;
+    (DATA[cat] || []).forEach(inst => {
+      if (inst.history && inst.history[0]) {
+        const d = inst.history[0].date;
+        if (!latest || d > latest) latest = d;
+      }
     });
   });
   return latest;
