@@ -389,14 +389,15 @@
     <!-- Category segmented control + data freshness — shown only on list views -->
     <div class="sub-nav-row" id="subNav">
       <div class="sub-nav">
-        <button class="cat-pill-btn active" data-cat="commercial_banks">Commercial Banks <span class="cat-count">20</span></button>
-        <button class="cat-pill-btn" data-cat="development_banks">Development Banks <span class="cat-count">16</span></button>
-        <button class="cat-pill-btn" data-cat="finance_companies">Finance Companies <span class="cat-count">15</span></button>
+        <a class="cat-pill-btn active" data-cat="commercial_banks" href="/base-rate-spread/commercial-banks/">Commercial Banks <span class="cat-count" id="count-commercial_banks">20</span></a>
+        <a class="cat-pill-btn" data-cat="development_banks" href="/base-rate-spread/development-banks/">Development Banks <span class="cat-count" id="count-development_banks">16</span></a>
+        <a class="cat-pill-btn" data-cat="finance_companies" href="/base-rate-spread/finance-companies/">Finance Companies <span class="cat-count" id="count-finance_companies">15</span></a>
       </div>
       <div class="data-asof" id="dataAsOfData"><span class="asof-dot blinking"></span>As of Ashadh 2083 Rates · 19 Updated, 1 Pending</div>
     </div>
 
-          <div class="tab-view active" data-tab-view="commercial_banks">
+    <div id="listViews">
+      <div class="tab-view active" data-tab-view="commercial_banks">
         <div class="section-head">
           <div>
             <h1>Commercial Banks</h1>
@@ -491,6 +492,7 @@
         </tbody></table></div>
         <div class="rate-cards" id="cards-finance_companies"></div>
       </div>
+    </div>
 
     <!-- HISTORY VIEW -->
     <div class="history-view" id="historyView">

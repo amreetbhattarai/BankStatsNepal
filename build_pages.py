@@ -241,10 +241,12 @@ def build_listviews_html(indicator, category, base_data, spread_data):
 
 def build_subnav_html(indicator, category, base_data):
     btns = []
+    slug_ind = INDICATOR_SLUG.get(indicator, 'base-rate-spread')
     for cat in CATEGORIES:
         cnt = len(base_data.get(cat, []))
         is_active = ' active' if cat == category else ''
-        btns.append(f'        <button class="cat-pill-btn{is_active}" data-cat="{cat}">{CATEGORY_LABEL_PLURAL[cat]} <span class="cat-count">{cnt}</span></button>')
+        slug_cat = CATEGORY_SLUG[cat]
+        btns.append(f'        <a class="cat-pill-btn{is_active}" data-cat="{cat}" href="/{slug_ind}/{slug_cat}/">{CATEGORY_LABEL_PLURAL[cat]} <span class="cat-count" id="count-{cat}">{cnt}</span></a>')
     return '<div class="sub-nav">\n' + '\n'.join(btns) + '\n      </div>'
 
 
@@ -481,7 +483,7 @@ def render_page(template, indicator, category, base_data, spread_data, q_data):
 
         start = out.index('<div id="listViews">')
         end = out.index('<!-- HISTORY VIEW -->')
-        out = out[:start] + build_listviews_html(indicator, category, base_data, spread_data) + '\n\n    ' + out[end:]
+        out = out[:start] + '<div id="listViews">\n' + build_listviews_html(indicator, category, base_data, spread_data) + '\n    </div>\n\n    ' + out[end:]
 
     # --- data-asof text ---
     asof_html = compute_asof_html(base_data)

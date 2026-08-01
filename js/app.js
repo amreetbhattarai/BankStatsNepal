@@ -343,7 +343,8 @@ function renderUnifiedList(category) {
     cards.appendChild(card);
   });
 
-  document.getElementById('count-' + category).textContent = items.length;
+  const cntEl = document.getElementById('count-' + category);
+  if (cntEl) cntEl.textContent = items.length;
 }
 
 /* ---- Dashboard ---- */
@@ -1238,16 +1239,22 @@ function selectInstitutionHistory(category, id, indicator = activeHistoryIndicat
     renderDetailPanel(category, baseInst);
   }
 
-  document.getElementById('listViews').style.display = 'none';
-  document.getElementById('subNav').style.display = 'none';
-  document.getElementById('historyView').classList.add('active');
+  const lvEl = document.getElementById('listViews');
+  if (lvEl) lvEl.style.display = 'none';
+  const subNavEl = document.getElementById('subNav');
+  if (subNavEl) subNavEl.style.display = 'none';
+  const histViewEl = document.getElementById('historyView');
+  if (histViewEl) histViewEl.classList.add('active');
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function showListViews() {
-  document.getElementById('historyView').classList.remove('active');
-  document.getElementById('listViews').style.display = 'block';
-  document.getElementById('subNav').style.display = '';
+  const histViewEl = document.getElementById('historyView');
+  if (histViewEl) histViewEl.classList.remove('active');
+  const lvEl = document.getElementById('listViews');
+  if (lvEl) lvEl.style.display = 'block';
+  const subNavEl = document.getElementById('subNav');
+  if (subNavEl) subNavEl.style.display = '';
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -1309,13 +1316,19 @@ function setActiveSubTab(tab, opts = {}) {
 
 /* ---- Indicator-specific chrome: category descriptions, list render ---- */
 function applyIndicatorUI(page) {
-  document.getElementById('categorySelect').innerHTML = `
-    <option value="commercial_banks">Commercial Banks</option>
-    <option value="development_banks">Development Banks</option>
-    <option value="finance_companies">Finance Companies</option>`;
-  document.getElementById('sub-commercial_banks').textContent = "Base rates & interest spreads of commercial banks in Nepal, updated monthly";
-  document.getElementById('sub-development_banks').textContent = "Base rates & interest spreads of development banks in Nepal, updated monthly";
-  document.getElementById('sub-finance_companies').textContent = "Base rates & interest spreads of finance companies in Nepal, updated monthly";
+  const catSel = document.getElementById('categorySelect');
+  if (catSel) {
+    catSel.innerHTML = `
+      <option value="commercial_banks">Commercial Banks</option>
+      <option value="development_banks">Development Banks</option>
+      <option value="finance_companies">Finance Companies</option>`;
+  }
+  const subCB = document.getElementById('sub-commercial_banks');
+  if (subCB) subCB.textContent = "Base rates & interest spreads of commercial banks in Nepal, updated monthly";
+  const subDB = document.getElementById('sub-development_banks');
+  if (subDB) subDB.textContent = "Base rates & interest spreads of development banks in Nepal, updated monthly";
+  const subFC = document.getElementById('sub-finance_companies');
+  if (subFC) subFC.textContent = "Base rates & interest spreads of finance companies in Nepal, updated monthly";
   ['commercial_banks','development_banks','finance_companies'].forEach(renderUnifiedList);
 }
 
@@ -1792,31 +1805,39 @@ function navigateTo(page, opts = {}) {
   const isDataPage = page === 'base_rate' || page === 'interest_spread' || page === 'base_rate_spread';
   const isQuarterlyPage = page === 'quarterly_indicators';
   const isComingSoon = page === 'npl' || page === 'capital_adequacy' || page === 'loans_deposits';
-  const histActive = document.getElementById('historyView') ? document.getElementById('historyView').classList.contains('active') : false;
+  const histView = document.getElementById('historyView');
+  const histActive = histView ? histView.classList.contains('active') : false;
 
-  document.getElementById('pageDashboard').classList.toggle('active', page === 'dashboard');
-  document.getElementById('pageData').classList.toggle('active', isDataPage);
+  const pageDash = document.getElementById('pageDashboard');
+  if (pageDash) pageDash.classList.toggle('active', page === 'dashboard');
+  const pageData = document.getElementById('pageData');
+  if (pageData) pageData.classList.toggle('active', isDataPage);
   if (document.getElementById('pageQuarterly')) {
     document.getElementById('pageQuarterly').classList.toggle('active', isQuarterlyPage);
   }
-  document.getElementById('pageComingSoon').classList.toggle('active', isComingSoon);
+  const pageCS = document.getElementById('pageComingSoon');
+  if (pageCS) pageCS.classList.toggle('active', isComingSoon);
 
-  document.getElementById('subNav').style.display = (isDataPage && !histActive) ? '' : 'none';
+  const subNav = document.getElementById('subNav');
+  if (subNav) subNav.style.display = (isDataPage && !histActive) ? '' : 'none';
 
   if (page === 'dashboard') {
     renderDashboard();
   } else if (isDataPage) {
-    document.getElementById('historyView').classList.remove('active');
-    document.getElementById('listViews').style.display = 'block';
-    document.getElementById('subNav').style.display = '';
+    if (histView) histView.classList.remove('active');
+    const listViews = document.getElementById('listViews');
+    if (listViews) listViews.style.display = 'block';
+    if (subNav) subNav.style.display = '';
     applyIndicatorUI(page);
     setActiveSubTab(activeSubTab || 'commercial_banks', { pushState: false });
   } else if (isQuarterlyPage) {
     renderQuarterlyView(activeQCat || 'commercial_banks');
   } else if (isComingSoon) {
     const labels = { npl: 'NPL data', capital_adequacy: 'Capital Adequacy data', loans_deposits: 'Loans & Deposits data' };
-    document.getElementById('comingSoonTitle').textContent = page === 'loans_deposits' ? 'Loans & Deposits' : 'Coming Soon';
-    document.getElementById('comingSoonLabel').textContent = labels[page] || 'this data';
+    const csTitle = document.getElementById('comingSoonTitle');
+    if (csTitle) csTitle.textContent = page === 'loans_deposits' ? 'Loans & Deposits' : 'Coming Soon';
+    const csLabel = document.getElementById('comingSoonLabel');
+    if (csLabel) csLabel.textContent = labels[page] || 'this data';
   }
 
   if (opts.pushState !== false && (page === 'dashboard' || isDataPage || isQuarterlyPage)) {
@@ -1890,13 +1911,16 @@ function init() {
     input.addEventListener('input', e => applySearch(input.dataset.search, e.target.value));
   });
 
-  // View history buttons
-  document.getElementById('listViews').addEventListener('click', e => {
-    const btn = e.target.closest('.history-btn');
-    if (btn) {
-      selectInstitutionHistory(btn.dataset.cat, btn.dataset.id);
-    }
-  });
+  // View history buttons - delegate to pageData or listViews
+  const listViewsEl = document.getElementById('listViews') || document.getElementById('pageData');
+  if (listViewsEl) {
+    listViewsEl.addEventListener('click', e => {
+      const btn = e.target.closest('.history-btn');
+      if (btn) {
+        selectInstitutionHistory(btn.dataset.cat, btn.dataset.id);
+      }
+    });
+  }
 
   // History view indicator toggle pills
   document.querySelectorAll('.hist-indicator-pill').forEach(btn => {
@@ -1907,18 +1931,28 @@ function init() {
     });
   });
 
-  document.getElementById('backBtn').addEventListener('click', showListViews);
+  const backBtn = document.getElementById('backBtn');
+  if (backBtn) {
+    backBtn.addEventListener('click', showListViews);
+  }
 
   // History view dropdowns
-  document.getElementById('categorySelect').addEventListener('change', e => {
-    const category = e.target.value;
-    populateInstSelect(category, false);
-    selectInstitutionHistory(category, document.getElementById('instSelect').value, activeHistoryIndicator);
-  });
+  const catSel = document.getElementById('categorySelect');
+  if (catSel) {
+    catSel.addEventListener('change', e => {
+      const category = e.target.value;
+      populateInstSelect(category, false);
+      const instSel = document.getElementById('instSelect');
+      selectInstitutionHistory(category, instSel ? instSel.value : '', activeHistoryIndicator);
+    });
+  }
 
-  document.getElementById('instSelect').addEventListener('change', e => {
-    selectInstitutionHistory(activeCategory, e.target.value, activeHistoryIndicator);
-  });
+  const instSel = document.getElementById('instSelect');
+  if (instSel) {
+    instSel.addEventListener('change', e => {
+      selectInstitutionHistory(activeCategory, e.target.value, activeHistoryIndicator);
+    });
+  }
 
   // Dashboard deviation chart category pills
   document.querySelectorAll('[data-devcat]').forEach(btn => {
