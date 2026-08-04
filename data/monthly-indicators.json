@@ -4388,6 +4388,11 @@
       "name": "Standard Chartered Bank Nepal",
       "history": [
         {
+          "date": "2083-03",
+          "base_rate": 4.42,
+          "interest_spread": 3.77
+        },
+        {
           "date": "2083-02",
           "base_rate": 4.04,
           "interest_spread": 4
