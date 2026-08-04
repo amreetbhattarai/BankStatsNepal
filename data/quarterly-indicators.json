@@ -1135,6 +1135,20 @@
       "name": "Siddhartha Bank",
       "history": [
         {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "car": 13.19,
+          "tier1": 10.88,
+          "cet1": 9.70,
+          "npl": 3.53,
+          "llp_npl": 104.69,
+          "cost_of_fund": 3.42,
+          "cd_ratio": 73.63,
+          "roe": 10.62,
+          "roa": 0.94
+        },
+        {
           "quarter": "Q3 2082",
           "date": "2082-12",
           "audited": false,
@@ -2124,6 +2138,20 @@
       "id": "shine",
       "name": "Shine Resunga Development Bank",
       "history": [
+        {
+          "quarter": "Q4 2082",
+          "date": "2083-03",
+          "audited": false,
+          "car": 13.70,
+          "tier1": 10.85,
+          "cet1": 10.85,
+          "npl": 4.93,
+          "llp_npl": 84.39,
+          "cost_of_fund": 3.68,
+          "cd_ratio": 84.18,
+          "roe": 15.35,
+          "roa": 1.41
+        },
         {
           "quarter": "Q3 2082",
           "date": "2082-12",
