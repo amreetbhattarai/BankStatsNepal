@@ -5,6 +5,20 @@
       "name": "Everest Bank",
       "history": [
         {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "car": 12.23,
+          "tier1": 9.98,
+          "cet1": 9.98,
+          "npl": 0.49,
+          "llp_npl": 295.25,
+          "cost_of_fund": 3.15,
+          "cd_ratio": 77.57,
+          "roe": 15.10,
+          "roa": 1.36
+        },
+        {
           "quarter": "Q3 2082",
           "date": "2082-12",
           "audited": false,
@@ -191,6 +205,20 @@
       "name": "Agriculture Development Bank",
       "history": [
         {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "car": 13.29,
+          "tier1": 11.35,
+          "cet1": 9.85,
+          "npl": 4.07,
+          "llp_npl": 110.52,
+          "cost_of_fund": 2.97,
+          "cd_ratio": 66.78,
+          "roe": 7.89,
+          "roa": 0.67
+        },
+        {
           "quarter": "Q3 2082",
           "date": "2082-12",
           "audited": false,
@@ -314,6 +342,20 @@
       "id": "nabil",
       "name": "Nabil Bank",
       "history": [
+        {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "car": 12.37,
+          "tier1": 9.68,
+          "cet1": 8.87,
+          "npl": 4.20,
+          "llp_npl": 119.73,
+          "cost_of_fund": 3.09,
+          "cd_ratio": 80.18,
+          "roe": 11.76,
+          "roa": 1.15
+        },
         {
           "quarter": "Q3 2082",
           "date": "2082-12",
@@ -687,6 +729,20 @@
       "name": "Global IME Bank",
       "history": [
         {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "car": 12.10,
+          "tier1": 10.04,
+          "cet1": 10.04,
+          "npl": 4.96,
+          "llp_npl": 120.47,
+          "cost_of_fund": 3.43,
+          "cd_ratio": 68.43,
+          "roe": 9.13,
+          "roa": 0.83
+        },
+        {
           "quarter": "Q3 2082",
           "date": "2082-12",
           "audited": false,
@@ -996,6 +1052,20 @@
       "id": "nmb",
       "name": "NMB Bank",
       "history": [
+        {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "car": 12.73,
+          "tier1": 9.90,
+          "cet1": 8.99,
+          "npl": 4.91,
+          "llp_npl": 92.57,
+          "cost_of_fund": 3.74,
+          "cd_ratio": 82.77,
+          "roe": 11.58,
+          "roa": 1.04
+        },
         {
           "quarter": "Q3 2082",
           "date": "2082-12",
@@ -1321,6 +1391,19 @@
       "name": "Excel Development Bank",
       "history": [
         {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "car": 14.63,
+          "tier1": 12.36,
+          "npl": 4.57,
+          "llp_npl": 104.74,
+          "cost_of_fund": 2.89,
+          "cd_ratio": 73.50,
+          "roe": 14.85,
+          "roa": 1.53
+        },
+        {
           "quarter": "Q3 2082",
           "date": "2082-12",
           "audited": false,
@@ -1378,6 +1461,20 @@
       "id": "garima",
       "name": "Garima Bikas Bank",
       "history": [
+        {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "car": 13.63,
+          "tier1": 11.62,
+          "cet1": 11.62,
+          "npl": 4.76,
+          "llp_npl": 100.56,
+          "cost_of_fund": 3.53,
+          "cd_ratio": 86.14,
+          "roe": 16.94,
+          "roa": 1.55
+        },
         {
           "quarter": "Q3 2082",
           "date": "2082-12",
@@ -1498,6 +1595,20 @@
       "id": "jbbl",
       "name": "Jyoti Bikash Bank",
       "history": [
+        {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "car": 13.84,
+          "tier1": 8.54,
+          "cet1": 8.54,
+          "npl": 7.75,
+          "llp_npl": 99.69,
+          "cost_of_fund": 4.99,
+          "cd_ratio": 83.23,
+          "roe": 13.38,
+          "roa": 1.29
+        },
         {
           "quarter": "Q3 2082",
           "date": "2082-12",
@@ -1636,6 +1747,19 @@
       "id": "lumbini",
       "name": "Lumbini Bikas Bank",
       "history": [
+        {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "car": 14.96,
+          "tier1": 11.31,
+          "npl": 6.94,
+          "llp_npl": 79.74,
+          "cost_of_fund": 3.95,
+          "cd_ratio": 86.63,
+          "roe": 10.99,
+          "roa": 1.25
+        },
         {
           "quarter": "Q3 2082",
           "date": "2082-12",
@@ -2139,7 +2263,7 @@
       "name": "Shine Resunga Development Bank",
       "history": [
         {
-          "quarter": "Q4 2082",
+          "quarter": "Q4 2083",
           "date": "2083-03",
           "audited": false,
           "car": 13.70,
