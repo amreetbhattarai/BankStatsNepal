@@ -8016,6 +8016,11 @@
       "name": "Jyoti Bikash Bank",
       "history": [
         {
+          "date": "2083-03",
+          "base_rate": 6.21,
+          "interest_spread": 4.15
+        },
+        {
           "date": "2083-02",
           "base_rate": 5.75,
           "interest_spread": 4.18
