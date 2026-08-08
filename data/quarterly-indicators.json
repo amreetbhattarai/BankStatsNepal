@@ -1892,6 +1892,20 @@
       "name": "Mahalaxmi Development Bank",
       "history": [
         {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "car": 17.57,
+          "tier1": 14.04,
+          "cet1": 14.04,
+          "npl": 6.32,
+          "llp_npl": 97.28,
+          "cost_of_fund": 3.62,
+          "cd_ratio": 86.82,
+          "roe": 8.66,
+          "roa": 0.97
+        },
+        {
           "quarter": "Q3 2082",
           "date": "2082-12",
           "audited": false,
