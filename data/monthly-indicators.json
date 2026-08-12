@@ -7036,6 +7036,11 @@
       "name": "Narayani Development Bank",
       "history": [
         {
+          "date": "2083-03",
+          "base_rate": 18.87,
+          "interest_spread": 3.76
+        },
+        {
           "date": "2083-02",
           "base_rate": 13.82,
           "interest_spread": 4.1
@@ -10468,6 +10473,11 @@
       "id": "nepalfinance",
       "name": "Nepal Finance",
       "history": [
+        {
+          "date": "2083-03",
+          "base_rate": 7.59,
+          "interest_spread": 4.55
+        },
         {
           "date": "2083-02",
           "base_rate": 7.69,
