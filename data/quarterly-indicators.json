@@ -419,6 +419,20 @@
       "name": "Kumari Bank",
       "history": [
         {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "car": 13.55,
+          "tier1": 9.92,
+          "cet1": 9.92,
+          "npl": 7.46,
+          "llp_npl": 111.75,
+          "cost_of_fund": 3.67,
+          "cd_ratio": 77.14,
+          "roe": 16.49,
+          "roa": 1.51
+        },
+        {
           "quarter": "Q3 2082",
           "date": "2082-12",
           "audited": false,
@@ -1967,6 +1981,20 @@
       "id": "muktinath",
       "name": "Muktinath Bikash Bank",
       "history": [
+        {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "car": 13.47,
+          "tier1": 11.40,
+          "cet1": 11.40,
+          "npl": 4.77,
+          "llp_npl": 84.08,
+          "cost_of_fund": 3.53,
+          "cd_ratio": 83.86,
+          "roe": 12.27,
+          "roa": 1.09
+        },
         {
           "quarter": "Q3 2082",
           "date": "2082-12",
