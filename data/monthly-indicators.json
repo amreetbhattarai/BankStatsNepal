@@ -9255,7 +9255,7 @@
         {
           "date": "2083-03",
           "base_rate": 6.33,
-          "interest_spread": Null
+          "interest_spread": null
         },
         {
           "date": "2083-02",
