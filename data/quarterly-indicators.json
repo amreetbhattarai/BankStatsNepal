@@ -943,6 +943,20 @@
       "name": "Nepal SBI Bank",
       "history": [
         {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "car": 13.74,
+          "tier1": 9.37,
+          "cet1": 9.37,
+          "npl": 2.92,
+          "llp_npl": 145.74,
+          "cost_of_fund": 4.06,
+          "cd_ratio": 71.16,
+          "roe": 9.59,
+          "roa": 0.85
+        },
+        {
           "quarter": "Q3 2082",
           "date": "2082-12",
           "audited": false,
