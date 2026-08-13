@@ -8515,6 +8515,11 @@
       "name": "Best Finance",
       "history": [
         {
+          "date": "2083-03",
+          "base_rate": 8.23,
+          "interest_spread": 4.10
+        },
+        {
           "date": "2083-02",
           "base_rate": 8.04,
           "interest_spread": 4.11
@@ -9248,6 +9253,11 @@
       "name": "Guheshwori Merchant Banking & Finance",
       "history": [
         {
+          "date": "2083-03",
+          "base_rate": 6.33,
+          "interest_spread": Null
+        },
+        {
           "date": "2083-02",
           "base_rate": 6.42,
           "interest_spread": 4.57
@@ -9488,6 +9498,11 @@
       "id": "gurkhas",
       "name": "Gurkhas Finance",
       "history": [
+        {
+          "date": "2083-03",
+          "base_rate": 6.11,
+          "interest_spread": 4.57
+        },
         {
           "date": "2083-02",
           "base_rate": 6.62,
