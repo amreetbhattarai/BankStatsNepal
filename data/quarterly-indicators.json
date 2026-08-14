@@ -309,6 +309,20 @@
       "name": "Rastriya Banijya Bank",
       "history": [
         {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "car": 11.40,
+          "tier1": 9.19,
+          "cet1": 9.19,
+          "npl": 3.95,
+          "llp_npl": 106.59,
+          "cost_of_fund": 2.96,
+          "cd_ratio": 50.87,
+          "roe": 8.42,
+          "roa": 0.67
+        },
+        {
           "quarter": "Q3 2082",
           "date": "2082-12",
           "audited": false,
