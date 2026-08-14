@@ -81,6 +81,20 @@
       "name": "Citizens Bank International",
       "history": [
         {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "car": 12.47,
+          "tier1": 9.23,
+          "cet1": 9.23,
+          "npl": 5.88,
+          "llp_npl": 95.92,
+          "cost_of_fund": 3.36,
+          "cd_ratio": 75.72,
+          "roe": 8.77,
+          "roa": 0.82
+        },
+        {
           "quarter": "Q3 2082",
           "date": "2082-12",
           "audited": false,
@@ -142,6 +156,20 @@
       "id": "hbl",
       "name": "Himalayan Bank",
       "history": [
+        {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "car": 11.69,
+          "tier1": 8.19,
+          "cet1": 8.19,
+          "npl": 7.96,
+          "llp_npl": 122.23,
+          "cost_of_fund": 3.63,
+          "cd_ratio": 72.74,
+          "roe": 3.83,
+          "roa": 0.37
+        },
         {
           "quarter": "Q3 2082",
           "date": "2082-12",
@@ -557,6 +585,20 @@
       "name": "Prime Commercial Bank",
       "history": [
         {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "car": 12.87,
+          "tier1": 9.88,
+          "cet1": 9.88,
+          "npl": 6.69,
+          "llp_npl": 89.70,
+          "cost_of_fund": 3.81,
+          "cd_ratio": 83.36,
+          "roe": 11.80,
+          "roa": 1.26
+        },
+        {
           "quarter": "Q3 2082",
           "date": "2082-12",
           "audited": false,
@@ -618,6 +660,20 @@
       "id": "prabhu",
       "name": "Prabhu Bank",
       "history": [
+        {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "car": 11.83,
+          "tier1": 8.17,
+          "cet1": 8.17,
+          "npl": 15.55,
+          "llp_npl": 69.27,
+          "cost_of_fund": 3.25,
+          "cd_ratio": 67.86,
+          "roe": -0.71,
+          "roa": -0.06
+        },
         {
           "quarter": "Q3 2082",
           "date": "2082-12",
