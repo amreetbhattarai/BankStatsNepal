@@ -991,7 +991,7 @@
         {
           "date": "2083-03",
           "base_rate": 5.19,
-          "interest_spread": null
+          "interest_spread": 2.83
         },
         {
           "date": "2083-02",
@@ -9255,7 +9255,7 @@
         {
           "date": "2083-03",
           "base_rate": 6.33,
-          "interest_spread": null
+          "interest_spread": 4.34
         },
         {
           "date": "2083-02",
@@ -9702,7 +9702,7 @@
         {
           "date": "2083-03",
           "base_rate": 5.88,
-          "interest_spread": null
+          "interest_spread": 4.09
         },
         {
           "date": "2083-02",
