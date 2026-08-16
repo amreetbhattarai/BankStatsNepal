@@ -10735,6 +10735,11 @@
       "name": "Pokhara Finance",
       "history": [
         {
+          "date": "2083-03",
+          "base_rate": 6.52,
+          "interest_spread": 4.16
+        },
+        {
           "date": "2083-02",
           "base_rate": 6.95,
           "interest_spread": 4.2
@@ -11663,6 +11668,11 @@
       "id": "shreeinvestment",
       "name": "Shree Investment & Finance",
       "history": [
+        {
+          "date": "2083-03",
+          "base_rate": 6.46,
+          "interest_spread": 3.68
+        },
         {
           "date": "2083-02",
           "base_rate": 6.55,
