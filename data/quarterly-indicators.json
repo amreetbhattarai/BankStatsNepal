@@ -537,6 +537,20 @@
       "name": "Laxmi Sunrise Bank",
       "history": [
         {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "car": 12.03,
+          "tier1": 9.90,
+          "cet1": 9.90,
+          "npl": 5.23,
+          "llp_npl": 101.41,
+          "cost_of_fund": 3.28,
+          "cd_ratio": 74.77,
+          "roe": 6.72,
+          "roa": 0.65
+        },
+        {
           "quarter": "Q3 2082",
           "date": "2082-12",
           "audited": false,
@@ -751,6 +765,20 @@
       "name": "Machhapuchhre Bank",
       "history": [
         {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "car": 13.21,
+          "tier1": 10.04,
+          "cet1": 8.60,
+          "npl": 3.98,
+          "llp_npl": 103.84,
+          "cost_of_fund": 3.27,
+          "cd_ratio": 78.45,
+          "roe": 10.36,
+          "roa": 0.89
+        },
+        {
           "quarter": "Q3 2082",
           "date": "2082-12",
           "audited": false,
@@ -889,6 +917,20 @@
       "name": "Nepal Bank",
       "history": [
         {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "car": 13.66,
+          "tier1": 11.27,
+          "cet1": 11.27,
+          "npl": 4.18,
+          "llp_npl": 111.70,
+          "cost_of_fund": 2.92,
+          "cd_ratio": 62.85,
+          "roe": 11.27,
+          "roa": 1.02
+        },
+        {
           "quarter": "Q3 2082",
           "date": "2082-12",
           "audited": false,
@@ -950,6 +992,20 @@
       "id": "nimb",
       "name": "Nepal Investment Mega Bank",
       "history": [
+        {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "car": 12.27,
+          "tier1": 9.46,
+          "cet1": 9.46,
+          "npl": 8.66,
+          "llp_npl": 101.11,
+          "cost_of_fund": 3.18,
+          "cd_ratio": 68.17,
+          "roe": 4.15,
+          "roa": 0.47
+        },
         {
           "quarter": "Q3 2082",
           "date": "2082-12",
@@ -1088,6 +1144,20 @@
       "id": "nicasia",
       "name": "NIC Asia Bank",
       "history": [
+        {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "car": 11.10,
+          "tier1": 6.27,
+          "cet1": 6.27,
+          "npl": 9.26,
+          "llp_npl": 114.23,
+          "cost_of_fund": 4.02,
+          "cd_ratio": 61.07,
+          "roe": 0.71,
+          "roa": 0.05
+        },
         {
           "quarter": "Q3 2082",
           "date": "2082-12",
@@ -1379,6 +1449,20 @@
       "name": "Standard Chartered Bank Nepal",
       "history": [
         {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "car": 18.13,
+          "tier1": 16.68,
+          "cet1": 16.68,
+          "npl": 2.03,
+          "llp_npl": 134.36,
+          "cost_of_fund": 2.53,
+          "cd_ratio": 47.24,
+          "roe": 12.85,
+          "roa": 1.70
+        },
+        {
           "quarter": "Q3 2082",
           "date": "2082-12",
           "audited": false,
@@ -1442,6 +1526,16 @@
       "id": "corporate",
       "name": "Corporate Development Bank",
       "history": [
+        {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "car": 39.73,
+          "npl": 6.24,
+          "llp_npl": 103.61,
+          "cost_of_fund": 5.50,
+          "cd_ratio": 58.14
+        },
         {
           "quarter": "Q3 2082",
           "date": "2082-12",
@@ -1635,6 +1729,19 @@
       "id": "green",
       "name": "Green Development Bank",
       "history": [
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 14.87,
+          "tier1": 13.63,
+          "npl": 3.22,
+          "llp_npl": 108.59,
+          "cost_of_fund": 4.02,
+          "cd_ratio": 84.95,
+          "roe": 9.57,
+          "roa": 1
+        },
         {
           "quarter": "Q3 2082",
           "date": "2082-12",
@@ -2142,6 +2249,16 @@
       "name": "Narayani Development Bank",
       "history": [
         {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "car": 29.41,
+          "npl": 48.49,
+          "llp_npl": 93,
+          "cost_of_fund": 4.74,
+          "cd_ratio": 49.34
+        },
+        {
           "quarter": "Q3 2082",
           "date": "2082-12",
           "audited": false,
@@ -2187,6 +2304,20 @@
       "id": "salapa",
       "name": "Salapa Bikas Bank",
       "history": [
+        {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "car": 32.56,
+          "tier1": 31.78,
+          "cet1": 31.78,
+          "npl": 0.79,
+          "llp_npl": 235.54,
+          "cost_of_fund": 4.56,
+          "cd_ratio": 63.31,
+          "roe": 1.41,
+          "roa": 0.35
+        },
         {
           "quarter": "Q3 2082",
           "date": "2082-12",
@@ -2464,6 +2595,19 @@
       "id": "sindu",
       "name": "Sindhu Bikash Bank",
       "history": [
+        {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "car": 12.36,
+          "tier1": 10.27,
+          "npl": 5.92,
+          "llp_npl": 90.97,
+          "cost_of_fund": 3.89,
+          "cd_ratio": 66.92,
+          "roe": 0.19,
+          "roa": 0.02
+        },
         {
           "quarter": "Q3 2082",
           "date": "2082-12",
