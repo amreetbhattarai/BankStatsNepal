@@ -743,6 +743,11 @@
       "name": "Global IME Bank",
       "history": [
         {
+          "date": "2083-04",
+          "base_rate": 4.60,
+          "interest_spread": null
+        },
+        {
           "date": "2083-03",
           "base_rate": 4.67,
           "interest_spread": 3.29
@@ -1234,6 +1239,11 @@
       "id": "kbl",
       "name": "Kumari Bank",
       "history": [
+        {
+          "date": "2083-04",
+          "base_rate": 4.85,
+          "interest_spread": null
+        },
         {
           "date": "2083-03",
           "base_rate": 5.08,
@@ -1727,6 +1737,11 @@
       "name": "Machhapuchhre Bank",
       "history": [
         {
+          "date": "2083-04",
+          "base_rate": 4.81,
+          "interest_spread": 3.47
+        },
+        {
           "date": "2083-03",
           "base_rate": 5.02,
           "interest_spread": 3.48
@@ -2218,6 +2233,11 @@
       "id": "nmb",
       "name": "NMB Bank",
       "history": [
+        {
+          "date": "2083-04",
+          "base_rate": 5.05,
+          "interest_spread": 3.41
+        },
         {
           "date": "2083-03",
           "base_rate": 5.01,
@@ -6790,9 +6810,14 @@
       "name": "Muktinath Bikash Bank",
       "history": [
         {
+          "date": "2083-04",
+          "base_rate": 5.52,
+          "interest_spread": null
+        },
+        {
           "date": "2083-03",
           "base_rate": 5.54,
-          "interest_spread": 4.3
+          "interest_spread": 4.55
         },
         {
           "date": "2083-02",
