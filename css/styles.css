@@ -93,14 +93,14 @@
     display: inline-block;
     background: none;
     border: none;
-    color: rgba(250,247,240,0.6);
+    color: rgba(250,247,240,0.65);
     font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
     padding: 8px 15px;
     cursor: pointer;
     border-radius: 8px;
-    transition: all 0.16s;
+    transition: color 0.18s ease, background 0.18s ease;
     white-space: nowrap;
     letter-spacing: 0.01em;
     position: relative;
@@ -111,7 +111,7 @@
 
   .nav-link.active { color: var(--paper); font-weight: 600; }
 
-  .nav-link.active::after {
+  .nav-link::after {
     content: '';
     position: absolute;
     bottom: -1px;
@@ -120,6 +120,14 @@
     height: 2px;
     background: var(--gold);
     border-radius: 2px 2px 0 0;
+    opacity: 0;
+    transform: scaleX(0.4);
+    transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .nav-link.active::after {
+    opacity: 1;
+    transform: scaleX(1);
   }
 
   .nav-link.coming-soon {
@@ -210,8 +218,13 @@
   /* ========= MAIN ========= */
   main { max-width: 1180px; margin: 0 auto; padding: 40px 28px 80px; }
 
+  @keyframes fadeInPage {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   .page { display: none; }
-  .page.active { display: block; }
+  .page.active { display: block; animation: fadeInPage 0.22s cubic-bezier(0.16, 1, 0.3, 1); }
 
   /* ========= DASHBOARD & DATA FRESHNESS STATUS PILL ========= */
   .data-asof {
@@ -553,9 +566,9 @@
   .rate-card.stale-card .rate-value { color: var(--slate); opacity: 0.85; }
   .rate-card.stale-card .trend-chip { opacity: 0.75; }
 
-  .history-btn { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; color: var(--slate); background: var(--paper); border: 1px solid var(--line); border-radius: 50%; cursor: pointer; transition: all 0.18s; }
+  .history-btn { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; min-width: 34px; min-height: 34px; color: var(--slate); background: var(--paper); border: 1px solid var(--line); border-radius: 50%; cursor: pointer; transition: all 0.18s; padding: 0; }
   .history-btn:hover { background: var(--ink); color: var(--gold); border-color: var(--ink); box-shadow: 0 2px 8px rgba(27,42,74,0.12); }
-  .history-btn svg { width: 17px; height: 17px; }
+  .history-btn svg { width: 17px; height: 17px; display: block; stroke: currentColor; flex-shrink: 0; }
 
   /* ========= MOBILE CARDS ========= */
   .rate-cards { display: none; }
@@ -566,8 +579,13 @@
   /* ========= HISTORY VIEW ========= */
   .history-view { display: none; }
   .history-view.active { display: block; }
+  @keyframes fadeInTab {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   .tab-view { display: none; }
-  .tab-view.active { display: block; }
+  .tab-view.active { display: block; animation: fadeInTab 0.2s cubic-bezier(0.16, 1, 0.3, 1); }
 
   .back-link { display: inline-flex; align-items: center; gap: 6px; font-size: 13.5px; font-weight: 600; color: var(--slate); background: none; border: none; cursor: pointer; margin-bottom: 18px; padding: 0; transition: color 0.15s; }
   .back-link:hover { color: var(--ink); }

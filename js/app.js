@@ -188,8 +188,8 @@ function applicableRate(history, i) {
 function trendChip(curr, prev) {
   if (prev === undefined) return '';
   const diff = +(curr-prev).toFixed(2);
-  if (diff > 0) return `<span class="trend-chip up">▲ ${diff.toFixed(2)}</span>`;
-  if (diff < 0) return `<span class="trend-chip down">▼ ${Math.abs(diff).toFixed(2)}</span>`;
+  if (diff > 0) return `<span class="trend-chip up">+${diff.toFixed(2)}</span>`;
+  if (diff < 0) return `<span class="trend-chip down">-${Math.abs(diff).toFixed(2)}</span>`;
   return `<span class="trend-chip flat">— 0.00</span>`;
 }
 
@@ -316,7 +316,7 @@ function renderUnifiedList(category) {
       <td class="num">${spreadHTML}</td>
       <td style="text-align:right">
         <button class="history-btn" data-cat="${category}" data-id="${inst.id}" title="View History">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;">
             <circle cx="12" cy="12" r="10"></circle>
             <polyline points="12 6 12 12 16 14"></polyline>
             <path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path>
@@ -335,7 +335,13 @@ function renderUnifiedList(category) {
           <div class="inst-name">${inst.name}${statusDot}</div>
           ${noteHTML}
         </div>
-        <button class="history-btn" data-cat="${category}" data-id="${inst.id}">History</button>
+        <button class="history-btn" data-cat="${category}" data-id="${inst.id}" title="View History">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path>
+          </svg>
+        </button>
       </div>
       <div style="display:flex;gap:16px;margin-top:10px;flex-wrap:wrap">
         <div>
@@ -697,7 +703,7 @@ function renderDashboardStats() {
     if (d == null) return '';
     if (Math.abs(d) < 0.005) return `<span class="stat-delta" style="color:var(--slate)">±0.00</span>`;
     const up = d > 0;
-    return `<span class="stat-delta" style="color:${up ? 'var(--up)' : 'var(--down)'}">${up ? '▲' : '▼'}${Math.abs(d).toFixed(2)}</span>`;
+    return `<span class="stat-delta" style="color:${up ? 'var(--up)' : 'var(--down)'}">${up ? '+' : '-'}${Math.abs(d).toFixed(2)}</span>`;
   };
 
   // Category averages with month-over-month delta
@@ -1636,7 +1642,7 @@ function renderQuarterlyTable(category, qData, cfg, latestQ) {
           <td class="num"><span class="${dateClass}">${fmtQuarterLabel(curr.quarter)}${auditBadge}</span></td>
           <td style="text-align:right">
             <button class="history-btn" data-qhist-cat="${category}" data-qhist-id="${inst.id}" title="View Quarterly History">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;">
                 <circle cx="12" cy="12" r="10"></circle>
                 <polyline points="12 6 12 12 16 14"></polyline>
                 <path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path>
@@ -1692,7 +1698,7 @@ function renderQuarterlyTable(category, qData, cfg, latestQ) {
           <td class="num"><span class="${dateClass}">${fmtQuarterLabel(curr.quarter)}${auditBadge}</span></td>
           <td style="text-align:right">
             <button class="history-btn" data-qhist-cat="${category}" data-qhist-id="${inst.id}" title="View Quarterly History">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;">
                 <circle cx="12" cy="12" r="10"></circle>
                 <polyline points="12 6 12 12 16 14"></polyline>
                 <path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path>

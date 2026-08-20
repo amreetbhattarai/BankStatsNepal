@@ -107,9 +107,9 @@ def trend_chip(curr, prev):
         return ''
     diff = round(curr - prev, 2)
     if diff > 0:
-        return f'<span class="trend-chip up">▲ {diff:.2f}</span>'
+        return f'<span class="trend-chip up">+{diff:.2f}</span>'
     if diff < 0:
-        return f'<span class="trend-chip down">▼ {abs(diff):.2f}</span>'
+        return f'<span class="trend-chip down">-{abs(diff):.2f}</span>'
     return '<span class="trend-chip flat">— 0.00</span>'
 
 
@@ -143,7 +143,7 @@ def unified_row(inst, spread_inst, category, latest_date=None):
         f'<td class="num">{spread_html}</td>'
         f'<td style="text-align:right">'
         f'<button class="history-btn" data-cat="{category}" data-id="{esc(inst["id"])}" title="View History">'
-        f'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">'
+        f'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;">'
         f'<circle cx="12" cy="12" r="10"></circle>'
         f'<polyline points="12 6 12 12 16 14"></polyline>'
         f'<path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path>'
@@ -347,7 +347,7 @@ def build_quarterly_table_html(category, q_data):
             f'<td class="num"><span class="{date_cls}">{q_label}{audit_badge}</span></td>'
             f'<td style="text-align:right">'
             f'<button class="history-btn" data-qhist-cat="{category}" data-qhist-id="{inst["id"]}" title="View Quarterly History">'
-            f'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">'
+            f'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;">'
             f'<circle cx="12" cy="12" r="10"></circle>'
             f'<polyline points="12 6 12 12 16 14"></polyline>'
             f'<path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path>'
