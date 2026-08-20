@@ -5,6 +5,11 @@
       "name": "Agriculture Development Bank",
       "history": [
         {
+          "date": "2083-04",
+          "base_rate": 4.55,
+          "interest_spread": null
+        },
+        {
           "date": "2083-03",
           "base_rate": 4.56,
           "interest_spread": 3.66
@@ -250,6 +255,11 @@
       "id": "ctzn",
       "name": "Citizens Bank International",
       "history": [
+        {
+          "date": "2083-04",
+          "base_rate": 4.96,
+          "interest_spread": 3.48
+        },
         {
           "date": "2083-03",
           "base_rate": 5.04,
@@ -1491,6 +1501,11 @@
       "name": "Laxmi Sunrise Bank",
       "history": [
         {
+          "date": "2083-04",
+          "base_rate": 4.82,
+          "interest_spread": 3.30
+        },
+        {
           "date": "2083-03",
           "base_rate": 5.05,
           "interest_spread": 3.22
@@ -2485,6 +2500,11 @@
       "name": "Nabil Bank",
       "history": [
         {
+          "date": "2083-04",
+          "base_rate": 4.46,
+          "interest_spread": 3.13
+        },
+        {
           "date": "2083-03",
           "base_rate": 4.32,
           "interest_spread": 3.18
@@ -2976,6 +2996,11 @@
       "id": "nimb",
       "name": "Nepal Investment Mega Bank",
       "history": [
+        {
+          "date": "2083-04",
+          "base_rate": 4.67,
+          "interest_spread": 3.07
+        },
         {
           "date": "2083-03",
           "base_rate": 4.53,
@@ -3916,6 +3941,11 @@
       "name": "Sanima Bank",
       "history": [
         {
+          "date": "2083-04",
+          "base_rate": 4.58,
+          "interest_spread": 3.50
+        },
+        {
           "date": "2083-03",
           "base_rate": 4.91,
           "interest_spread": 3.39
@@ -4161,6 +4191,11 @@
       "id": "sbl",
       "name": "Siddhartha Bank",
       "history": [
+        {
+          "date": "2083-04",
+          "base_rate": 4.84,
+          "interest_spread": 3.56
+        },
         {
           "date": "2083-03",
           "base_rate": 5.02,
@@ -4653,6 +4688,11 @@
       "id": "rbb",
       "name": "Rastriya Banijya Bank",
       "history": [
+        {
+          "date": "2083-04",
+          "base_rate": 4.14,
+          "interest_spread": 3.41
+        },
         {
           "date": "2083-03",
           "base_rate": 4.06,
@@ -6318,6 +6358,11 @@
       "name": "Mahalaxmi Development Bank",
       "history": [
         {
+          "date": "2083-04",
+          "base_rate": 5.64,
+          "interest_spread": 4.16
+        },
+        {
           "date": "2083-03",
           "base_rate": 5.68,
           "interest_spread": 4.19
@@ -6563,6 +6608,11 @@
       "id": "miteri",
       "name": "Miteri Development Bank",
       "history": [
+        {
+          "date": "2083-04",
+          "base_rate": 5.74,
+          "interest_spread": 4.59
+        },
         {
           "date": "2083-03",
           "base_rate": 5.8,
@@ -8297,6 +8347,11 @@
       "name": "Sindhu Bikash Bank",
       "history": [
         {
+          "date": "2083-04",
+          "base_rate": 7.17,
+          "interest_spread": 4.59
+        },
+        {
           "date": "2083-03",
           "base_rate": 7.27,
           "interest_spread": 4.59
@@ -9730,6 +9785,11 @@
       "name": "ICFC Finance",
       "history": [
         {
+          "date": "2083-04",
+          "base_rate": 5.68,
+          "interest_spread": null
+        },
+        {
           "date": "2083-03",
           "base_rate": 5.88,
           "interest_spread": 4.09
@@ -9737,7 +9797,7 @@
         {
           "date": "2083-02",
           "base_rate": 5.97,
-          "interest_spread": null
+          "interest_spread": 4.40
         },
         {
           "date": "2083-01",
@@ -9976,6 +10036,11 @@
       "name": "Janaki Finance",
       "history": [
         {
+          "date": "2083-04",
+          "base_rate": 9.42,
+          "interest_spread": 4.6
+        },
+        {
           "date": "2083-03",
           "base_rate": 9.8,
           "interest_spread": 4.6
@@ -10116,6 +10181,11 @@
       "id": "manjushree",
       "name": "Manjushree Finance",
       "history": [
+        {
+          "date": "2083-04",
+          "base_rate": 5.84,
+          "interest_spread": 4.59
+        },
         {
           "date": "2083-03",
           "base_rate": 5.77,
@@ -11211,6 +11281,11 @@
       "id": "reliance",
       "name": "Reliance Finance",
       "history": [
+        {
+          "date": "2083-04",
+          "base_rate": 6.59,
+          "interest_spread": 4.02
+        },
         {
           "date": "2083-03",
           "base_rate": 6.72,
