@@ -7109,6 +7109,8 @@
     {
       "id": "narayani",
       "name": "Narayani Development Bank",
+      "excludeFromAvg": true,
+      "note": "(Outlier, excluded from category average)",
       "history": [
         {
           "date": "2083-03",
@@ -10833,6 +10835,7 @@
     {
       "id": "pokhara",
       "name": "Pokhara Finance",
+      "note": "Merged with Samriddhi Finance",
       "history": [
         {
           "date": "2083-03",
@@ -11531,6 +11534,7 @@
     {
       "id": "samriddhi",
       "name": "Samriddhi Finance",
+      "inactive": true,
       "history": [
         {
           "date": "2083-02",

@@ -97,13 +97,13 @@
       "@type": "ListItem",
       "position": 1,
       "name": "Agriculture Development Bank",
-      "description": "Base rate 4.56% as of Ashadh 2083"
+      "description": "Base rate 4.55% as of Shrawan 2083"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "Citizens Bank International",
-      "description": "Base rate 5.04% as of Ashadh 2083"
+      "description": "Base rate 4.96% as of Shrawan 2083"
     },
     {
       "@type": "ListItem",
@@ -115,7 +115,7 @@
       "@type": "ListItem",
       "position": 4,
       "name": "Global IME Bank",
-      "description": "Base rate 4.67% as of Ashadh 2083"
+      "description": "Base rate 4.60% as of Shrawan 2083"
     },
     {
       "@type": "ListItem",
@@ -127,19 +127,19 @@
       "@type": "ListItem",
       "position": 6,
       "name": "Kumari Bank",
-      "description": "Base rate 5.08% as of Ashadh 2083"
+      "description": "Base rate 4.85% as of Shrawan 2083"
     },
     {
       "@type": "ListItem",
       "position": 7,
       "name": "Laxmi Sunrise Bank",
-      "description": "Base rate 5.05% as of Ashadh 2083"
+      "description": "Base rate 4.82% as of Shrawan 2083"
     },
     {
       "@type": "ListItem",
       "position": 8,
       "name": "Machhapuchhre Bank",
-      "description": "Base rate 5.02% as of Ashadh 2083"
+      "description": "Base rate 4.81% as of Shrawan 2083"
     },
     {
       "@type": "ListItem",
@@ -151,13 +151,13 @@
       "@type": "ListItem",
       "position": 10,
       "name": "NMB Bank",
-      "description": "Base rate 5.01% as of Ashadh 2083"
+      "description": "Base rate 5.05% as of Shrawan 2083"
     },
     {
       "@type": "ListItem",
       "position": 11,
       "name": "Nabil Bank",
-      "description": "Base rate 4.32% as of Ashadh 2083"
+      "description": "Base rate 4.46% as of Shrawan 2083"
     },
     {
       "@type": "ListItem",
@@ -169,7 +169,7 @@
       "@type": "ListItem",
       "position": 13,
       "name": "Nepal Investment Mega Bank",
-      "description": "Base rate 4.53% as of Ashadh 2083"
+      "description": "Base rate 4.67% as of Shrawan 2083"
     },
     {
       "@type": "ListItem",
@@ -193,32 +193,32 @@
       "@type": "ListItem",
       "position": 17,
       "name": "Rastriya Banijya Bank",
-      "description": "Base rate 4.06% as of Ashadh 2083"
+      "description": "Base rate 4.14% as of Shrawan 2083"
     },
     {
       "@type": "ListItem",
       "position": 18,
       "name": "Sanima Bank",
-      "description": "Base rate 4.91% as of Ashadh 2083"
+      "description": "Base rate 4.58% as of Shrawan 2083"
     },
     {
       "@type": "ListItem",
       "position": 19,
       "name": "Siddhartha Bank",
-      "description": "Base rate 5.02% as of Ashadh 2083"
+      "description": "Base rate 4.84% as of Shrawan 2083"
     },
     {
       "@type": "ListItem",
       "position": 20,
       "name": "Standard Chartered Bank Nepal",
-      "description": "Base rate 4.04% as of Jestha 2083"
+      "description": "Base rate 4.42% as of Ashadh 2083"
     }
   ]
 }
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/styles.css?v=6.1">
 </head>
 <body>
@@ -249,7 +249,7 @@
   <div id="pageDashboard" class="page">
     <h1 class="sr-only">Base Rate, Interest Spread &amp; Quarterly Indicators of Banks in Nepal (2026/2083)</h1>
 
-    <div class="data-asof" id="dataAsOf"><span class="asof-dot blinking"></span>As of Ashadh 2083 Rates · 41 Updated, 10 Pending</div>
+    <div class="data-asof" id="dataAsOf"><span class="asof-dot blinking"></span>As of Shrawan 2083 Rates · 21 Updated, 29 Pending</div>
 
     <div class="dash-stat-grid">
       <div class="stat-card stat-card-combined">
@@ -331,11 +331,6 @@
           <div class="dash-card-title">Base Rate Distribution</div>
           <div class="dash-card-sub" id="beeswarmSub">All BFIs · Loading…</div>
         </div>
-        <div class="dash-legend">
-          <div class="dash-leg"><div class="dash-leg-dot" style="background:var(--cb)"></div>Commercial Banks</div>
-          <div class="dash-leg"><div class="dash-leg-dot" style="background:var(--db)"></div>Development Banks</div>
-          <div class="dash-leg"><div class="dash-leg-dot" style="background:var(--fc)"></div>Finance Companies</div>
-        </div>
       </div>
       <svg id="beeswarmChart" width="100%" style="display:block;overflow:visible"></svg>
     </div>
@@ -393,7 +388,7 @@
         <a class="cat-pill-btn" data-cat="development_banks" href="/base-rate-spread/development-banks/">Development Banks <span class="cat-count" id="count-development_banks"></span></a>
         <a class="cat-pill-btn" data-cat="finance_companies" href="/base-rate-spread/finance-companies/">Finance Companies <span class="cat-count" id="count-finance_companies"></span></a>
       </div>
-      <div class="data-asof" id="dataAsOfData"><span class="asof-dot blinking"></span>As of Ashadh 2083 Rates · 19 Updated, 1 Pending</div>
+      <div class="data-asof" id="dataAsOfData"><span class="asof-dot blinking"></span>As of Shrawan 2083 Rates · 12 Updated, 8 Pending</div>
     </div>
 
     <div id="listViews">
@@ -545,26 +540,26 @@
           <th class="num sortable-th" data-qsort="quarter">Reporting Quarter ↕</th>
           <th></th>
         </tr></thead><tbody>
-<tr><td><div class="inst-name">Agriculture Development Bank<span class="status-dot-indicator yellow" title="2083 Ashadh (Q4) pending — displaying 2082 Chaitra (Q3)"></span></div></td><td class="num"><span class="rate-value">4.98%</span></td><td class="num"><span class="trend-chip up">+0.33%</span></td><td class="num"><span style="color:var(--slate)">—</span></td><td class="num"><span class="rate-date stale-date">2082 Chaitra (Q3)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="commercial_banks" data-qhist-id="adbl">History</button></td></tr>
-<tr><td><div class="inst-name">Citizens Bank International<span class="status-dot-indicator yellow" title="2083 Ashadh (Q4) pending — displaying 2082 Chaitra (Q3)"></span></div></td><td class="num"><span class="rate-value">6.82%</span></td><td class="num"><span class="trend-chip down">-0.04%</span></td><td class="num"><span style="color:var(--slate)">—</span></td><td class="num"><span class="rate-date stale-date">2082 Chaitra (Q3)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="commercial_banks" data-qhist-id="ctzn">History</button></td></tr>
-<tr><td><div class="inst-name">Everest Bank<span class="status-dot-indicator yellow" title="2083 Ashadh (Q4) pending — displaying 2082 Chaitra (Q3)"></span></div></td><td class="num"><span class="rate-value">0.61%</span></td><td class="num"><span class="trend-chip down">-0.07%</span></td><td class="num"><span style="color:var(--slate)">—</span></td><td class="num"><span class="rate-date stale-date">2082 Chaitra (Q3)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="commercial_banks" data-qhist-id="ebl">History</button></td></tr>
-<tr><td><div class="inst-name">Global IME Bank<span class="status-dot-indicator yellow" title="2083 Ashadh (Q4) pending — displaying 2082 Chaitra (Q3)"></span></div></td><td class="num"><span class="rate-value">4.97%</span></td><td class="num"><span class="trend-chip up">+0.06%</span></td><td class="num"><span style="color:var(--slate)">—</span></td><td class="num"><span class="rate-date stale-date">2082 Chaitra (Q3)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="commercial_banks" data-qhist-id="gbime">History</button></td></tr>
-<tr><td><div class="inst-name">Himalayan Bank<span class="status-dot-indicator yellow" title="2083 Ashadh (Q4) pending — displaying 2082 Chaitra (Q3)"></span></div></td><td class="num"><span class="rate-value">7.98%</span></td><td class="num"><span class="trend-chip up">+0.02%</span></td><td class="num"><span style="color:var(--slate)">—</span></td><td class="num"><span class="rate-date stale-date">2082 Chaitra (Q3)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="commercial_banks" data-qhist-id="hbl">History</button></td></tr>
-<tr><td><div class="inst-name">Kumari Bank<span class="status-dot-indicator yellow" title="2083 Ashadh (Q4) pending — displaying 2082 Chaitra (Q3)"></span></div></td><td class="num"><span class="rate-value">6.94%</span></td><td class="num"><span class="trend-chip up">+0.02%</span></td><td class="num"><span style="color:var(--slate)">—</span></td><td class="num"><span class="rate-date stale-date">2082 Chaitra (Q3)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="commercial_banks" data-qhist-id="kbl">History</button></td></tr>
-<tr><td><div class="inst-name">Laxmi Sunrise Bank<span class="status-dot-indicator yellow" title="2083 Ashadh (Q4) pending — displaying 2082 Chaitra (Q3)"></span></div></td><td class="num"><span class="rate-value">5.29%</span></td><td class="num"><span class="trend-chip down">-0.21%</span></td><td class="num"><span style="color:var(--slate)">—</span></td><td class="num"><span class="rate-date stale-date">2082 Chaitra (Q3)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="commercial_banks" data-qhist-id="lsbl">History</button></td></tr>
-<tr><td><div class="inst-name">Machhapuchhre Bank<span class="status-dot-indicator yellow" title="2083 Ashadh (Q4) pending — displaying 2082 Chaitra (Q3)"></span></div></td><td class="num"><span class="rate-value">4.01%</span></td><td class="num"><span class="trend-chip down">-0.24%</span></td><td class="num"><span style="color:var(--slate)">—</span></td><td class="num"><span class="rate-date stale-date">2082 Chaitra (Q3)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="commercial_banks" data-qhist-id="mbl">History</button></td></tr>
-<tr><td><div class="inst-name">NIC Asia Bank<span class="status-dot-indicator yellow" title="2083 Ashadh (Q4) pending — displaying 2082 Chaitra (Q3)"></span></div></td><td class="num"><span class="rate-value">8.85%</span></td><td class="num"><span class="trend-chip up">+1.38%</span></td><td class="num"><span style="color:var(--slate)">—</span></td><td class="num"><span class="rate-date stale-date">2082 Chaitra (Q3)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="commercial_banks" data-qhist-id="nicasia">History</button></td></tr>
-<tr><td><div class="inst-name">NMB Bank<span class="status-dot-indicator yellow" title="2083 Ashadh (Q4) pending — displaying 2082 Chaitra (Q3)"></span></div></td><td class="num"><span class="rate-value">4.95%</span></td><td class="num"><span class="trend-chip up">+0.39%</span></td><td class="num"><span style="color:var(--slate)">—</span></td><td class="num"><span class="rate-date stale-date">2082 Chaitra (Q3)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="commercial_banks" data-qhist-id="nmb">History</button></td></tr>
-<tr><td><div class="inst-name">Nabil Bank<span class="status-dot-indicator yellow" title="2083 Ashadh (Q4) pending — displaying 2082 Chaitra (Q3)"></span></div></td><td class="num"><span class="rate-value">4.37%</span></td><td class="num"><span class="trend-chip up">+0.12%</span></td><td class="num"><span style="color:var(--slate)">—</span></td><td class="num"><span class="rate-date stale-date">2082 Chaitra (Q3)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="commercial_banks" data-qhist-id="nabil">History</button></td></tr>
-<tr><td><div class="inst-name">Nepal Bank<span class="status-dot-indicator yellow" title="2083 Ashadh (Q4) pending — displaying 2082 Chaitra (Q3)"></span></div></td><td class="num"><span class="rate-value">4.96%</span></td><td class="num"><span class="trend-chip down">-1.89%</span></td><td class="num"><span style="color:var(--slate)">—</span></td><td class="num"><span class="rate-date stale-date">2082 Chaitra (Q3)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="commercial_banks" data-qhist-id="nbl">History</button></td></tr>
-<tr><td><div class="inst-name">Nepal Investment Mega Bank<span class="status-dot-indicator yellow" title="2083 Ashadh (Q4) pending — displaying 2082 Chaitra (Q3)"></span></div></td><td class="num"><span class="rate-value">8.41%</span></td><td class="num"><span class="trend-chip up">+0.51%</span></td><td class="num"><span style="color:var(--slate)">—</span></td><td class="num"><span class="rate-date stale-date">2082 Chaitra (Q3)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="commercial_banks" data-qhist-id="nimb">History</button></td></tr>
-<tr><td><div class="inst-name">Nepal SBI Bank<span class="status-dot-indicator yellow" title="2083 Ashadh (Q4) pending — displaying 2082 Chaitra (Q3)"></span></div></td><td class="num"><span class="rate-value">2.53%</span></td><td class="num"><span class="trend-chip down">-0.11%</span></td><td class="num"><span style="color:var(--slate)">—</span></td><td class="num"><span class="rate-date stale-date">2082 Chaitra (Q3)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="commercial_banks" data-qhist-id="sbi">History</button></td></tr>
-<tr><td><div class="inst-name">Prabhu Bank<span class="status-dot-indicator yellow" title="2083 Ashadh (Q4) pending — displaying 2082 Chaitra (Q3)"></span></div></td><td class="num"><span class="rate-value">8.84%</span></td><td class="num"><span class="trend-chip up">+0.90%</span></td><td class="num"><span style="color:var(--slate)">—</span></td><td class="num"><span class="rate-date stale-date">2082 Chaitra (Q3)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="commercial_banks" data-qhist-id="prabhu">History</button></td></tr>
-<tr><td><div class="inst-name">Prime Commercial Bank<span class="status-dot-indicator yellow" title="2083 Ashadh (Q4) pending — displaying 2082 Chaitra (Q3)"></span></div></td><td class="num"><span class="rate-value">6.39%</span></td><td class="num"><span class="trend-chip up">+0.01%</span></td><td class="num"><span style="color:var(--slate)">—</span></td><td class="num"><span class="rate-date stale-date">2082 Chaitra (Q3)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="commercial_banks" data-qhist-id="pcbl">History</button></td></tr>
-<tr><td><div class="inst-name">Rastriya Banijya Bank<span class="status-dot-indicator yellow" title="2083 Ashadh (Q4) pending — displaying 2082 Chaitra (Q3)"></span></div></td><td class="num"><span class="rate-value">4.48%</span></td><td class="num"><span class="trend-chip up">+0.12%</span></td><td class="num"><span style="color:var(--slate)">—</span></td><td class="num"><span class="rate-date stale-date">2082 Chaitra (Q3)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="commercial_banks" data-qhist-id="rbb">History</button></td></tr>
-<tr><td><div class="inst-name">Sanima Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></td><td class="num"><span class="rate-value">2.87%</span></td><td class="num"><span class="trend-chip down">-1.12%</span></td><td class="num"><span class="trend-chip down">-0.14%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="commercial_banks" data-qhist-id="sanima">History</button></td></tr>
-<tr><td><div class="inst-name">Siddhartha Bank<span class="status-dot-indicator yellow" title="2083 Ashadh (Q4) pending — displaying 2082 Chaitra (Q3)"></span></div></td><td class="num"><span class="rate-value">3.71%</span></td><td class="num"><span class="trend-chip up">+0.26%</span></td><td class="num"><span style="color:var(--slate)">—</span></td><td class="num"><span class="rate-date stale-date">2082 Chaitra (Q3)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="commercial_banks" data-qhist-id="sbl">History</button></td></tr>
-<tr><td><div class="inst-name">Standard Chartered Bank Nepal<span class="status-dot-indicator yellow" title="2083 Ashadh (Q4) pending — displaying 2082 Chaitra (Q3)"></span></div></td><td class="num"><span class="rate-value">1.81%</span></td><td class="num"><span class="trend-chip down">-0.07%</span></td><td class="num"><span style="color:var(--slate)">—</span></td><td class="num"><span class="rate-date stale-date">2082 Chaitra (Q3)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="commercial_banks" data-qhist-id="scb">History</button></td></tr>
+<tr><td><div class="inst-name">Agriculture Development Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></td><td class="num"><span class="rate-value">4.07%</span></td><td class="num"><span class="trend-chip down">-0.91%</span></td><td class="num"><span class="trend-chip up">+0.81%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="commercial_banks" data-qhist-id="adbl" title="View Quarterly History"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></td></tr>
+<tr><td><div class="inst-name">Citizens Bank International<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></td><td class="num"><span class="rate-value">5.88%</span></td><td class="num"><span class="trend-chip down">-0.94%</span></td><td class="num"><span class="trend-chip up">+0.94%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="commercial_banks" data-qhist-id="ctzn" title="View Quarterly History"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></td></tr>
+<tr><td><div class="inst-name">Everest Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></td><td class="num"><span class="rate-value">0.49%</span></td><td class="num"><span class="trend-chip down">-0.12%</span></td><td class="num"><span class="trend-chip up">+0.11%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="commercial_banks" data-qhist-id="ebl" title="View Quarterly History"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></td></tr>
+<tr><td><div class="inst-name">Global IME Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></td><td class="num"><span class="rate-value">4.96%</span></td><td class="num"><span class="trend-chip down">-0.01%</span></td><td class="num"><span class="trend-chip up">+0.09%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="commercial_banks" data-qhist-id="gbime" title="View Quarterly History"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></td></tr>
+<tr><td><div class="inst-name">Himalayan Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></td><td class="num"><span class="rate-value">7.96%</span></td><td class="num"><span class="trend-chip down">-0.02%</span></td><td class="num"><span class="trend-chip up">+0.68%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="commercial_banks" data-qhist-id="hbl" title="View Quarterly History"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></td></tr>
+<tr><td><div class="inst-name">Kumari Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></td><td class="num"><span class="rate-value">7.46%</span></td><td class="num"><span class="trend-chip up">+0.52%</span></td><td class="num"><span class="trend-chip up">+1.04%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="commercial_banks" data-qhist-id="kbl" title="View Quarterly History"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></td></tr>
+<tr><td><div class="inst-name">Laxmi Sunrise Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></td><td class="num"><span class="rate-value">5.23%</span></td><td class="num"><span class="trend-chip down">-0.06%</span></td><td class="num"><span class="trend-chip up">+0.98%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="commercial_banks" data-qhist-id="lsbl" title="View Quarterly History"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></td></tr>
+<tr><td><div class="inst-name">Machhapuchhre Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></td><td class="num"><span class="rate-value">3.98%</span></td><td class="num"><span class="trend-chip down">-0.03%</span></td><td class="num"><span class="trend-chip up">+0.15%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="commercial_banks" data-qhist-id="mbl" title="View Quarterly History"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></td></tr>
+<tr><td><div class="inst-name">NIC Asia Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></td><td class="num"><span class="rate-value">9.26%</span></td><td class="num"><span class="trend-chip up">+0.41%</span></td><td class="num"><span class="trend-chip up">+2.98%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="commercial_banks" data-qhist-id="nicasia" title="View Quarterly History"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></td></tr>
+<tr><td><div class="inst-name">NMB Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></td><td class="num"><span class="rate-value">4.91%</span></td><td class="num"><span class="trend-chip down">-0.04%</span></td><td class="num"><span class="trend-chip up">+1.19%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="commercial_banks" data-qhist-id="nmb" title="View Quarterly History"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></td></tr>
+<tr><td><div class="inst-name">Nabil Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></td><td class="num"><span class="rate-value">4.20%</span></td><td class="num"><span class="trend-chip down">-0.17%</span></td><td class="num"><span class="trend-chip down">-0.07%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="commercial_banks" data-qhist-id="nabil" title="View Quarterly History"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></td></tr>
+<tr><td><div class="inst-name">Nepal Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></td><td class="num"><span class="rate-value">4.18%</span></td><td class="num"><span class="trend-chip down">-0.78%</span></td><td class="num"><span class="trend-chip down">-0.29%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="commercial_banks" data-qhist-id="nbl" title="View Quarterly History"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></td></tr>
+<tr><td><div class="inst-name">Nepal Investment Mega Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></td><td class="num"><span class="rate-value">8.66%</span></td><td class="num"><span class="trend-chip up">+0.25%</span></td><td class="num"><span class="trend-chip up">+2.81%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="commercial_banks" data-qhist-id="nimb" title="View Quarterly History"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></td></tr>
+<tr><td><div class="inst-name">Nepal SBI Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></td><td class="num"><span class="rate-value">2.92%</span></td><td class="num"><span class="trend-chip up">+0.39%</span></td><td class="num"><span class="trend-chip down">-0.43%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="commercial_banks" data-qhist-id="sbi" title="View Quarterly History"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></td></tr>
+<tr><td><div class="inst-name">Prabhu Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></td><td class="num"><span class="rate-value">15.55%</span></td><td class="num"><span class="trend-chip up">+6.71%</span></td><td class="num"><span class="trend-chip up">+10.59%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="commercial_banks" data-qhist-id="prabhu" title="View Quarterly History"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></td></tr>
+<tr><td><div class="inst-name">Prime Commercial Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></td><td class="num"><span class="rate-value">6.69%</span></td><td class="num"><span class="trend-chip up">+0.30%</span></td><td class="num"><span class="trend-chip up">+1.13%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="commercial_banks" data-qhist-id="pcbl" title="View Quarterly History"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></td></tr>
+<tr><td><div class="inst-name">Rastriya Banijya Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></td><td class="num"><span class="rate-value">3.95%</span></td><td class="num"><span class="trend-chip down">-0.53%</span></td><td class="num"><span class="trend-chip up">+0.36%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="commercial_banks" data-qhist-id="rbb" title="View Quarterly History"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></td></tr>
+<tr><td><div class="inst-name">Sanima Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></td><td class="num"><span class="rate-value">2.87%</span></td><td class="num"><span class="trend-chip down">-1.12%</span></td><td class="num"><span class="trend-chip down">-0.14%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="commercial_banks" data-qhist-id="sanima" title="View Quarterly History"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></td></tr>
+<tr><td><div class="inst-name">Siddhartha Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></td><td class="num"><span class="rate-value">3.53%</span></td><td class="num"><span class="trend-chip down">-0.18%</span></td><td class="num"><span class="trend-chip up">+0.91%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="commercial_banks" data-qhist-id="sbl" title="View Quarterly History"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></td></tr>
+<tr><td><div class="inst-name">Standard Chartered Bank Nepal<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></td><td class="num"><span class="rate-value">2.03%</span></td><td class="num"><span class="trend-chip up">+0.22%</span></td><td class="num"><span class="trend-chip up">+0.56%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="commercial_banks" data-qhist-id="scb" title="View Quarterly History"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></td></tr>
         </tbody></table></div>
       </div></div>
       
@@ -687,7 +682,7 @@
 <div class="tip" id="scatTip"></div>
 <div class="tip" id="trendTip"></div>
 
-<script src="/js/app.js?v=6.6"></script>
+<script src="/js/app.js?v=6.7"></script>
 
 </body>
 </html>

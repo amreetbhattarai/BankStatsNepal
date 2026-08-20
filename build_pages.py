@@ -133,13 +133,23 @@ def unified_row(inst, spread_inst, category, latest_date=None):
             schip = trend_chip(scurr['rate'], sprev['rate'] if sprev else None)
             spread_html = f'<div><span class="rate-value" style="font-size:16px">{fmt_rate(scurr["rate"])}</span>{schip}</div>'
 
+    note_html = f'<div class="inst-note">{esc(inst["note"])}</div>' if inst.get('note') else ''
+
     return (
         f'<tr data-name="{esc(inst["name"].lower())}"{tr_class}>'
-        f'<td><div class="inst-name">{esc(inst["name"])}{status_dot}</div></td>'
+        f'<td><div class="inst-name">{esc(inst["name"])}{status_dot}</div>{note_html}</td>'
         f'<td class="num"><div><span class="rate-value">{fmt_rate(curr["rate"])}</span>{chip}</div></td>'
         f'<td class="num"><div><span class="rate-value" style="font-size:16px">{fmt_rate(a3)}</span></div></td>'
         f'<td class="num">{spread_html}</td>'
-        f'<td style="text-align:right"><button class="history-btn" data-cat="{category}" data-id="{esc(inst["id"])}">View History</button></td>'
+        f'<td style="text-align:right">'
+        f'<button class="history-btn" data-cat="{category}" data-id="{esc(inst["id"])}" title="View History">'
+        f'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">'
+        f'<circle cx="12" cy="12" r="10"></circle>'
+        f'<polyline points="12 6 12 12 16 14"></polyline>'
+        f'<path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path>'
+        f'</svg>'
+        f'</button>'
+        f'</td>'
         f'</tr>'
     )
 
@@ -261,7 +271,7 @@ def build_subnav_quarterly_html(category, q_data):
 
 
 def build_quarterly_table_html(category, q_data):
-    items = sorted(q_data.get(category, []), key=lambda x: x['name'])
+    items = sorted([i for i in q_data.get(category, []) if not i.get('inactive')], key=lambda x: x['name'])
     all_quarters = [inst['history'][0].get('quarter') for inst in items if inst.get('history') and inst['history'][0].get('quarter')]
     all_quarters.sort(key=lambda q: parse_quarter_key(q), reverse=True)
     latest_q = all_quarters[0] if all_quarters else ''
@@ -277,6 +287,7 @@ def build_quarterly_table_html(category, q_data):
         is_stale = bool(curr.get('quarter') and curr.get('quarter') != latest_q)
         status_dot = f'<span class="status-dot-indicator yellow" title="{fmt_quarter_label(latest_q)} pending — displaying {fmt_quarter_label(curr.get("quarter"))}"></span>' if is_stale else f'<span class="status-dot-indicator green" title="{fmt_quarter_label(latest_q)} disclosure up to date"></span>'
         date_cls = 'rate-date stale-date' if is_stale else 'rate-date latest-date'
+        note_html = f'<div class="inst-note">{esc(inst["note"])}</div>' if inst.get('note') else ''
 
         val = curr.get('npl')
         val_str = f"{val:.2f}%" if val is not None else '—'
@@ -329,12 +340,20 @@ def build_quarterly_table_html(category, q_data):
 
         rows.append(
             f'<tr>'
-            f'<td><div class="inst-name">{esc(inst["name"])}{status_dot}</div></td>'
+            f'<td><div class="inst-name">{esc(inst["name"])}{status_dot}</div>{note_html}</td>'
             f'<td class="num"><span class="rate-value">{val_str}</span></td>'
             f'<td class="num">{qoq_str}</td>'
             f'<td class="num">{yoy_str}</td>'
             f'<td class="num"><span class="{date_cls}">{q_label}{audit_badge}</span></td>'
-            f'<td style="text-align:right"><button class="history-btn" data-qhist-cat="{category}" data-qhist-id="{inst["id"]}">History</button></td>'
+            f'<td style="text-align:right">'
+            f'<button class="history-btn" data-qhist-cat="{category}" data-qhist-id="{inst["id"]}" title="View Quarterly History">'
+            f'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">'
+            f'<circle cx="12" cy="12" r="10"></circle>'
+            f'<polyline points="12 6 12 12 16 14"></polyline>'
+            f'<path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path>'
+            f'</svg>'
+            f'</button>'
+            f'</td>'
             f'</tr>'
         )
 
@@ -517,14 +536,14 @@ NOT_FOUND_HTML = '''<!DOCTYPE html>
 <meta name="robots" content="noindex">
 <title>Page not found — BankStatsNepal</title>
 <link rel="icon" type="image/png" href="/logo.png">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=IBM+Plex+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
 <main style="max-width:640px;margin:0 auto;padding:120px 28px;text-align:center;">
   <div class="cs-title" style="font-family:\'Fraunces\',serif;font-size:30px;font-weight:600;color:var(--ink);margin-bottom:10px;">Page not found</div>
   <p style="font-size:15px;color:var(--slate);margin-bottom:28px;">That page doesn't exist. It may have moved, or the link is out of date.</p>
-  <a href="/" style="font-family:\'Inter\',sans-serif;font-size:14px;font-weight:600;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px 22px;text-decoration:none;">&larr; Back to Dashboard</a>
+  <a href="/" style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:600;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px 22px;text-decoration:none;">&larr; Back to Dashboard</a>
 </main>
 </body>
 </html>
@@ -541,10 +560,17 @@ def main():
 
     for cat in CATEGORIES:
         for inst in monthly_raw.get(cat, []):
+            if inst.get('inactive'):
+                continue
             b_hist = [{'date': h['date'], 'rate': h['base_rate']} for h in inst.get('history', []) if h.get('base_rate') is not None]
             s_hist = [{'date': h['date'], 'rate': h['interest_spread']} for h in inst.get('history', []) if h.get('interest_spread') is not None]
-            base_data[cat].append({'id': inst['id'], 'name': inst['name'], 'history': b_hist})
-            spread_data[cat].append({'id': inst['id'], 'name': inst['name'], 'history': s_hist})
+            b_obj = {'id': inst['id'], 'name': inst['name'], 'history': b_hist}
+            s_obj = {'id': inst['id'], 'name': inst['name'], 'history': s_hist}
+            if inst.get('note'):
+                b_obj['note'] = inst['note']
+                s_obj['note'] = inst['note']
+            base_data[cat].append(b_obj)
+            spread_data[cat].append(s_obj)
 
     for indicator in ('base_rate_spread', 'quarterly_indicators'):
         for cat in CATEGORIES:

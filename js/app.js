@@ -6,8 +6,8 @@ const CATEGORY_LABELS = {
 
 const CAT_COLORS = {
   commercial_banks: '#3B6FDB',
-  development_banks: '#B8962E',
-  finance_companies: '#C05A3A'
+  development_banks: '#059669',
+  finance_companies: '#D97706'
 };
 
 const DEV_CAT_MAP = {
@@ -121,7 +121,7 @@ function yGrid(y, min, max, x0, x1, ticks = 4) {
     const v = min + (max - min) * t / ticks;
     const yy = y(v).toFixed(1);
     out += `<line x1="${x0}" x2="${x1}" y1="${yy}" y2="${yy}" stroke="#E2DCCB" stroke-width="1"/>`;
-    out += `<text x="${x0 - 6}" y="${+yy + 3.5}" text-anchor="end" font-family="Space Mono, monospace" font-size="10" fill="#5A6478">${v.toFixed(1)}</text>`;
+    out += `<text x="${x0 - 6}" y="${+yy + 3.5}" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10" fill="#5A6478">${v.toFixed(1)}</text>`;
   }
   return out;
 }
@@ -132,7 +132,7 @@ function xDateLabels(dates, x, labelY) {
   const step = Math.max(1, Math.ceil(dates.length / 5));
   dates.forEach((d, i) => {
     if (i % step === 0 || i === dates.length - 1) {
-      out += `<text x="${x(i).toFixed(1)}" y="${labelY}" text-anchor="middle" font-family="Space Mono, monospace" font-size="10" fill="#5A6478">${fmtDateShort(d)}</text>`;
+      out += `<text x="${x(i).toFixed(1)}" y="${labelY}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="#5A6478">${fmtDateShort(d)}</text>`;
     }
   });
   return out;
@@ -301,11 +301,12 @@ function renderUnifiedList(category) {
       }
     }
 
+    const noteHTML = inst.note ? `<div class="inst-note">${inst.note}</div>` : '';
     const tr = document.createElement('tr');
     tr.dataset.name = inst.name.toLowerCase();
     if (isPending) tr.className = 'stale-row';
     tr.innerHTML = `
-      <td><div class="inst-name">${inst.name}${statusDot}</div></td>
+      <td><div class="inst-name">${inst.name}${statusDot}</div>${noteHTML}</td>
       <td class="num">
         <div><span class="rate-value">${fmtRate(curr.rate)}</span>${chip}</div>
       </td>
@@ -313,7 +314,15 @@ function renderUnifiedList(category) {
         <div><span class="rate-value" style="font-size:16px">${fmtRate(avg3)}</span>${avgChip}</div>
       </td>
       <td class="num">${spreadHTML}</td>
-      <td style="text-align:right"><button class="history-btn" data-cat="${category}" data-id="${inst.id}">View History</button></td>
+      <td style="text-align:right">
+        <button class="history-btn" data-cat="${category}" data-id="${inst.id}" title="View History">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path>
+          </svg>
+        </button>
+      </td>
     `;
     tbody.appendChild(tr);
 
@@ -322,7 +331,10 @@ function renderUnifiedList(category) {
     card.dataset.name = inst.name.toLowerCase();
     card.innerHTML = `
       <div class="rate-card-top">
-        <div class="inst-name">${inst.name}${statusDot}</div>
+        <div>
+          <div class="inst-name">${inst.name}${statusDot}</div>
+          ${noteHTML}
+        </div>
         <button class="history-btn" data-cat="${category}" data-id="${inst.id}">History</button>
       </div>
       <div style="display:flex;gap:16px;margin-top:10px;flex-wrap:wrap">
@@ -362,12 +374,12 @@ function renderDashboard() {
 function renderTrend() {
   const svg = document.getElementById('trendChart');
   const cats = ['commercial_banks', 'development_banks', 'finance_companies'];
-  const DASHES = { commercial_banks: '', development_banks: '7,4', finance_companies: '2,3' };
+  const DASHES = { commercial_banks: '', development_banks: '', finance_companies: '' };
 
   const byCat = {}, dateSet = new Set();
   cats.forEach(cat => {
     const m = {};
-    DATA[cat].forEach(inst => inst.history.forEach(h => { (m[h.date] = m[h.date] || []).push(h.rate); }));
+    DATA[cat].filter(inst => !inst.excludeFromAvg && !inst.problematic).forEach(inst => inst.history.forEach(h => { (m[h.date] = m[h.date] || []).push(h.rate); }));
     byCat[cat] = m;
     Object.keys(m).forEach(d => dateSet.add(d));
   });
@@ -436,7 +448,7 @@ function renderTrend() {
   ends.forEach(e => e.ly = y(e.v));
   spreadEndLabels(ends);
   const endLabels = ends.map(e =>
-    `<text x="${(x(e.i) + 6).toFixed(1)}" y="${(e.ly + 3.5).toFixed(1)}" font-family="Space Mono, monospace" font-size="10.5" font-weight="700" fill="${e.color}">${e.v.toFixed(2)}</text>`
+    `<text x="${(x(e.i) + 6).toFixed(1)}" y="${(e.ly + 3.5).toFixed(1)}" font-family="IBM Plex Mono, monospace" font-size="10.5" font-weight="700" fill="${e.color}">${e.v.toFixed(2)}</text>`
   ).join('');
 
   // Hover strips: one per date, tooltip shows all category averages
@@ -481,6 +493,7 @@ function renderScatter(scatCat) {
   const pts = [];
   const unmatched = [];
   base.forEach(b => {
+    if (b.problematic || b.excludeFromAvg) return;
     const s = spread.find(v => v.id === b.id) || spread.find(v => v.name === b.name);
     if (s && s.history && s.history.length > 0 && b.history && b.history.length > 0) {
       pts.push({ name: b.name, bx: b.history[0].rate, sy: s.history[0].rate });
@@ -517,7 +530,7 @@ function renderScatter(scatCat) {
   let grid = yGrid(y, yMin, yMax, padL, W - padR);
   for (let t = 0; t <= 4; t++) {
     const vx = xMin + (xMax - xMin) * t / 4;
-    grid += `<text x="${x(vx).toFixed(1)}" y="${H - padB + 16}" text-anchor="middle" font-family="Space Mono, monospace" font-size="10" fill="#5A6478">${vx.toFixed(1)}</text>`;
+    grid += `<text x="${x(vx).toFixed(1)}" y="${H - padB + 16}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="#5A6478">${vx.toFixed(1)}</text>`;
   }
   grid += `<text x="${(padL + plotW / 2).toFixed(1)}" y="${H - 4}" text-anchor="middle" font-size="10" fill="#5A6478">Base rate %</text>`;
   grid += `<text x="12" y="${(padT + plotH / 2).toFixed(1)}" text-anchor="middle" font-size="10" fill="#5A6478" transform="rotate(-90 12 ${(padT + plotH / 2).toFixed(1)})">Spread %</text>`;
@@ -526,8 +539,8 @@ function renderScatter(scatCat) {
   const cross =
     `<line x1="${x(avgX).toFixed(1)}" x2="${x(avgX).toFixed(1)}" y1="${padT}" y2="${padT + plotH}" stroke="#1B2A4A" stroke-width="1" stroke-dasharray="4,3" opacity="0.3"/>` +
     `<line x1="${padL}" x2="${padL + plotW}" y1="${y(avgY).toFixed(1)}" y2="${y(avgY).toFixed(1)}" stroke="#1B2A4A" stroke-width="1" stroke-dasharray="4,3" opacity="0.3"/>` +
-    `<text x="${(x(avgX) + 4).toFixed(1)}" y="${padT + 10}" font-family="Space Mono, monospace" font-size="9" fill="#5A6478">avg ${avgX.toFixed(2)}</text>` +
-    `<text x="${(padL + plotW - 2).toFixed(1)}" y="${(y(avgY) - 4).toFixed(1)}" text-anchor="end" font-family="Space Mono, monospace" font-size="9" fill="#5A6478">avg ${avgY.toFixed(2)}</text>`;
+    `<text x="${(x(avgX) + 4).toFixed(1)}" y="${padT + 10}" font-family="IBM Plex Mono, monospace" font-size="9" fill="#5A6478">avg ${avgX.toFixed(2)}</text>` +
+    `<text x="${(padL + plotW - 2).toFixed(1)}" y="${(y(avgY) - 4).toFixed(1)}" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="9" fill="#5A6478">avg ${avgY.toFixed(2)}</text>`;
 
   const color = CAT_COLORS[catKey];
   let dotsHtml = '', hovers = '';
@@ -623,7 +636,7 @@ function renderIRC() {
     KEYS.forEach(k => {
       const v = data[a][k];
       const dy = k === 'lower' ? 13 : -5;
-      changeMarks += `<text x="${mx}" y="${(y(v) + dy).toFixed(1)}" text-anchor="middle" font-family="Space Mono, monospace" font-size="9.5" font-weight="700" fill="${KEY_COLORS[k]}">${v.toFixed(2)}</text>`;
+      changeMarks += `<text x="${mx}" y="${(y(v) + dy).toFixed(1)}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" font-weight="700" fill="${KEY_COLORS[k]}">${v.toFixed(2)}</text>`;
     });
   }
 
@@ -632,7 +645,7 @@ function renderIRC() {
     const i = bounds[s];
     const cx = x(i).toFixed(1);
     changeMarks += `<line x1="${cx}" x2="${cx}" y1="${padT}" y2="${H - padB}" stroke="#5A6478" stroke-width="1" stroke-dasharray="3,3" opacity="0.4"/>`;
-    changeMarks += `<text x="${+cx + 4}" y="${padT + 9}" font-family="Space Mono, monospace" font-size="9" fill="#5A6478">${fmtDateShort(data[i].date)}</text>`;
+    changeMarks += `<text x="${+cx + 4}" y="${padT + 9}" font-family="IBM Plex Mono, monospace" font-size="9" fill="#5A6478">${fmtDateShort(data[i].date)}</text>`;
     KEYS.filter(k => data[i][k] !== data[i - 1][k]).forEach(k => {
       const oldV = data[i - 1][k], newV = data[i][k];
       const d = newV - oldV;
@@ -640,8 +653,8 @@ function renderIRC() {
       const col = d > 0 ? '#B8533E' : '#4A7C59';
       // Pre-change rate, just left of the revision line at its old level
       const oldDy = d < 0 ? -4 : 11;
-      changeMarks += `<text x="${+cx - 4}" y="${(y(oldV) + oldDy).toFixed(1)}" text-anchor="end" font-family="Space Mono, monospace" font-size="9" font-weight="700" fill="${KEY_COLORS[k]}" opacity="0.75">${oldV.toFixed(2)}</text>`;
-      changeMarks += `<text x="${+cx + 4}" y="${(midY + 3.5).toFixed(1)}" font-family="Space Mono, monospace" font-size="9.5" font-weight="700" fill="${col}">${d > 0 ? '▲' : '▼'}${Math.abs(d).toFixed(2)}</text>`;
+      changeMarks += `<text x="${+cx - 4}" y="${(y(oldV) + oldDy).toFixed(1)}" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="9" font-weight="700" fill="${KEY_COLORS[k]}" opacity="0.75">${oldV.toFixed(2)}</text>`;
+      changeMarks += `<text x="${+cx + 4}" y="${(midY + 3.5).toFixed(1)}" font-family="IBM Plex Mono, monospace" font-size="9.5" font-weight="700" fill="${col}">${d > 0 ? '▲' : '▼'}${Math.abs(d).toFixed(2)}</text>`;
     });
   }
 
@@ -667,7 +680,7 @@ function renderIRC() {
   spreadEndLabels(ends);
   const endX = x(data.length - 1) + 6;
   const endLabels = ends.map(e =>
-    `<text x="${endX.toFixed(1)}" y="${(e.ly + 3.5).toFixed(1)}" text-anchor="start" font-family="Space Mono, monospace" font-size="10.5" font-weight="700" fill="${e.color}">${e.v.toFixed(2)}</text>`
+    `<text x="${endX.toFixed(1)}" y="${(e.ly + 3.5).toFixed(1)}" text-anchor="start" font-family="IBM Plex Mono, monospace" font-size="10.5" font-weight="700" fill="${e.color}">${e.v.toFixed(2)}</text>`
   ).join('');
 
   svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
@@ -689,7 +702,7 @@ function renderDashboardStats() {
 
   // Category averages with month-over-month delta
   cats.forEach(cat => {
-    const validInsts = (DATA[cat] || []).filter(i => i.history && i.history.length > 0);
+    const validInsts = (DATA[cat] || []).filter(i => i.history && i.history.length > 0 && !i.excludeFromAvg && !i.problematic);
     if (!validInsts.length) return;
     const curr = avg(validInsts.map(i => i.history[0].rate));
     const prevArr = validInsts.filter(i => i.history[1]).map(i => i.history[1].rate);
@@ -737,92 +750,142 @@ function renderDashboardStats() {
 function renderBeeswarm() {
   const svg = document.getElementById('beeswarmChart');
   const W = chartWidth(svg);
-  const padL = 24, padR = 24, padT = 28, padB = 38;
-  const plotW = W - padL - padR;
-  const plotH = 140;
-  const centerY = padT + plotH / 2;
-  const r = 6;
+  const isMobile = W < 520;
+  const padL = isMobile ? 115 : 165;
+  const padR = 20;
+  const padT = 16;
+  const padB = 32;
+  const plotW = Math.max(100, W - padL - padR);
+  const tierH = 72;
+  const cats = ['commercial_banks', 'development_banks', 'finance_companies'];
+  const SHORT_NAME = { commercial_banks: 'Commercial Banks', development_banks: 'Development Banks', finance_companies: 'Finance Companies' };
+  const SHORT_CODE = { commercial_banks: 'Commercial', development_banks: 'Development', finance_companies: 'Finance' };
+  const plotH = cats.length * tierH;
+  const r = 5.0;
 
   const allInsts = [];
-  ['commercial_banks', 'development_banks', 'finance_companies'].forEach(cat => {
+  cats.forEach(cat => {
     (DATA[cat] || []).forEach(inst => {
-      if (inst.history && inst.history.length > 0) {
+      if (inst.history && inst.history.length > 0 && !inst.problematic && !inst.excludeFromAvg) {
         allInsts.push({ name: inst.name, rate: inst.history[0].rate, cat, color: CAT_COLORS[cat] });
       }
     });
   });
-
-  allInsts.sort((a, b) => a.rate - b.rate);
 
   const rates = allInsts.map(i => i.rate);
   const minRate = Math.min(...rates);
   const maxRate = Math.max(...rates);
   const rateSpan = (maxRate - minRate) || 1;
 
-  const xPos = rate => padL + ((rate - minRate) / rateSpan) * plotW;
+  const xPos = rate => padL + ((Math.min(Math.max(rate, minRate), maxRate) - minRate) / rateSpan) * plotW;
 
-  // Beeswarm collision avoidance
-  const placed = [];
-  const dots = allInsts.map(inst => {
-    const x = xPos(inst.rate);
-    let y = centerY;
-    let found = false;
-    for (let offset = 0; offset <= plotH / 2 - r - 2; offset += r * 2.3) {
-      const candidates = offset === 0 ? [0] : [-offset, offset];
-      for (const dy of candidates) {
-        const tryY = centerY + dy;
-        const ok = !placed.some(p => {
-          const dx = p.x - x, ddy = p.y - tryY;
-          return Math.sqrt(dx * dx + ddy * ddy) < r * 2.3;
-        });
-        if (ok) { y = tryY; found = true; break; }
-      }
-      if (found) break;
+  let svgContent = '';
+
+  // Render Tier Backgrounds, Gridlines, and Row Labels
+  const labelX = isMobile ? 10 : 16;
+  cats.forEach((cat, tierIdx) => {
+    const tierY = padT + tierIdx * tierH;
+    const tierCenterY = tierY + tierH / 2;
+
+    if (tierIdx % 2 === 0) {
+      svgContent += `<rect x="0" y="${tierY}" width="${W}" height="${tierH}" fill="rgba(27,42,74,0.02)"/>`;
     }
-    placed.push({ x, y });
-    return { ...inst, x, y };
+
+    svgContent += `<line x1="${padL}" y1="${tierCenterY}" x2="${padL + plotW}" y2="${tierCenterY}" stroke="${CAT_COLORS[cat]}" stroke-opacity="0.18" stroke-dasharray="3,3"/>`;
+
+    const labelText = isMobile ? SHORT_CODE[cat] : SHORT_NAME[cat];
+    svgContent += `<text x="${labelX}" y="${tierCenterY + 4}" text-anchor="start" font-size="${isMobile ? '10' : '11'}" font-weight="600" fill="#1B2A4A">${labelText}</text>`;
   });
 
-  // X axis
-  const axisY = padT + plotH + 6;
-  let svgContent = `<line x1="${padL}" y1="${axisY}" x2="${padL + plotW}" y2="${axisY}" stroke="#E2DCCB" stroke-width="1"/>`;
-
-  // X axis labels
+  // Vertical gridlines across tiers
   const labelCount = Math.min(7, Math.floor(plotW / 70));
+  const axisY = padT + plotH + 4;
+
   for (let i = 0; i < labelCount; i++) {
     const rate = minRate + (i / (labelCount - 1)) * rateSpan;
     const x = xPos(rate);
     const anchor = i === 0 ? 'start' : (i === labelCount - 1 ? 'end' : 'middle');
-    svgContent += `<text x="${x.toFixed(1)}" y="${axisY + 18}" text-anchor="${anchor}" font-family="Space Mono, monospace" font-size="10.5" fill="#5A6478">${rate.toFixed(2)}%</text>`;
+
+    svgContent += `<line x1="${x.toFixed(1)}" y1="${padT}" x2="${x.toFixed(1)}" y2="${padT + plotH}" stroke="#1B2A4A" stroke-opacity="0.06" stroke-dasharray="2,2"/>`;
+    svgContent += `<text x="${x.toFixed(1)}" y="${axisY + 16}" text-anchor="${anchor}" font-family="IBM Plex Mono, monospace" font-size="10" fill="#5A6478">${rate.toFixed(2)}%</text>`;
   }
 
-  // Dots
-  dots.forEach((d, idx) => {
-    svgContent += `<circle cx="${d.x.toFixed(1)}" cy="${d.y.toFixed(1)}" r="${r}" fill="${d.color}" fill-opacity="0.82" stroke="#FAF7F0" stroke-width="1.5"/>`;
+  // X axis base line
+  svgContent += `<line x1="${padL}" y1="${axisY}" x2="${padL + plotW}" y2="${axisY}" stroke="#E2DCCB" stroke-width="1"/>`;
+
+  // Plot dots by tier with zero-overlap 2D placement
+  const dots = [];
+  cats.forEach((cat, tierIdx) => {
+    const tierCenterY = padT + tierIdx * tierH + tierH / 2;
+    const insts = allInsts.filter(i => i.cat === cat).sort((a, b) => a.rate - b.rate);
+    const placed = [];
+    const stepY = r * 2.1;
+    const maxYOffset = Math.floor((tierH / 2) - r - 3);
+
+    insts.forEach(inst => {
+      const baseX = xPos(inst.rate);
+      let bestX = baseX, bestY = tierCenterY;
+      let placedOk = false;
+
+      for (let xOff = 0; xOff <= r * 6; xOff += r * 0.9) {
+        const xCandidates = xOff === 0 ? [0] : [xOff, -xOff];
+        for (const dx of xCandidates) {
+          const tryX = baseX + dx;
+          for (let yOff = 0; yOff <= maxYOffset; yOff += stepY) {
+            const yCandidates = yOff === 0 ? [0] : [-yOff, yOff];
+            for (const dy of yCandidates) {
+              const tryY = tierCenterY + dy;
+              const hasCollision = placed.some(p => {
+                const pdx = p.x - tryX, pdy = p.y - tryY;
+                return (pdx * pdx + pdy * pdy) < (r * 2.05) * (r * 2.05);
+              });
+              if (!hasCollision) {
+                bestX = tryX;
+                bestY = tryY;
+                placedOk = true;
+                break;
+              }
+            }
+            if (placedOk) break;
+          }
+          if (placedOk) break;
+        }
+        if (placedOk) break;
+      }
+      placed.push({ x: bestX, y: bestY });
+      dots.push({ ...inst, x: bestX, y: bestY });
+    });
   });
 
-  // Invisible hover targets
-  dots.forEach((d, idx) => {
-    svgContent += `<circle class="bs-hover" data-idx="${idx}" cx="${d.x.toFixed(1)}" cy="${d.y.toFixed(1)}" r="11" fill="transparent" style="cursor:pointer"/>`;
+  // Render dots
+  dots.forEach((d) => {
+    const opacity = d.problematic ? '0.45' : '0.85';
+    svgContent += `<circle cx="${d.x.toFixed(1)}" cy="${d.y.toFixed(1)}" r="${r}" fill="${d.color}" fill-opacity="${opacity}" stroke="#FAF7F0" stroke-width="1.2"/>`;
   });
 
-  const totalH = padT + plotH + padB;
+  // Hover targets
+  dots.forEach((d, idx) => {
+    svgContent += `<circle class="bs-hover" data-idx="${idx}" cx="${d.x.toFixed(1)}" cy="${d.y.toFixed(1)}" r="10" fill="transparent" style="cursor:pointer"/>`;
+  });
+
+  const totalH = axisY + padB;
   svg.setAttribute('viewBox', `0 0 ${W} ${totalH}`);
   svg.setAttribute('height', totalH);
   svg.innerHTML = svgContent;
 
-  document.getElementById('beeswarmSub').textContent = `${allInsts.length} BFIs · ${fmtDate(GLOBAL_LATEST_DATE)}`;
+  document.getElementById('beeswarmSub').textContent = `3 Tiers · ${allInsts.length} BFIs · ${fmtDate(GLOBAL_LATEST_DATE)}`;
 
   attachTip(svg, '.bs-hover', 'bsTip', el => {
     const d = dots[parseInt(el.dataset.idx)];
-    return `<b>${d.name}</b><br>${d.rate.toFixed(2)}%`;
+    const note = d.problematic ? ' (Outlier)' : '';
+    return `<b>${d.name}</b>${note}<br>${d.rate.toFixed(2)}%`;
   });
 }
 
 function renderDeviationChart(devCat) {
   currentDevCat = devCat;
   const catKey = DEV_CAT_MAP[devCat];
-  const group = (DATA[catKey] || []).filter(i => i.history && i.history.length > 0);
+  const group = (DATA[catKey] || []).filter(i => i.history && i.history.length > 0 && !i.problematic && !i.excludeFromAvg);
   if (!group.length) return;
   const avg = group.reduce((s, i) => s + i.history[0].rate, 0) / group.length;
 
@@ -833,7 +896,8 @@ function renderDeviationChart(devCat) {
   const W = chartWidth(svg);
 
   const sorted = [...group].sort((a, b) => a.history[0].rate - b.history[0].rate);
-  const maxDev = Math.max(...sorted.map(i => Math.abs(i.history[0].rate - avg)));
+  const scaleGroup = sorted.filter(i => !i.excludeFromAvg && !i.problematic);
+  const maxDev = Math.max(...scaleGroup.map(i => Math.abs(i.history[0].rate - avg)), 1);
 
   // Measure actual text widths to avoid overlap
   const _canvas = document.createElement('canvas');
@@ -866,16 +930,19 @@ function renderDeviationChart(devCat) {
   sorted.forEach((inst, idx) => {
     const rate = inst.history[0].rate;
     const dev = rate - avg;
-    const barW = maxDev > 0 ? (Math.abs(dev) / maxDev) * halfBarMax : 0;
+    const isOutlier = Boolean(inst.excludeFromAvg || inst.problematic || Math.abs(dev) > maxDev * 2.5);
+    const barW = maxDev > 0 ? Math.min((Math.abs(dev) / maxDev) * halfBarMax, halfBarMax) : 0;
     const color = dev >= 0 ? '#B8533E' : '#4A7C59';
     const barX = dev >= 0 ? centerX : centerX - barW;
     const sign = dev >= 0 ? '+' : '';
-    const labelX = dev >= 0 ? centerX + barW + 4 : centerX - barW - 4;
+    const devLabel = isOutlier ? `${sign}${dev.toFixed(2)} ↗` : `${sign}${dev.toFixed(2)}`;
+    let labelX = dev >= 0 ? centerX + barW + 4 : centerX - barW - 4;
+    if (dev >= 0 && labelX > svgW - 25) labelX = svgW - 25;
     const anchor = dev >= 0 ? 'start' : 'end';
 
     rowsHtml += `<text x="${nameW}" y="${curY + BAR_H / 2 + 4}" text-anchor="end" font-size="10" fill="#1B2A4A">${displayNames[idx]}</text>`;
-    rowsHtml += `<rect class="dev-bar" x="${barX.toFixed(1)}" y="${curY}" width="${Math.max(barW, 1.5).toFixed(1)}" height="${BAR_H}" rx="2" fill="${color}" fill-opacity="0.8" style="cursor:pointer" data-name="${inst.name}" data-rate="${rate.toFixed(2)}" data-dev="${sign}${dev.toFixed(2)}" data-avg="${avg.toFixed(2)}"/>`;
-    rowsHtml += `<text x="${labelX.toFixed(1)}" y="${curY + BAR_H / 2 + 4}" text-anchor="${anchor}" font-size="9.5" fill="${color}" font-weight="600">${sign}${dev.toFixed(2)}</text>`;
+    rowsHtml += `<rect class="dev-bar" x="${barX.toFixed(1)}" y="${curY}" width="${Math.max(barW, 1.5).toFixed(1)}" height="${BAR_H}" rx="2" fill="${color}" fill-opacity="${isOutlier ? '0.5' : '0.8'}" style="cursor:pointer" data-name="${inst.name}" data-rate="${rate.toFixed(2)}" data-dev="${sign}${dev.toFixed(2)}" data-avg="${avg.toFixed(2)}"/>`;
+    rowsHtml += `<text x="${labelX.toFixed(1)}" y="${curY + BAR_H / 2 + 4}" text-anchor="${anchor}" font-size="9.5" fill="${color}" font-weight="600">${devLabel}</text>`;
 
     curY += ROW_H;
   });
@@ -888,7 +955,7 @@ function renderDeviationChart(devCat) {
   const badgeW = badgeLabel.length * 7.2 + 18;
   const avgBadge = `
     <rect x="${(centerX - badgeW / 2).toFixed(1)}" y="3" width="${badgeW.toFixed(1)}" height="24" rx="6" fill="var(--ink)"/>
-    <text x="${centerX}" y="19" text-anchor="middle" font-family="Space Mono, monospace" font-size="11" fill="#C9A961" font-weight="700">${badgeLabel}</text>`;
+    <text x="${centerX}" y="19" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#C9A961" font-weight="700">${badgeLabel}</text>`;
 
   svg.setAttribute('viewBox', `0 0 ${svgW} ${curY + 4}`);
   svg.setAttribute('height', curY + 4);
@@ -934,10 +1001,10 @@ function drawSpreadChart(history, range) {
     const idx = Math.round((i/(labelCount-1||1))*(data.length-1));
     const d = data[idx];
     const anchor = i===0?'start':(i===labelCount-1?'end':'middle');
-    xLabels += `<text x="${xPos(idx).toFixed(2)}" y="${H-8}" text-anchor="${anchor}" font-family="Space Mono, monospace" font-size="11" fill="#5A6478">${fmtDateShort(d.date)}</text>`;
+    xLabels += `<text x="${xPos(idx).toFixed(2)}" y="${H-8}" text-anchor="${anchor}" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5A6478">${fmtDateShort(d.date)}</text>`;
   }
 
-  const meanLabel = `<text x="${(W-padR).toFixed(2)}" y="${(meanY-5).toFixed(2)}" text-anchor="end" font-family="Space Mono, monospace" font-size="10" fill="#5A6478">avg ${meanRate.toFixed(2)}%</text>`;
+  const meanLabel = `<text x="${(W-padR).toFixed(2)}" y="${(meanY-5).toFixed(2)}" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10" fill="#5A6478">avg ${meanRate.toFixed(2)}%</text>`;
 
   container.innerHTML = `
   <svg id="rhSvg" viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block;cursor:crosshair" preserveAspectRatio="xMidYMid meet">
@@ -1031,7 +1098,7 @@ function drawRobinhoodChart(history, range) {
   for (let i = 0; i < labelCount; i++) {
     const idx = Math.round((i/(labelCount-1||1))*(data.length-1));
     const anchor = i===0?'start':(i===labelCount-1?'end':'middle');
-    xLabels += `<text x="${x(idx).toFixed(2)}" y="${H-8}" text-anchor="${anchor}" font-family="Space Mono, monospace" font-size="11" fill="#5A6478">${fmtDateShort(data[idx].date)}</text>`;
+    xLabels += `<text x="${x(idx).toFixed(2)}" y="${H-8}" text-anchor="${anchor}" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5A6478">${fmtDateShort(data[idx].date)}</text>`;
   }
 
   let hoverDots = '';
@@ -1106,7 +1173,8 @@ function renderDetailPanel(category, inst) {
   document.getElementById('histCategory').textContent = CATEGORY_LABELS[category];
   const curr = inst.history[0];
   const isPending = GLOBAL_LATEST_DATE && curr.date < GLOBAL_LATEST_DATE;
-  document.getElementById('histName').innerHTML = inst.name + (isPending ? `<span class="pending-badge" title="No rate reported for ${fmtDate(GLOBAL_LATEST_DATE)}">Pending update</span>` : '');
+  const noteHTML = inst.note ? `<div class="inst-note" style="margin-top:4px">${inst.note}</div>` : '';
+  document.getElementById('histName').innerHTML = inst.name + noteHTML + (isPending ? `<span class="pending-badge" title="No rate reported for ${fmtDate(GLOBAL_LATEST_DATE)}">Pending update</span>` : '');
 
   const last12 = inst.history.slice(0,12);
   const rates12 = last12.map(h => h.rate);
@@ -1150,7 +1218,8 @@ function renderDetailPanel(category, inst) {
 /* ---- Detail panel (spread) ---- */
 function renderSpreadDetailPanel(category, inst) {
   document.getElementById('histCategory').textContent = CATEGORY_LABELS[category] + ' — Interest Spread';
-  document.getElementById('histName').innerHTML = inst.name;
+  const noteHTML = inst.note ? `<div class="inst-note" style="margin-top:4px">${inst.note}</div>` : '';
+  document.getElementById('histName').innerHTML = inst.name + noteHTML;
 
   const last12 = inst.history.slice(0, Math.min(12, inst.history.length));
   const rates12 = last12.map(h => h.rate);
@@ -1565,7 +1634,15 @@ function renderQuarterlyTable(category, qData, cfg, latestQ) {
           <td class="num"><span class="rate-value">${tier1Val}</span></td>
           <td class="num"><span class="rate-value">${cet1Val}</span></td>
           <td class="num"><span class="${dateClass}">${fmtQuarterLabel(curr.quarter)}${auditBadge}</span></td>
-          <td style="text-align:right"><button class="history-btn" data-qhist-cat="${category}" data-qhist-id="${inst.id}">History</button></td>
+          <td style="text-align:right">
+            <button class="history-btn" data-qhist-cat="${category}" data-qhist-id="${inst.id}" title="View Quarterly History">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path>
+              </svg>
+            </button>
+          </td>
         </tr>`;
     } else {
       const val = curr[activeQMetric] !== undefined ? curr[activeQMetric] : null;
@@ -1613,7 +1690,15 @@ function renderQuarterlyTable(category, qData, cfg, latestQ) {
           <td class="num">${qoqHTML}</td>
           <td class="num">${yoyHTML}</td>
           <td class="num"><span class="${dateClass}">${fmtQuarterLabel(curr.quarter)}${auditBadge}</span></td>
-          <td style="text-align:right"><button class="history-btn" data-qhist-cat="${category}" data-qhist-id="${inst.id}">History</button></td>
+          <td style="text-align:right">
+            <button class="history-btn" data-qhist-cat="${category}" data-qhist-id="${inst.id}" title="View Quarterly History">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path>
+              </svg>
+            </button>
+          </td>
         </tr>`;
     }
   });
@@ -1709,7 +1794,7 @@ function showQuarterlyHistory(category, instId) {
 
     rowsHTML += `
       <tr>
-        <td><strong style="font-family:'Space Mono',monospace;font-size:13.5px">${fmtQuarterLabel(curr.quarter)}</strong>${auditBadge}</td>
+        <td><strong style="font-family:'IBM Plex Mono',monospace;font-size:13.5px">${fmtQuarterLabel(curr.quarter)}</strong>${auditBadge}</td>
         <td class="num"><span class="rate-value">${curr.npl !== undefined ? fmtRate(curr.npl) : '—'}</span></td>
         <td class="num"><span class="rate-value">${curr.car !== undefined ? fmtRate(curr.car) : '—'}</span></td>
         <td class="num"><span class="rate-value">${curr.tier1 !== undefined ? fmtRate(curr.tier1) : '—'}</span></td>
@@ -1776,7 +1861,7 @@ function renderQuarterlyChart(category, qData, cfg, latestQ) {
   if (cfg.threshold != null) {
     const threshX = xScale(cfg.threshold);
     elements += `<line x1="${threshX}" y1="${padding.top - 10}" x2="${threshX}" y2="${chartH - padding.bottom}" stroke="var(--slate)" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.6"/>`;
-    elements += `<text x="${threshX}" y="${padding.top - 16}" fill="var(--slate)" font-size="11" font-weight="600" text-anchor="middle" font-family="Space Mono, monospace">${cfg.thresholdLabel}</text>`;
+    elements += `<text x="${threshX}" y="${padding.top - 16}" fill="var(--slate)" font-size="11" font-weight="600" text-anchor="middle" font-family="IBM Plex Mono, monospace">${cfg.thresholdLabel}</text>`;
   }
 
   validItems.forEach((inst, idx) => {
@@ -1786,7 +1871,7 @@ function renderQuarterlyChart(category, qData, cfg, latestQ) {
 
     elements += `<text x="${padding.left - 12}" y="${y + 5}" fill="var(--ink)" font-size="12" font-weight="600" text-anchor="end" font-family="Fraunces, serif">${inst.name}</text>`;
     elements += `<rect x="${padding.left}" y="${y - 8}" width="${barW}" height="14" rx="4" fill="var(--cb)" opacity="0.85"/>`;
-    elements += `<text x="${padding.left + barW + 8}" y="${y + 4}" fill="var(--ink)" font-size="12" font-weight="700" font-family="Space Mono, monospace">${fmtRate(val)}</text>`;
+    elements += `<text x="${padding.left + barW + 8}" y="${y + 4}" fill="var(--ink)" font-size="12" font-weight="700" font-family="IBM Plex Mono, monospace">${fmtRate(val)}</text>`;
   });
 
   svg.innerHTML = elements;
@@ -1911,16 +1996,18 @@ function init() {
     input.addEventListener('input', e => applySearch(input.dataset.search, e.target.value));
   });
 
-  // View history buttons - delegate to pageData or listViews
-  const listViewsEl = document.getElementById('listViews') || document.getElementById('pageData');
-  if (listViewsEl) {
-    listViewsEl.addEventListener('click', e => {
-      const btn = e.target.closest('.history-btn');
-      if (btn) {
-        selectInstitutionHistory(btn.dataset.cat, btn.dataset.id);
-      }
-    });
-  }
+  // View history buttons - delegated globally
+  document.addEventListener('click', e => {
+    const qbtn = e.target.closest('[data-qhist-id]');
+    if (qbtn) {
+      showQuarterlyHistory(qbtn.dataset.qhistCat, qbtn.dataset.qhistId);
+      return;
+    }
+    const btn = e.target.closest('.history-btn[data-id]');
+    if (btn) {
+      selectInstitutionHistory(btn.dataset.cat, btn.dataset.id);
+    }
+  });
 
   // History view indicator toggle pills
   document.querySelectorAll('.hist-indicator-pill').forEach(btn => {
@@ -2105,6 +2192,7 @@ Promise.all([
 
   ['commercial_banks', 'development_banks', 'finance_companies'].forEach(cat => {
     ((monthlyData && monthlyData[cat]) || []).forEach(inst => {
+      if (inst.inactive) return;
       const bHistory = [];
       const sHistory = [];
       (inst.history || []).forEach(h => {
@@ -2115,8 +2203,8 @@ Promise.all([
           sHistory.push({ date: h.date, rate: h.interest_spread });
         }
       });
-      baseData[cat].push({ id: inst.id, name: inst.name, history: bHistory });
-      spreadData[cat].push({ id: inst.id, name: inst.name, history: sHistory });
+      baseData[cat].push({ id: inst.id, name: inst.name, note: inst.note, problematic: inst.problematic, excludeFromAvg: inst.excludeFromAvg, history: bHistory });
+      spreadData[cat].push({ id: inst.id, name: inst.name, note: inst.note, problematic: inst.problematic, excludeFromAvg: inst.excludeFromAvg, history: sHistory });
     });
   });
 
@@ -2143,7 +2231,7 @@ Promise.all([
           <p style="font-size: 15px; color: var(--slate); max-width: 540px; margin: 0 auto 20px;">
             You opened this file directly via <code>file://</code> protocol. Web browsers block local JSON data fetching over <code>file://</code> due to CORS security policies.
           </p>
-          <div style="background: var(--paper-dim); border: 1px solid var(--line); border-radius: 8px; padding: 14px 20px; font-family:'Space Mono',monospace; font-size: 13px; color: var(--ink); max-width: 480px; margin: 0 auto 16px; text-align: left;">
+          <div style="background: var(--paper-dim); border: 1px solid var(--line); border-radius: 8px; padding: 14px 20px; font-family:'IBM Plex Mono',monospace; font-size: 13px; color: var(--ink); max-width: 480px; margin: 0 auto 16px; text-align: left;">
             $ python3 -m http.server 8000
           </div>
           <p style="font-size: 14px; color: var(--slate);">Then open <strong style="color:var(--ink)">http://localhost:8000</strong> in your web browser.</p>
