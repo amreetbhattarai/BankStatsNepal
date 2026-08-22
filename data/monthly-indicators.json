@@ -507,6 +507,11 @@
       "name": "Everest Bank",
       "history": [
         {
+          "date": "2083-04",
+          "base_rate": 4.17,
+          "interest_spread": 3.17
+        },
+        {
           "date": "2083-03",
           "base_rate": 4.25,
           "interest_spread": 3.05
@@ -1003,6 +1008,11 @@
       "id": "hbl",
       "name": "Himalayan Bank",
       "history": [
+        {
+          "date": "2083-04",
+          "base_rate": 5.06,
+          "interest_spread": 2.71
+        },
         {
           "date": "2083-03",
           "base_rate": 5.19,
@@ -2750,6 +2760,11 @@
       "id": "nbl",
       "name": "Nepal Bank",
       "history": [
+         {
+          "date": "2083-04",
+          "base_rate": 4.42,
+          "interest_spread": 3.45
+        },
         {
           "date": "2083-03",
           "base_rate": 4.45,
@@ -3202,6 +3217,11 @@
       "id": "sbi",
       "name": "Nepal SBI Bank",
       "history": [
+          {
+          "date": "2083-04",
+          "base_rate": 5.05,
+          "interest_spread": 3.27
+        },
         {
           "date": "2083-03",
           "base_rate": 5.19,
@@ -3694,6 +3714,11 @@
       "id": "pcbl",
       "name": "Prime Commercial Bank",
       "history": [
+         {
+          "date": "2083-04",
+          "base_rate": 4.86,
+          "interest_spread": 3.65
+        },
         {
           "date": "2083-03",
           "base_rate": 4.95,
@@ -6111,6 +6136,11 @@
       "id": "lumbini",
       "name": "Lumbini Bikas Bank",
       "history": [
+         {
+          "date": "2083-04",
+          "base_rate": 5.54,
+          "interest_spread": 3.86
+        },
         {
           "date": "2083-03",
           "base_rate": 5.48,
