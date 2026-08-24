@@ -3469,6 +3469,11 @@
       "name": "Prabhu Bank",
       "history": [
         {
+          "date": "2083-04",
+          "base_rate": 4.85,
+          "interest_spread": 3.30
+        },
+        {
           "date": "2083-03",
           "base_rate": 4.99,
           "interest_spread": 3.28
@@ -4468,6 +4473,11 @@
       "name": "Standard Chartered Bank Nepal",
       "history": [
         {
+          "date": "2083-04",
+          "base_rate": 3.91,
+          "interest_spread": 3.71
+        },
+        {
           "date": "2083-03",
           "base_rate": 4.42,
           "interest_spread": 3.77
@@ -5152,6 +5162,11 @@
       "id": "excel",
       "name": "Excel Development Bank",
       "history": [
+        {
+          "date": "2083-04",
+          "base_rate": 5.23,
+          "interest_spread": null
+        },
         {
           "date": "2083-03",
           "base_rate": 4.87,
@@ -10618,8 +10633,13 @@
     },
     {
       "id": "nepalfinance",
-      "name": "Nepal Finance",
+      "name": "`inance",
       "history": [
+        {
+          "date": "2083-04",
+          "base_rate": 7.21,
+          "interest_spread": 4.54
+        },
         {
           "date": "2083-03",
           "base_rate": 7.59,
@@ -11113,7 +11133,7 @@
       "id": "progressive",
       "name": "Progressive Finance",
       "history": [
-        {
+         {
           "date": "2083-03",
           "base_rate": 7.2,
           "interest_spread": 4.55
@@ -11807,6 +11827,11 @@
       "id": "shreeinvestment",
       "name": "Shree Investment & Finance",
       "history": [
+         {
+          "date": "2083-04",
+          "base_rate": 6.31,
+          "interest_spread": 3.67
+        },
         {
           "date": "2083-03",
           "base_rate": 6.46,
