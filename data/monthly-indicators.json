@@ -2013,6 +2013,11 @@
       "name": "NIC Asia Bank",
       "history": [
         {
+          "date": "2083-04",
+          "base_rate": 5.68,
+          "interest_spread": 3.53
+        },
+        {
           "date": "2083-03",
           "base_rate": 5.83,
           "interest_spread": 3.5
@@ -5660,6 +5665,11 @@
       "name": "Green Development Bank",
       "history": [
         {
+          "date": "2083-04",
+          "base_rate": 6.02,
+          "interest_spread": 4.21
+        },
+        {
           "date": "2083-03",
           "base_rate": 6.8,
           "interest_spread": 4.57
@@ -5905,6 +5915,11 @@
       "id": "kamana",
       "name": "Kamana Sewa Bikas Bank",
       "history": [
+        {
+          "date": "2083-04",
+          "base_rate": 5.42,
+          "interest_spread": 4
+        },
         {
           "date": "2083-03",
           "base_rate": 5.53,
@@ -7158,6 +7173,11 @@
       "note": "(Outlier, excluded from category average)",
       "history": [
         {
+          "date": "2083-04",
+          "base_rate": 10.80,
+          "interest_spread": 3.86
+        },
+        {
           "date": "2083-03",
           "base_rate": 18.87,
           "interest_spread": 3.76
@@ -7903,6 +7923,11 @@
       "history": [
         {
           "date": "2083-03",
+          "base_rate": 5.53,
+          "interest_spread": 3.90
+        },
+        {
+          "date": "2083-03",
           "base_rate": 5.38,
           "interest_spread": 4.01
         },
@@ -8646,6 +8671,11 @@
       "id": "best",
       "name": "Best Finance",
       "history": [
+        {
+          "date": "2083-04",
+          "base_rate": 7.84,
+          "interest_spread": 4.15
+        },
         {
           "date": "2083-03",
           "base_rate": 8.23,
@@ -10470,6 +10500,11 @@
       "name": "Multipurpose Finance",
       "history": [
         {
+          "date": "2083-04",
+          "base_rate": 7.69,
+          "interest_spread": 4.57
+        },
+        {
           "date": "2083-03",
           "base_rate": 7.91,
           "interest_spread": 4.54
@@ -10633,7 +10668,7 @@
     },
     {
       "id": "nepalfinance",
-      "name": "`inance",
+      "name": "Nepal Finance",   
       "history": [
         {
           "date": "2083-04",
