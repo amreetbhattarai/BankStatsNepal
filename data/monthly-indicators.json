@@ -7922,7 +7922,7 @@
       "name": "Shine Resunga Development Bank",
       "history": [
         {
-          "date": "2083-03",
+          "date": "2083-04",
           "base_rate": 5.53,
           "interest_spread": 3.90
         },
@@ -10922,6 +10922,11 @@
       "name": "Pokhara Finance",
       "note": "Merged with Samriddhi Finance",
       "history": [
+        {
+          "date": "2083-04",
+          "base_rate": 6.77,
+          "interest_spread": 3.95
+        },
         {
           "date": "2083-03",
           "base_rate": 6.52,
