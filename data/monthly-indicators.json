@@ -4982,6 +4982,11 @@
       "name": "Corporate Development Bank",
       "history": [
         {
+          "date": "2083-04",
+          "base_rate": 7.44,
+          "interest_spread": 4.58
+        },
+        {
           "date": "2083-03",
           "base_rate": 7.75,
           "interest_spread": 4.57
@@ -9660,6 +9665,11 @@
       "id": "gurkhas",
       "name": "Gurkhas Finance",
       "history": [
+        {
+          "date": "2083-04",
+          "base_rate": 6.09,
+          "interest_spread": 4.55
+        },
         {
           "date": "2083-03",
           "base_rate": 6.11,
