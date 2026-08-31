@@ -7250,6 +7250,11 @@
       "history": [
         {
           "date": "2083-03",
+          "base_rate": 9.79,
+          "interest_spread": 4.59
+        },
+        {
+          "date": "2083-03",
           "base_rate": 9.90,
           "interest_spread": 4.58
         },
@@ -7434,6 +7439,11 @@
       "id": "saptakoshi",
       "name": "Saptakoshi Development Bank",
       "history": [
+        {
+          "date": "2083-03",
+          "base_rate": 5.83,
+          "interest_spread": 4.17
+        },
         {
           "date": "2083-03",
           "base_rate": 5.85,
@@ -9419,6 +9429,11 @@
       "id": "guheshwori",
       "name": "Guheshwori Merchant Banking & Finance",
       "history": [
+        {
+          "date": "2083-04",
+          "base_rate": 6.19,
+          "interest_spread": 4.39
+        },
         {
           "date": "2083-03",
           "base_rate": 6.33,
