@@ -5424,6 +5424,11 @@
       "name": "Garima Bikas Bank",
       "history": [
         {
+          "date": "2083-04",
+          "base_rate": 5.14,
+          "interest_spread": 4.07
+        },
+        {
           "date": "2083-03",
           "base_rate": 5.31,
           "interest_spread": 4.04
@@ -9188,6 +9193,11 @@
       "id": "goodwill",
       "name": "Goodwill Finance",
       "history": [
+        {
+          "date": "2083-04",
+          "base_rate": 6.61,
+          "interest_spread": 4.10
+        },
         {
           "date": "2083-03",
           "base_rate": 6.7,
