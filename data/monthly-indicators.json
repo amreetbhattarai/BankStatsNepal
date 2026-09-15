@@ -11212,7 +11212,12 @@
       "id": "progressive",
       "name": "Progressive Finance",
       "history": [
-         {
+        {
+          "date": "2083-04",
+          "base_rate": 7.04,
+          "interest_spread": 4.54
+        }, 
+        {
           "date": "2083-03",
           "base_rate": 7.2,
           "interest_spread": 4.55
