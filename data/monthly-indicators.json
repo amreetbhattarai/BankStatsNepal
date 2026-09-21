@@ -1526,6 +1526,11 @@
       "name": "Laxmi Sunrise Bank",
       "history": [
         {
+          "date": "2083-05",
+          "base_rate": 4.94,
+          "interest_spread": 3.13
+        },
+        {
           "date": "2083-04",
           "base_rate": 4.82,
           "interest_spread": 3.30
@@ -1777,6 +1782,11 @@
       "name": "Machhapuchhre Bank",
       "history": [
         {
+          "date": "2083-05",
+          "base_rate": 4.96,
+          "interest_spread": 3.40
+        },
+        {
           "date": "2083-04",
           "base_rate": 4.81,
           "interest_spread": 3.47
@@ -2027,6 +2037,11 @@
       "id": "nicasia",
       "name": "NIC Asia Bank",
       "history": [
+        {
+          "date": "2083-05",
+          "base_rate": 5.57,
+          "interest_spread": 3.24
+        },
         {
           "date": "2083-04",
           "base_rate": 5.68,
@@ -2529,6 +2544,11 @@
       "id": "nabil",
       "name": "Nabil Bank",
       "history": [
+        {
+          "date": "2083-05",
+          "base_rate": 4.45,
+          "interest_spread": 3.11
+        },
         {
           "date": "2083-04",
           "base_rate": 4.46,
@@ -4753,6 +4773,11 @@
       "id": "rbb",
       "name": "Rastriya Banijya Bank",
       "history": [
+         {
+          "date": "2083-05",
+          "base_rate": 3.83,
+          "interest_spread": 3.39
+        },
         {
           "date": "2083-04",
           "base_rate": 4.14,
@@ -5448,6 +5473,11 @@
       "id": "garima",
       "name": "Garima Bikas Bank",
       "history": [
+        {
+          "date": "2083-05",
+          "base_rate": 5.21,
+          "interest_spread": 4.04
+        },
         {
           "date": "2083-04",
           "base_rate": 5.14,
