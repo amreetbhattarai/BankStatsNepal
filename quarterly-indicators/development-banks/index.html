@@ -97,91 +97,91 @@
       "@type": "ListItem",
       "position": 1,
       "name": "Corporate Development Bank",
-      "description": "Base rate 7.75% as of Ashadh 2083"
+      "description": "Base rate 7.42% as of Bhadra 2083"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "Excel Development Bank",
-      "description": "Base rate 4.87% as of Ashadh 2083"
+      "description": "Base rate 4.88% as of Bhadra 2083"
     },
     {
       "@type": "ListItem",
       "position": 3,
       "name": "Garima Bikas Bank",
-      "description": "Base rate 5.31% as of Ashadh 2083"
+      "description": "Base rate 5.21% as of Bhadra 2083"
     },
     {
       "@type": "ListItem",
       "position": 4,
       "name": "Green Development Bank",
-      "description": "Base rate 6.80% as of Ashadh 2083"
+      "description": "Base rate 6.03% as of Bhadra 2083"
     },
     {
       "@type": "ListItem",
       "position": 5,
       "name": "Jyoti Bikash Bank",
-      "description": "Base rate 6.21% as of Ashadh 2083"
+      "description": "Base rate 5.27% as of Shrawan 2083"
     },
     {
       "@type": "ListItem",
       "position": 6,
       "name": "Kamana Sewa Bikas Bank",
-      "description": "Base rate 5.53% as of Ashadh 2083"
+      "description": "Base rate 5.42% as of Shrawan 2083"
     },
     {
       "@type": "ListItem",
       "position": 7,
       "name": "Lumbini Bikas Bank",
-      "description": "Base rate 5.48% as of Ashadh 2083"
+      "description": "Base rate 5.54% as of Shrawan 2083"
     },
     {
       "@type": "ListItem",
       "position": 8,
       "name": "Mahalaxmi Development Bank",
-      "description": "Base rate 5.64% as of Shrawan 2083"
+      "description": "Base rate 5.73% as of Bhadra 2083"
     },
     {
       "@type": "ListItem",
       "position": 9,
       "name": "Miteri Development Bank",
-      "description": "Base rate 5.74% as of Shrawan 2083"
+      "description": "Base rate 5.37% as of Bhadra 2083"
     },
     {
       "@type": "ListItem",
       "position": 10,
       "name": "Muktinath Bikash Bank",
-      "description": "Base rate 5.52% as of Shrawan 2083"
+      "description": "Base rate 5.51% as of Bhadra 2083"
     },
     {
       "@type": "ListItem",
       "position": 11,
       "name": "Narayani Development Bank",
-      "description": "Base rate 18.87% as of Ashadh 2083"
+      "description": "Base rate 10.80% as of Shrawan 2083"
     },
     {
       "@type": "ListItem",
       "position": 12,
       "name": "Salapa Bikash Bank",
-      "description": "Base rate 9.90% as of Ashadh 2083"
+      "description": "Base rate 9.14% as of Bhadra 2083"
     },
     {
       "@type": "ListItem",
       "position": 13,
       "name": "Saptakoshi Development Bank",
-      "description": "Base rate 5.85% as of Ashadh 2083"
+      "description": "Base rate 5.83% as of Shrawan 2083"
     },
     {
       "@type": "ListItem",
       "position": 14,
       "name": "Shangrila Development Bank",
-      "description": "Base rate 5.51% as of Shrawan 2083"
+      "description": "Base rate 5.62% as of Bhadra 2083"
     },
     {
       "@type": "ListItem",
       "position": 15,
       "name": "Shine Resunga Development Bank",
-      "description": "Base rate 5.38% as of Ashadh 2083"
+      "description": "Base rate 5.53% as of Shrawan 2083"
     },
     {
       "@type": "ListItem",
@@ -195,7 +195,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/styles.css?v=7.0">
+<link rel="stylesheet" href="/css/styles.css?v=8.8">
+<script>
+  (function() {
+    var t = localStorage.getItem('bsn_theme');
+    if (!t) t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', t);
+  })();
+</script>
 </head>
 <body>
 
@@ -205,10 +212,13 @@
     <div class="nav-inner">
       <div class="nav-brand" onclick="navigateTo('dashboard')">
         <img src="/logo.png" alt="BankStatsNepal" style="height:44px;width:44px;object-fit:contain;flex-shrink:0;">
-        <span class="brand-mark">BankStats<span class="accent">Nepal</span><sup style="font-size:10px;color:var(--gold-soft);letter-spacing:0.08em;margin-left:4px;">BETA</sup></span>
+        <span class="brand-mark">BankStats<span class="accent">Nepal</span><span class="beta-badge">BETA</span></span>
       </div>
 
       <div class="nav-links">
+        <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme" title="Toggle Theme">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        </button>
         <a class="nav-link" data-page="dashboard" href="/">Dashboard</a>
         <a class="nav-link" data-page="base_rate_spread" href="/base-rate-spread/commercial-banks/">Base Rate &amp; Spread Rate</a>
         <a class="nav-link active" data-page="quarterly_indicators" href="/quarterly-indicators/development-banks/">Quarterly Indicators</a>
@@ -225,7 +235,7 @@
   <div id="pageDashboard" class="page">
     <h1 class="sr-only">Base Rate, Interest Spread &amp; Quarterly Indicators of Banks in Nepal (2026/2083)</h1>
 
-    <div class="data-asof" id="dataAsOf"><span class="asof-dot blinking"></span>As of Shrawan 2083 Rates · 21 Updated, 29 Pending</div>
+    <div class="data-asof" id="dataAsOf"><span class="asof-dot blinking"></span>As of Bhadra 2083 Rates · 33 Updated, 17 Pending</div>
 
     <div class="dash-stat-grid">
       <div class="stat-card stat-card-combined">
@@ -318,7 +328,7 @@
       <div class="dash-card" style="margin-bottom:0">
         <div class="dash-card-header">
           <div>
-            <div class="dash-card-title">Category Deviation</div>
+            <div class="dash-card-title">Deviation from Average</div>
             <div class="dash-card-sub" id="dashAvgLabel">Select a category</div>
           </div>
           <div class="dash-cat-pills">
@@ -364,55 +374,125 @@
         <a class="cat-pill-btn" data-cat="development_banks" href="/base-rate-spread/development-banks/">Development Banks <span class="cat-count" id="count-development_banks"></span></a>
         <a class="cat-pill-btn" data-cat="finance_companies" href="/base-rate-spread/finance-companies/">Finance Companies <span class="cat-count" id="count-finance_companies"></span></a>
       </div>
-      <div class="data-asof" id="dataAsOfData"><span class="asof-dot blinking"></span>As of Shrawan 2083 Rates · 5 Updated, 11 Pending</div>
+      <div class="data-asof" id="dataAsOfData"><span class="asof-dot blinking"></span>As of Bhadra 2083 Rates · 9 Updated, 7 Pending</div>
     </div>
 
-    <div id="listViews">
-      <div class="tab-view active" data-tab-view="commercial_banks">
-        <div class="section-head">
-          <div>
-            <h1>Commercial Banks</h1>
-            <div class="section-sub" id="sub-commercial_banks">Base rates &amp; interest spreads of commercial banks in Nepal, updated monthly</div>
+    <div id="brDataContainer">
+      <div id="listViews">
+        <div class="tab-view active" data-tab-view="commercial_banks">
+          <div class="section-head">
+            <div>
+              <h1>Commercial Banks</h1>
+              <div class="section-sub" id="sub-commercial_banks">Base rates &amp; interest spreads of commercial banks in Nepal, updated monthly</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+              <div class="br-view-switcher">
+                <button class="br-view-btn active" data-brview="data">📋 Data View</button>
+                <button class="br-view-btn" data-brview="chart">📊 Chart View</button>
+              </div>
+              <div class="search-box"><input type="text" placeholder="Search bank…" data-search="commercial_banks"></div>
+            </div>
           </div>
-          <div class="search-box"><input type="text" placeholder="Search bank…" data-search="commercial_banks"></div>
+          <div class="rate-table-wrap"><table class="rate-table"><thead><tr id="thead-commercial_banks">
+            <th>Institution</th><th class="num">Base Rate</th><th class="num">3M Avg Rate</th><th class="num">Spread Rate</th><th></th>
+          </tr></thead><tbody id="tbody-commercial_banks"></tbody></table></div>
+          <div class="rate-cards" id="cards-commercial_banks"></div>
         </div>
-        <div class="rate-table-wrap"><table class="rate-table"><thead><tr id="thead-commercial_banks">
-          <th>Institution</th><th class="num">Base Rate</th><th class="num">3M Avg Rate</th><th class="num">Spread Rate</th><th></th>
-        </tr></thead><tbody id="tbody-commercial_banks"></tbody></table></div>
-        <div class="rate-cards" id="cards-commercial_banks"></div>
+
+        <div class="tab-view" data-tab-view="development_banks">
+          <div class="section-head">
+            <div>
+              <h1>Development Banks</h1>
+              <div class="section-sub" id="sub-development_banks">Base rates &amp; interest spreads of development banks in Nepal, updated monthly</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+              <div class="br-view-switcher">
+                <button class="br-view-btn active" data-brview="data">📋 Data View</button>
+                <button class="br-view-btn" data-brview="chart">📊 Chart View</button>
+              </div>
+              <div class="search-box"><input type="text" placeholder="Search bank…" data-search="development_banks"></div>
+            </div>
+          </div>
+          <div class="rate-table-wrap"><table class="rate-table"><thead><tr id="thead-development_banks">
+            <th>Institution</th><th class="num">Base Rate</th><th class="num">3M Avg Rate</th><th class="num">Spread Rate</th><th></th>
+          </tr></thead><tbody id="tbody-development_banks"></tbody></table></div>
+          <div class="rate-cards" id="cards-development_banks"></div>
+        </div>
+
+        <div class="tab-view" data-tab-view="finance_companies">
+          <div class="section-head">
+            <div>
+              <h1>Finance Companies</h1>
+              <div class="section-sub" id="sub-finance_companies">Base rates &amp; interest spreads of finance companies in Nepal, updated monthly</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+              <div class="br-view-switcher">
+                <button class="br-view-btn active" data-brview="data">📋 Data View</button>
+                <button class="br-view-btn" data-brview="chart">📊 Chart View</button>
+              </div>
+              <div class="search-box"><input type="text" placeholder="Search company…" data-search="finance_companies"></div>
+            </div>
+          </div>
+          <div class="rate-table-wrap"><table class="rate-table"><thead><tr id="thead-finance_companies">
+            <th>Institution</th><th class="num">Base Rate</th><th class="num">3M Avg Rate</th><th class="num">Spread Rate</th><th></th>
+          </tr></thead><tbody id="tbody-finance_companies"></tbody></table></div>
+          <div class="rate-cards" id="cards-finance_companies"></div>
+        </div>
       </div>
 
-      <div class="tab-view" data-tab-view="development_banks">
-        <div class="section-head">
+      <!-- CHART VIEW -->
+      <div id="brChartView" style="display:none">
+        <div class="section-head" style="margin-bottom:16px">
           <div>
-            <h1>Development Banks</h1>
-            <div class="section-sub" id="sub-development_banks">Base rates &amp; interest spreads of development banks in Nepal, updated monthly</div>
+            <h1 id="brChartHeading">Commercial Banks</h1>
+            <div class="section-sub" id="brChartSub">Historical interest rate trend analysis</div>
           </div>
-          <div class="search-box"><input type="text" placeholder="Search bank…" data-search="development_banks"></div>
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+            <div class="br-view-switcher">
+              <button class="br-view-btn" data-brview="data">📋 Data View</button>
+              <button class="br-view-btn active" data-brview="chart">📊 Chart View</button>
+            </div>
+            <div class="inst-selectors">
+              <div class="selector-wrap">
+                <select id="brChartInstSelect"></select>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="rate-table-wrap"><table class="rate-table"><thead><tr id="thead-development_banks">
-          <th>Institution</th><th class="num">Base Rate</th><th class="num">3M Avg Rate</th><th class="num">Spread Rate</th><th></th>
-        </tr></thead><tbody id="tbody-development_banks"></tbody></table></div>
-        <div class="rate-cards" id="cards-development_banks"></div>
-      </div>
 
-      <div class="tab-view" data-tab-view="finance_companies">
-        <div class="section-head">
-          <div>
-            <h1>Finance Companies</h1>
-            <div class="section-sub" id="sub-finance_companies">Base rates &amp; interest spreads of finance companies in Nepal, updated monthly</div>
+        <div class="chart-col br-chart-card">
+          <div class="br-chart-toolbar">
+            <div class="hist-indicator-pills" id="brChartIndicatorPills" style="margin-bottom:0">
+              <button class="hist-indicator-pill active" data-brchart-ind="base_rate">Base Rate</button>
+              <button class="hist-indicator-pill" data-brchart-ind="avg3">3M Avg Rate</button>
+              <button class="hist-indicator-pill" data-brchart-ind="interest_spread">Spread Rate</button>
+            </div>
+            <div class="range-pills" id="brRangePills">
+              <button class="range-pill" data-brrange="6">6M</button>
+              <button class="range-pill" data-brrange="12">1Y</button>
+              <button class="range-pill" data-brrange="36">3Y</button>
+              <button class="range-pill active" data-brrange="all">All</button>
+            </div>
           </div>
-          <div class="search-box"><input type="text" placeholder="Search company…" data-search="finance_companies"></div>
+
+          <div class="chart-col-head" style="margin-top:14px">
+            <div>
+              <div class="chart-price" id="brChartPrice">—</div>
+              <div class="chart-price-change" id="brChartPriceChange">—</div>
+            </div>
+            <div style="text-align:right">
+              <div class="chart-hover-date" id="brChartHoverDate"></div>
+              <div class="chart-extra-stats" id="brChartExtraStats"></div>
+            </div>
+          </div>
+
+          <div id="brRobinhoodChart"></div>
         </div>
-        <div class="rate-table-wrap"><table class="rate-table"><thead><tr id="thead-finance_companies">
-          <th>Institution</th><th class="num">Base Rate</th><th class="num">3M Avg Rate</th><th class="num">Spread Rate</th><th></th>
-        </tr></thead><tbody id="tbody-finance_companies"></tbody></table></div>
-        <div class="rate-cards" id="cards-finance_companies"></div>
       </div>
     </div>
 
     <!-- HISTORY VIEW -->
-    <div class="history-view" id="historyView">
+    <div class="history-view" id="historyView" style="display:none">
       <div class="history-topbar">
         <button class="back-link" id="backBtn" style="margin-bottom:0">Back to list</button>
         <div class="inst-selectors">
@@ -429,40 +509,27 @@
         </div>
       </div>
 
-      <div class="history-grid">
-        <div class="detail-col">
-          <span class="category-label" id="histCategory"></span>
-          <h1 id="histName"></h1>
-
-          <!-- Indicator selector pills inside History View -->
-          <div class="hist-indicator-pills" id="histIndicatorPills">
-            <button class="hist-indicator-pill active" data-hist-ind="base_rate">Base Rate</button>
-            <button class="hist-indicator-pill" data-hist-ind="interest_spread">Spread Rate</button>
+      <div class="dash-card" style="margin-bottom:24px">
+        <div class="dash-card-header">
+          <div>
+            <div class="dash-card-title" id="histName">Institution Name</div>
+            <div class="dash-card-sub" id="histCategory">Commercial Bank — Monthly Disclosures</div>
           </div>
-
-          <div class="detail-history">
-            <h2 id="histSectionTitle">Rate History</h2>
-            <div id="histEntries"></div>
-          </div>
+          <div class="chart-extra-stats" id="chartExtraStats" style="text-align:right"></div>
         </div>
-        <div class="chart-col">
-          <div class="chart-col-head">
-            <div>
-              <div class="chart-price" id="chartPrice">—</div>
-              <div class="chart-price-change" id="chartPriceChange">—</div>
-            </div>
-            <div style="text-align:right">
-              <div class="chart-hover-date" id="chartHoverDate"></div>
-              <div class="chart-extra-stats" id="chartExtraStats"></div>
-            </div>
-          </div>
-          <div id="robinhoodChart"></div>
-          <div class="range-pills" id="rangePills">
-            <button class="range-pill" data-range="6">6M</button>
-            <button class="range-pill" data-range="12">1Y</button>
-            <button class="range-pill" data-range="36">3Y</button>
-            <button class="range-pill active" data-range="all">All</button>
-          </div>
+
+        <div class="rate-table-wrap" style="margin-top:16px;overflow-x:auto;">
+          <table class="rate-table" id="histTable">
+            <thead>
+              <tr>
+                <th>Date / Month</th>
+                <th class="num">Base Rate</th>
+                <th class="num">3M Avg Rate</th>
+                <th class="num">Spread Rate</th>
+              </tr>
+            </thead>
+            <tbody id="histEntries"></tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -516,22 +583,22 @@
           <th class="num sortable-th" data-qsort="quarter">Reporting Quarter ↕</th>
           <th></th>
         </tr></thead><tbody>
-<tr><td><div class="inst-name">Corporate Development Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></td><td class="num"><span class="rate-value">6.24%</span></td><td class="num"><span class="trend-chip down">-0.12%</span></td><td class="num"><span class="trend-chip down">-6.12%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="development_banks" data-qhist-id="corporate" title="View Quarterly History"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></td></tr>
-<tr><td><div class="inst-name">Excel Development Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></td><td class="num"><span class="rate-value">4.57%</span></td><td class="num"><span class="trend-chip down">-2.02%</span></td><td class="num"><span class="trend-chip down">-2.14%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="development_banks" data-qhist-id="excel" title="View Quarterly History"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></td></tr>
-<tr><td><div class="inst-name">Garima Bikas Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></td><td class="num"><span class="rate-value">4.76%</span></td><td class="num"><span class="trend-chip down">-0.01%</span></td><td class="num"><span class="trend-chip up">+0.04%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="development_banks" data-qhist-id="garima" title="View Quarterly History"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></td></tr>
-<tr><td><div class="inst-name">Green Development Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></td><td class="num"><span class="rate-value">3.22%</span></td><td class="num"><span class="trend-chip down">-1.10%</span></td><td class="num"><span class="trend-chip down">-0.11%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="development_banks" data-qhist-id="green" title="View Quarterly History"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></td></tr>
-<tr><td><div class="inst-name">Jyoti Bikash Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></td><td class="num"><span class="rate-value">7.75%</span></td><td class="num"><span class="trend-chip down">-0.08%</span></td><td class="num"><span class="trend-chip down">-0.23%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="development_banks" data-qhist-id="jbbl" title="View Quarterly History"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></td></tr>
-<tr><td><div class="inst-name">Kamana Sewa Bikas Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></td><td class="num"><span class="rate-value">3.77%</span></td><td class="num"><span class="trend-chip down">-0.63%</span></td><td class="num"><span class="trend-chip up">+0.39%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="development_banks" data-qhist-id="kamana" title="View Quarterly History"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></td></tr>
-<tr><td><div class="inst-name">Lumbini Bikas Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></td><td class="num"><span class="rate-value">6.94%</span></td><td class="num"><span class="trend-chip up">+0.45%</span></td><td class="num"><span class="trend-chip up">+2.39%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="development_banks" data-qhist-id="lumbini" title="View Quarterly History"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></td></tr>
-<tr><td><div class="inst-name">Mahalaxmi Development Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></td><td class="num"><span class="rate-value">6.32%</span></td><td class="num"><span class="trend-chip down">-0.27%</span></td><td class="num"><span class="trend-chip up">+1.46%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="development_banks" data-qhist-id="mahalaxmi" title="View Quarterly History"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></td></tr>
-<tr><td><div class="inst-name">Miteri Development Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></td><td class="num"><span class="rate-value">0.26%</span></td><td class="num"><span class="trend-chip down">-0.22%</span></td><td class="num"><span class="trend-chip down">-0.02%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="development_banks" data-qhist-id="miteri" title="View Quarterly History"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></td></tr>
-<tr><td><div class="inst-name">Muktinath Bikash Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></td><td class="num"><span class="rate-value">4.77%</span></td><td class="num"><span class="trend-chip down">-0.11%</span></td><td class="num"><span class="trend-chip up">+2.02%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="development_banks" data-qhist-id="muktinath" title="View Quarterly History"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></td></tr>
-<tr><td><div class="inst-name">Narayani Development Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></td><td class="num"><span class="rate-value">48.49%</span></td><td class="num"><span class="trend-chip down">-10.88%</span></td><td class="num"><span class="trend-chip down">-2.48%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="development_banks" data-qhist-id="narayani" title="View Quarterly History"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></td></tr>
-<tr><td><div class="inst-name">Salapa Bikas Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></td><td class="num"><span class="rate-value">0.79%</span></td><td class="num"><span class="trend-chip down">-2.56%</span></td><td class="num"><span class="trend-chip down">-1.83%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="development_banks" data-qhist-id="salapa" title="View Quarterly History"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></td></tr>
-<tr><td><div class="inst-name">Saptakoshi Development Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></td><td class="num"><span class="rate-value">7.68%</span></td><td class="num"><span class="trend-chip up">+0.08%</span></td><td class="num"><span class="trend-chip down">-1.42%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="development_banks" data-qhist-id="saptakoshi" title="View Quarterly History"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></td></tr>
-<tr><td><div class="inst-name">Shangrila Development Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></td><td class="num"><span class="rate-value">6.87%</span></td><td class="num"><span class="trend-chip down">-1.00%</span></td><td class="num"><span class="trend-chip up">+1.23%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="development_banks" data-qhist-id="shangrila" title="View Quarterly History"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></td></tr>
-<tr><td><div class="inst-name">Shine Resunga Development Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></td><td class="num"><span class="rate-value">4.93%</span></td><td class="num"><span class="trend-chip up">+0.01%</span></td><td class="num"><span class="trend-chip up">+0.69%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="development_banks" data-qhist-id="shine" title="View Quarterly History"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></td></tr>
-<tr><td><div class="inst-name">Sindhu Bikash Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></td><td class="num"><span class="rate-value">5.92%</span></td><td class="num"><span class="trend-chip down">-2.00%</span></td><td class="num"><span class="trend-chip down">-0.11%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><button class="history-btn" data-qhist-cat="development_banks" data-qhist-id="sindu" title="View Quarterly History"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></td></tr>
+<tr><td><div class="inst-cell"><div class="inst-logo-box"><img src="/img/logos/corporate.png" alt="Corporate Development Bank" class="inst-logo" loading="lazy" onerror="if(!this.dataset.icoTry){this.dataset.icoTry='1';this.src='/img/logos/corporate.ico';}else{this.style.display='none';if(this.nextElementSibling)this.nextElementSibling.style.display='inline-flex';}"><span class="inst-logo-fallback" style="display:none;">CD</span></div><div><div class="inst-name">Corporate Development Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></div></div></td><td class="num"><span class="rate-value">6.24%</span></td><td class="num"><span class="trend-chip down">-0.12%</span></td><td class="num"><span class="trend-chip down">-6.12%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><div class="inst-actions"><a class="inst-site-btn" href="https://cdbl.com.np" target="_blank" rel="noopener" title="Visit Official Website of Corporate Development Bank"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></a><button class="history-btn" data-qhist-cat="development_banks" data-qhist-id="corporate" title="View Quarterly History"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></div></td></tr>
+<tr><td><div class="inst-cell"><div class="inst-logo-box"><img src="/img/logos/excel.png" alt="Excel Development Bank" class="inst-logo" loading="lazy" onerror="if(!this.dataset.icoTry){this.dataset.icoTry='1';this.src='/img/logos/excel.ico';}else{this.style.display='none';if(this.nextElementSibling)this.nextElementSibling.style.display='inline-flex';}"><span class="inst-logo-fallback" style="display:none;">ED</span></div><div><div class="inst-name">Excel Development Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></div></div></td><td class="num"><span class="rate-value">4.57%</span></td><td class="num"><span class="trend-chip down">-2.02%</span></td><td class="num"><span class="trend-chip down">-2.14%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><div class="inst-actions"><a class="inst-site-btn" href="https://edb.com.np" target="_blank" rel="noopener" title="Visit Official Website of Excel Development Bank"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></a><button class="history-btn" data-qhist-cat="development_banks" data-qhist-id="excel" title="View Quarterly History"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></div></td></tr>
+<tr><td><div class="inst-cell"><div class="inst-logo-box"><img src="/img/logos/garima.png" alt="Garima Bikas Bank" class="inst-logo" loading="lazy" onerror="if(!this.dataset.icoTry){this.dataset.icoTry='1';this.src='/img/logos/garima.ico';}else{this.style.display='none';if(this.nextElementSibling)this.nextElementSibling.style.display='inline-flex';}"><span class="inst-logo-fallback" style="display:none;">GB</span></div><div><div class="inst-name">Garima Bikas Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></div></div></td><td class="num"><span class="rate-value">4.76%</span></td><td class="num"><span class="trend-chip down">-0.01%</span></td><td class="num"><span class="trend-chip up">+0.04%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><div class="inst-actions"><a class="inst-site-btn" href="https://garimabank.com.np" target="_blank" rel="noopener" title="Visit Official Website of Garima Bikas Bank"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></a><button class="history-btn" data-qhist-cat="development_banks" data-qhist-id="garima" title="View Quarterly History"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></div></td></tr>
+<tr><td><div class="inst-cell"><div class="inst-logo-box"><img src="/img/logos/green.png" alt="Green Development Bank" class="inst-logo" loading="lazy" onerror="if(!this.dataset.icoTry){this.dataset.icoTry='1';this.src='/img/logos/green.ico';}else{this.style.display='none';if(this.nextElementSibling)this.nextElementSibling.style.display='inline-flex';}"><span class="inst-logo-fallback" style="display:none;">GD</span></div><div><div class="inst-name">Green Development Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></div></div></td><td class="num"><span class="rate-value">3.22%</span></td><td class="num"><span class="trend-chip down">-1.10%</span></td><td class="num"><span class="trend-chip down">-0.11%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><div class="inst-actions"><a class="inst-site-btn" href="https://greenbank.com.np" target="_blank" rel="noopener" title="Visit Official Website of Green Development Bank"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></a><button class="history-btn" data-qhist-cat="development_banks" data-qhist-id="green" title="View Quarterly History"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></div></td></tr>
+<tr><td><div class="inst-cell"><div class="inst-logo-box"><img src="/img/logos/jbbl.png" alt="Jyoti Bikash Bank" class="inst-logo" loading="lazy" onerror="if(!this.dataset.icoTry){this.dataset.icoTry='1';this.src='/img/logos/jbbl.ico';}else{this.style.display='none';if(this.nextElementSibling)this.nextElementSibling.style.display='inline-flex';}"><span class="inst-logo-fallback" style="display:none;">JB</span></div><div><div class="inst-name">Jyoti Bikash Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></div></div></td><td class="num"><span class="rate-value">7.75%</span></td><td class="num"><span class="trend-chip down">-0.08%</span></td><td class="num"><span class="trend-chip down">-0.23%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><div class="inst-actions"><a class="inst-site-btn" href="https://jbbl.com.np" target="_blank" rel="noopener" title="Visit Official Website of Jyoti Bikash Bank"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></a><button class="history-btn" data-qhist-cat="development_banks" data-qhist-id="jbbl" title="View Quarterly History"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></div></td></tr>
+<tr><td><div class="inst-cell"><div class="inst-logo-box"><img src="/img/logos/kamana.png" alt="Kamana Sewa Bikas Bank" class="inst-logo" loading="lazy" onerror="if(!this.dataset.icoTry){this.dataset.icoTry='1';this.src='/img/logos/kamana.ico';}else{this.style.display='none';if(this.nextElementSibling)this.nextElementSibling.style.display='inline-flex';}"><span class="inst-logo-fallback" style="display:none;">KS</span></div><div><div class="inst-name">Kamana Sewa Bikas Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></div></div></td><td class="num"><span class="rate-value">3.77%</span></td><td class="num"><span class="trend-chip down">-0.63%</span></td><td class="num"><span class="trend-chip up">+0.39%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><div class="inst-actions"><a class="inst-site-btn" href="https://kamanasewabank.com" target="_blank" rel="noopener" title="Visit Official Website of Kamana Sewa Bikas Bank"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></a><button class="history-btn" data-qhist-cat="development_banks" data-qhist-id="kamana" title="View Quarterly History"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></div></td></tr>
+<tr><td><div class="inst-cell"><div class="inst-logo-box"><img src="/img/logos/lumbini.png" alt="Lumbini Bikas Bank" class="inst-logo" loading="lazy" onerror="if(!this.dataset.icoTry){this.dataset.icoTry='1';this.src='/img/logos/lumbini.ico';}else{this.style.display='none';if(this.nextElementSibling)this.nextElementSibling.style.display='inline-flex';}"><span class="inst-logo-fallback" style="display:none;">LB</span></div><div><div class="inst-name">Lumbini Bikas Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></div></div></td><td class="num"><span class="rate-value">6.94%</span></td><td class="num"><span class="trend-chip up">+0.45%</span></td><td class="num"><span class="trend-chip up">+2.39%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><div class="inst-actions"><a class="inst-site-btn" href="https://lumbinibikasbank.com" target="_blank" rel="noopener" title="Visit Official Website of Lumbini Bikas Bank"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></a><button class="history-btn" data-qhist-cat="development_banks" data-qhist-id="lumbini" title="View Quarterly History"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></div></td></tr>
+<tr><td><div class="inst-cell"><div class="inst-logo-box"><img src="/img/logos/mahalaxmi.png" alt="Mahalaxmi Development Bank" class="inst-logo" loading="lazy" onerror="if(!this.dataset.icoTry){this.dataset.icoTry='1';this.src='/img/logos/mahalaxmi.ico';}else{this.style.display='none';if(this.nextElementSibling)this.nextElementSibling.style.display='inline-flex';}"><span class="inst-logo-fallback" style="display:none;">MD</span></div><div><div class="inst-name">Mahalaxmi Development Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></div></div></td><td class="num"><span class="rate-value">6.32%</span></td><td class="num"><span class="trend-chip down">-0.27%</span></td><td class="num"><span class="trend-chip up">+1.46%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><div class="inst-actions"><a class="inst-site-btn" href="https://mahalaxmibank.com" target="_blank" rel="noopener" title="Visit Official Website of Mahalaxmi Development Bank"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></a><button class="history-btn" data-qhist-cat="development_banks" data-qhist-id="mahalaxmi" title="View Quarterly History"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></div></td></tr>
+<tr><td><div class="inst-cell"><div class="inst-logo-box"><img src="/img/logos/miteri.png" alt="Miteri Development Bank" class="inst-logo" loading="lazy" onerror="if(!this.dataset.icoTry){this.dataset.icoTry='1';this.src='/img/logos/miteri.ico';}else{this.style.display='none';if(this.nextElementSibling)this.nextElementSibling.style.display='inline-flex';}"><span class="inst-logo-fallback" style="display:none;">MD</span></div><div><div class="inst-name">Miteri Development Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></div></div></td><td class="num"><span class="rate-value">0.26%</span></td><td class="num"><span class="trend-chip down">-0.22%</span></td><td class="num"><span class="trend-chip down">-0.02%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><div class="inst-actions"><a class="inst-site-btn" href="https://miteribank.com.np" target="_blank" rel="noopener" title="Visit Official Website of Miteri Development Bank"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></a><button class="history-btn" data-qhist-cat="development_banks" data-qhist-id="miteri" title="View Quarterly History"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></div></td></tr>
+<tr><td><div class="inst-cell"><div class="inst-logo-box"><img src="/img/logos/muktinath.png" alt="Muktinath Bikash Bank" class="inst-logo" loading="lazy" onerror="if(!this.dataset.icoTry){this.dataset.icoTry='1';this.src='/img/logos/muktinath.ico';}else{this.style.display='none';if(this.nextElementSibling)this.nextElementSibling.style.display='inline-flex';}"><span class="inst-logo-fallback" style="display:none;">MB</span></div><div><div class="inst-name">Muktinath Bikash Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></div></div></td><td class="num"><span class="rate-value">4.77%</span></td><td class="num"><span class="trend-chip down">-0.11%</span></td><td class="num"><span class="trend-chip up">+2.02%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><div class="inst-actions"><a class="inst-site-btn" href="https://muktinathbank.com.np" target="_blank" rel="noopener" title="Visit Official Website of Muktinath Bikash Bank"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></a><button class="history-btn" data-qhist-cat="development_banks" data-qhist-id="muktinath" title="View Quarterly History"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></div></td></tr>
+<tr><td><div class="inst-cell"><div class="inst-logo-box"><img src="/img/logos/narayani.png" alt="Narayani Development Bank" class="inst-logo" loading="lazy" onerror="if(!this.dataset.icoTry){this.dataset.icoTry='1';this.src='/img/logos/narayani.ico';}else{this.style.display='none';if(this.nextElementSibling)this.nextElementSibling.style.display='inline-flex';}"><span class="inst-logo-fallback" style="display:none;">ND</span></div><div><div class="inst-name">Narayani Development Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></div></div></td><td class="num"><span class="rate-value">48.49%</span></td><td class="num"><span class="trend-chip down">-10.88%</span></td><td class="num"><span class="trend-chip down">-2.48%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><div class="inst-actions"><a class="inst-site-btn" href="https://narayanibank.com.np" target="_blank" rel="noopener" title="Visit Official Website of Narayani Development Bank"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></a><button class="history-btn" data-qhist-cat="development_banks" data-qhist-id="narayani" title="View Quarterly History"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></div></td></tr>
+<tr><td><div class="inst-cell"><div class="inst-logo-box"><img src="/img/logos/salapa.png" alt="Salapa Bikas Bank" class="inst-logo" loading="lazy" onerror="if(!this.dataset.icoTry){this.dataset.icoTry='1';this.src='/img/logos/salapa.ico';}else{this.style.display='none';if(this.nextElementSibling)this.nextElementSibling.style.display='inline-flex';}"><span class="inst-logo-fallback" style="display:none;">SB</span></div><div><div class="inst-name">Salapa Bikas Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></div></div></td><td class="num"><span class="rate-value">0.79%</span></td><td class="num"><span class="trend-chip down">-2.56%</span></td><td class="num"><span class="trend-chip down">-1.83%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><div class="inst-actions"><a class="inst-site-btn" href="https://salapabikasbank.com.np" target="_blank" rel="noopener" title="Visit Official Website of Salapa Bikas Bank"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></a><button class="history-btn" data-qhist-cat="development_banks" data-qhist-id="salapa" title="View Quarterly History"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></div></td></tr>
+<tr><td><div class="inst-cell"><div class="inst-logo-box"><img src="/img/logos/saptakoshi.png" alt="Saptakoshi Development Bank" class="inst-logo" loading="lazy" onerror="if(!this.dataset.icoTry){this.dataset.icoTry='1';this.src='/img/logos/saptakoshi.ico';}else{this.style.display='none';if(this.nextElementSibling)this.nextElementSibling.style.display='inline-flex';}"><span class="inst-logo-fallback" style="display:none;">SD</span></div><div><div class="inst-name">Saptakoshi Development Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></div></div></td><td class="num"><span class="rate-value">7.68%</span></td><td class="num"><span class="trend-chip up">+0.08%</span></td><td class="num"><span class="trend-chip down">-1.42%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><div class="inst-actions"><a class="inst-site-btn" href="https://saptakoshibank.com.np" target="_blank" rel="noopener" title="Visit Official Website of Saptakoshi Development Bank"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></a><button class="history-btn" data-qhist-cat="development_banks" data-qhist-id="saptakoshi" title="View Quarterly History"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></div></td></tr>
+<tr><td><div class="inst-cell"><div class="inst-logo-box"><img src="/img/logos/shangrila.png" alt="Shangrila Development Bank" class="inst-logo" loading="lazy" onerror="if(!this.dataset.icoTry){this.dataset.icoTry='1';this.src='/img/logos/shangrila.ico';}else{this.style.display='none';if(this.nextElementSibling)this.nextElementSibling.style.display='inline-flex';}"><span class="inst-logo-fallback" style="display:none;">SD</span></div><div><div class="inst-name">Shangrila Development Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></div></div></td><td class="num"><span class="rate-value">6.87%</span></td><td class="num"><span class="trend-chip down">-1.00%</span></td><td class="num"><span class="trend-chip up">+1.23%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><div class="inst-actions"><a class="inst-site-btn" href="https://shangrilabank.com" target="_blank" rel="noopener" title="Visit Official Website of Shangrila Development Bank"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></a><button class="history-btn" data-qhist-cat="development_banks" data-qhist-id="shangrila" title="View Quarterly History"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></div></td></tr>
+<tr><td><div class="inst-cell"><div class="inst-logo-box"><img src="/img/logos/shine.png" alt="Shine Resunga Development Bank" class="inst-logo" loading="lazy" onerror="if(!this.dataset.icoTry){this.dataset.icoTry='1';this.src='/img/logos/shine.ico';}else{this.style.display='none';if(this.nextElementSibling)this.nextElementSibling.style.display='inline-flex';}"><span class="inst-logo-fallback" style="display:none;">SR</span></div><div><div class="inst-name">Shine Resunga Development Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></div></div></td><td class="num"><span class="rate-value">4.93%</span></td><td class="num"><span class="trend-chip up">+0.01%</span></td><td class="num"><span class="trend-chip up">+0.69%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><div class="inst-actions"><a class="inst-site-btn" href="https://srdb.com.np" target="_blank" rel="noopener" title="Visit Official Website of Shine Resunga Development Bank"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></a><button class="history-btn" data-qhist-cat="development_banks" data-qhist-id="shine" title="View Quarterly History"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></div></td></tr>
+<tr><td><div class="inst-cell"><div class="inst-logo-box"><img src="/img/logos/sindu.png" alt="Sindhu Bikash Bank" class="inst-logo" loading="lazy" onerror="if(!this.dataset.icoTry){this.dataset.icoTry='1';this.src='/img/logos/sindu.ico';}else{this.style.display='none';if(this.nextElementSibling)this.nextElementSibling.style.display='inline-flex';}"><span class="inst-logo-fallback" style="display:none;">SB</span></div><div><div class="inst-name">Sindhu Bikash Bank<span class="status-dot-indicator green" title="2083 Ashadh (Q4) disclosure up to date"></span></div></div></div></td><td class="num"><span class="rate-value">5.92%</span></td><td class="num"><span class="trend-chip down">-2.00%</span></td><td class="num"><span class="trend-chip down">-0.11%</span></td><td class="num"><span class="rate-date latest-date">2083 Ashadh (Q4)</span></td><td style="text-align:right"><div class="inst-actions"><a class="inst-site-btn" href="https://sindhubikashbank.com.np" target="_blank" rel="noopener" title="Visit Official Website of Sindhu Bikash Bank"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></a><button class="history-btn" data-qhist-cat="development_banks" data-qhist-id="sindu" title="View Quarterly History"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path></svg></button></div></td></tr>
         </tbody></table></div>
       </div></div>
       
@@ -634,7 +701,7 @@
         <div class="footer-sub">Spotted an error or want a new statistic tracked?</div>
         <p class="footer-text">BankStatsNepal is an independent project. Corrections, suggestions and requests for new indicators are always welcome.</p>
         <a class="footer-btn" href="https://docs.google.com/forms/d/e/1FAIpQLSfdIRY2k1cT20pW-jmejLOa0AvpG2byer5D2yepw0wow8hlyw/viewform" target="_blank" rel="noopener">Send feedback</a>
-        <p class="footer-text" style="margin:14px 0 0">For correspondence: <a href="mailto:bankstatsnepal@gmail.com" style="color:var(--gold-soft);text-decoration:none">bankstatsnepal@gmail.com</a></p>
+        <p class="footer-text" style="margin:14px 0 0">For correspondence: <a href="mailto:bankstatsnepal@gmail.com" class="footer-email-link">bankstatsnepal@gmail.com</a></p>
         <!-- Future footer links (about, data sources, socials) go here -->
       </div>
 
@@ -654,7 +721,7 @@
 <div class="tip" id="scatTip"></div>
 <div class="tip" id="trendTip"></div>
 
-<script src="/js/app.js?v=7.0"></script>
+<script src="/js/app.js?v=8.8"></script>
 
 </body>
 </html>

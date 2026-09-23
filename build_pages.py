@@ -113,6 +113,27 @@ def trend_chip(curr, prev):
     return '<span class="trend-chip flat">— 0.00</span>'
 
 
+def get_initials(name):
+    if not name:
+        return 'BK'
+    words = [w for w in name.split() if w.lower() not in ('bank', 'ltd', 'ltd.', 'limited')]
+    if len(words) >= 2:
+        return (words[0][0] + words[1][0]).upper()
+    return name[:2].upper()
+
+
+def render_logo_html(inst):
+    initials = get_initials(inst.get('name', ''))
+    inst_id = esc(inst.get('id', ''))
+    name = esc(inst.get('name', ''))
+    return (
+        f'<div class="inst-logo-box">'
+        f'<img src="/img/logos/{inst_id}.png" alt="{name}" class="inst-logo" loading="lazy" onerror="if(!this.dataset.icoTry){{this.dataset.icoTry=\'1\';this.src=\'/img/logos/{inst_id}.ico\';}}else{{this.style.display=\'none\';if(this.nextElementSibling)this.nextElementSibling.style.display=\'inline-flex\';}}">'
+        f'<span class="inst-logo-fallback" style="display:none;">{initials}</span>'
+        f'</div>'
+    )
+
+
 def unified_row(inst, spread_inst, category, latest_date=None):
     hist = inst['history']
     curr, prev = hist[0], (hist[1] if len(hist) > 1 else None)
@@ -135,13 +156,26 @@ def unified_row(inst, spread_inst, category, latest_date=None):
 
     note_html = f'<div class="inst-note">{esc(inst["note"])}</div>' if inst.get('note') else ''
 
+    site_btn = ''
+    if inst.get('website'):
+        site_btn = (
+            f'<a class="inst-site-btn" href="{esc(inst["website"])}" target="_blank" rel="noopener" title="Visit Official Website of {esc(inst["name"])}">'
+            f'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">'
+            f'<circle cx="12" cy="12" r="10"></circle>'
+            f'<line x1="2" y1="12" x2="22" y2="12"></line>'
+            f'<path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>'
+            f'</svg>'
+            f'</a>'
+        )
+
     return (
         f'<tr data-name="{esc(inst["name"].lower())}"{tr_class}>'
-        f'<td><div class="inst-name">{esc(inst["name"])}{status_dot}</div>{note_html}</td>'
+        f'<td><div class="inst-cell">{render_logo_html(inst)}<div><div class="inst-name">{esc(inst["name"])}{status_dot}</div>{note_html}</div></div></td>'
         f'<td class="num"><div><span class="rate-value">{fmt_rate(curr["rate"])}</span>{chip}</div></td>'
         f'<td class="num"><div><span class="rate-value" style="font-size:16px">{fmt_rate(a3)}</span></div></td>'
         f'<td class="num">{spread_html}</td>'
         f'<td style="text-align:right">'
+        f'<div class="inst-actions">{site_btn}'
         f'<button class="history-btn" data-cat="{category}" data-id="{esc(inst["id"])}" title="View History">'
         f'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;">'
         f'<circle cx="12" cy="12" r="10"></circle>'
@@ -149,6 +183,7 @@ def unified_row(inst, spread_inst, category, latest_date=None):
         f'<path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path>'
         f'</svg>'
         f'</button>'
+        f'</div>'
         f'</td>'
         f'</tr>'
     )
@@ -235,7 +270,13 @@ def build_listviews_html(indicator, category, base_data, spread_data):
             <h1>{cat_label}</h1>
             <div class="section-sub" id="sub-{cat}">{cat_sub}</div>
           </div>
-          <div class="search-box"><input type="text" placeholder="Search bank…" data-search="{cat}"></div>
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+            <div class="br-view-switcher">
+              <button class="br-view-btn active" data-brview="data">📋 Data View</button>
+              <button class="br-view-btn" data-brview="chart">📊 Chart View</button>
+            </div>
+            <div class="search-box"><input type="text" placeholder="Search bank…" data-search="{cat}"></div>
+          </div>
         </div>
         <div class="rate-table-wrap"><table class="rate-table"><thead><tr id="thead-{cat}">
           {UNIFIED_THEAD}
@@ -338,14 +379,27 @@ def build_quarterly_table_html(category, q_data):
                     cls = 'up' if diff > 0 else 'down'
                     yoy_str = f'<span class="trend-chip {cls}">{formatted}</span>'
 
+        site_btn = ''
+        if inst.get('website'):
+            site_btn = (
+                f'<a class="inst-site-btn" href="{esc(inst["website"])}" target="_blank" rel="noopener" title="Visit Official Website of {esc(inst["name"])}">'
+                f'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">'
+                f'<circle cx="12" cy="12" r="10"></circle>'
+                f'<line x1="2" y1="12" x2="22" y2="12"></line>'
+                f'<path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>'
+                f'</svg>'
+                f'</a>'
+            )
+
         rows.append(
             f'<tr>'
-            f'<td><div class="inst-name">{esc(inst["name"])}{status_dot}</div>{note_html}</td>'
+            f'<td><div class="inst-cell">{render_logo_html(inst)}<div><div class="inst-name">{esc(inst["name"])}{status_dot}</div>{note_html}</div></div></td>'
             f'<td class="num"><span class="rate-value">{val_str}</span></td>'
             f'<td class="num">{qoq_str}</td>'
             f'<td class="num">{yoy_str}</td>'
             f'<td class="num"><span class="{date_cls}">{q_label}{audit_badge}</span></td>'
             f'<td style="text-align:right">'
+            f'<div class="inst-actions">{site_btn}'
             f'<button class="history-btn" data-qhist-cat="{category}" data-qhist-id="{inst["id"]}" title="View Quarterly History">'
             f'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;">'
             f'<circle cx="12" cy="12" r="10"></circle>'
@@ -353,6 +407,7 @@ def build_quarterly_table_html(category, q_data):
             f'<path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path>'
             f'</svg>'
             f'</button>'
+            f'</div>'
             f'</td>'
             f'</tr>'
         )
@@ -374,7 +429,7 @@ def build_quarterly_table_html(category, q_data):
           <th class="num sortable-th" data-qsort="quarter">Reporting Quarter ↕</th>
           <th></th>
         </tr></thead><tbody>
-{chr(10).join(rows)}
+{chr(10).join(rows) if rows else '<tr><td colspan="6" style="text-align:center;padding:36px;color:var(--slate)">No quarterly data reported yet for this category.</td></tr>'}
         </tbody></table></div>
       </div>'''
 
@@ -501,8 +556,8 @@ def render_page(template, indicator, category, base_data, spread_data, q_data):
         out = out[:start] + build_subnav_html(indicator, category, base_data) + '\n      ' + out[end:]
 
         start = out.index('<div id="listViews">')
-        end = out.index('<!-- HISTORY VIEW -->')
-        out = out[:start] + '<div id="listViews">\n' + build_listviews_html(indicator, category, base_data, spread_data) + '\n    </div>\n\n    ' + out[end:]
+        end = out.index('<!-- CHART VIEW -->')
+        out = out[:start] + '<div id="listViews">\n' + build_listviews_html(indicator, category, base_data, spread_data) + '\n    </div>\n\n      ' + out[end:]
 
     # --- data-asof text ---
     asof_html = compute_asof_html(base_data)
@@ -564,8 +619,8 @@ def main():
                 continue
             b_hist = [{'date': h['date'], 'rate': h['base_rate']} for h in inst.get('history', []) if h.get('base_rate') is not None]
             s_hist = [{'date': h['date'], 'rate': h['interest_spread']} for h in inst.get('history', []) if h.get('interest_spread') is not None]
-            b_obj = {'id': inst['id'], 'name': inst['name'], 'history': b_hist}
-            s_obj = {'id': inst['id'], 'name': inst['name'], 'history': s_hist}
+            b_obj = {'id': inst['id'], 'name': inst['name'], 'website': inst.get('website', ''), 'history': b_hist}
+            s_obj = {'id': inst['id'], 'name': inst['name'], 'website': inst.get('website', ''), 'history': s_hist}
             if inst.get('note'):
                 b_obj['note'] = inst['note']
                 s_obj['note'] = inst['note']

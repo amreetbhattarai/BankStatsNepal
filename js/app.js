@@ -63,6 +63,62 @@ function parseLocationPath() {
   return { page: 'dashboard', category: 'commercial_banks' };
 }
 
+/* ========= THEME ENGINE (DARK / LIGHT MODE) ========= */
+function getTheme() {
+  const saved = localStorage.getItem('bsn_theme');
+  if (saved) return saved;
+  return (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+}
+
+function updateThemeToggleIcon(theme) {
+  const btns = document.querySelectorAll('.theme-toggle-btn');
+  const moonSVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`;
+  const sunSVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`;
+  
+  btns.forEach(btn => {
+    btn.innerHTML = theme === 'dark' ? sunSVG : moonSVG;
+    btn.setAttribute('title', theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode');
+    btn.setAttribute('aria-label', theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode');
+  });
+}
+
+function applyTheme(theme, isInit = false) {
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('bsn_theme', theme);
+  updateThemeToggleIcon(theme);
+
+  if (!isInit && DATA) {
+    if (currentPage === 'dashboard') {
+      renderDashboard();
+    } else if (currentPage === 'quarterly_indicators' && activeQView === 'chart') {
+      const qData = (QUARTERLY_DATA && QUARTERLY_DATA[activeQCat]) || [];
+      const cfg = Q_METRIC_CONFIG[activeQMetric] || Q_METRIC_CONFIG.npl;
+      const latestQ = (qData[0] && qData[0].history && qData[0].history[0]?.quarter) || 'Q3 2082';
+      renderQuarterlyChart(activeQCat, qData, cfg, latestQ);
+    }
+  }
+}
+
+function toggleTheme() {
+  const curr = document.documentElement.getAttribute('data-theme') || getTheme();
+  const next = curr === 'dark' ? 'light' : 'dark';
+  applyTheme(next);
+}
+
+function initTheme() {
+  const theme = getTheme();
+  applyTheme(theme, true);
+  document.addEventListener('click', e => {
+    const btn = e.target.closest('.theme-toggle-btn');
+    if (btn) {
+      e.preventDefault();
+      toggleTheme();
+    }
+  });
+}
+
+initTheme();
+
 let DATA = null;
 let SPREAD_DATA = null;
 let QUARTERLY_DATA = null;
@@ -81,6 +137,10 @@ let activeSubTab = _initialLoc.category;
 let activeQCat = _initialLoc.category || 'commercial_banks';
 let activeQMetric = 'npl';
 let activeQView = 'data';
+let activeBRView = 'data';
+let activeBRChartInstId = null;
+let activeBRChartIndicator = 'base_rate';
+let activeBRChartRange = 'all';
 let sortState = { col: null, dir: null };
 let qSortState = { col: null, dir: null };
 let qChartSortDir = 'desc'; // 'desc', 'asc', 'name'
@@ -106,6 +166,25 @@ function fmtDateShort(d) {
 
 function fmtRate(r) { return r.toFixed(2) + '%'; }
 
+function getInitials(name) {
+  if (!name) return 'BK';
+  const words = name.replace(/^(the|bank)\s+/i, '').split(/\s+/).filter(w => !['bank', 'ltd', 'ltd.', 'limited'].includes(w.toLowerCase()));
+  if (words.length >= 2) {
+    return (words[0][0] + words[1][0]).toUpperCase();
+  }
+  return name.slice(0, 2).toUpperCase();
+}
+
+function renderLogoHTML(inst, extraClass = '') {
+  if (!inst) return '';
+  const initials = getInitials(inst.name);
+  const logoSrc = `/img/logos/${inst.id}.png`;
+  return `<div class="inst-logo-box ${extraClass}">` +
+    `<img src="${logoSrc}" alt="${inst.name}" class="inst-logo" loading="lazy" onerror="if(!this.dataset.icoTry){this.dataset.icoTry='1';this.src='/img/logos/${inst.id}.ico';}else{this.style.display='none';if(this.nextElementSibling)this.nextElementSibling.style.display='inline-flex';}">` +
+    `<span class="inst-logo-fallback" style="display:none;">${initials}</span>` +
+    `</div>`;
+}
+
 /* ---- Shared chart helpers ---- */
 
 // Usable chart width inside a .dash-card (28px padding each side)
@@ -120,8 +199,8 @@ function yGrid(y, min, max, x0, x1, ticks = 4) {
   for (let t = 0; t <= ticks; t++) {
     const v = min + (max - min) * t / ticks;
     const yy = y(v).toFixed(1);
-    out += `<line x1="${x0}" x2="${x1}" y1="${yy}" y2="${yy}" stroke="#E2DCCB" stroke-width="1"/>`;
-    out += `<text x="${x0 - 6}" y="${+yy + 3.5}" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10" fill="#5A6478">${v.toFixed(1)}</text>`;
+    out += `<line x1="${x0}" x2="${x1}" y1="${yy}" y2="${yy}" stroke="var(--line)" stroke-width="1"/>`;
+    out += `<text x="${x0 - 6}" y="${+yy + 3.5}" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--slate)">${v.toFixed(1)}</text>`;
   }
   return out;
 }
@@ -132,7 +211,7 @@ function xDateLabels(dates, x, labelY) {
   const step = Math.max(1, Math.ceil(dates.length / 5));
   dates.forEach((d, i) => {
     if (i % step === 0 || i === dates.length - 1) {
-      out += `<text x="${x(i).toFixed(1)}" y="${labelY}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="#5A6478">${fmtDateShort(d)}</text>`;
+      out += `<text x="${x(i).toFixed(1)}" y="${labelY}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--slate)">${fmtDateShort(d)}</text>`;
     }
   });
   return out;
@@ -306,7 +385,15 @@ function renderUnifiedList(category) {
     tr.dataset.name = inst.name.toLowerCase();
     if (isPending) tr.className = 'stale-row';
     tr.innerHTML = `
-      <td><div class="inst-name">${inst.name}${statusDot}</div>${noteHTML}</td>
+      <td>
+        <div class="inst-cell">
+          ${renderLogoHTML(inst)}
+          <div>
+            <div class="inst-name">${inst.name}${statusDot}</div>
+            ${noteHTML}
+          </div>
+        </div>
+      </td>
       <td class="num">
         <div><span class="rate-value">${fmtRate(curr.rate)}</span>${chip}</div>
       </td>
@@ -315,13 +402,23 @@ function renderUnifiedList(category) {
       </td>
       <td class="num">${spreadHTML}</td>
       <td style="text-align:right">
-        <button class="history-btn" data-cat="${category}" data-id="${inst.id}" title="View History">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;">
-            <circle cx="12" cy="12" r="10"></circle>
-            <polyline points="12 6 12 12 16 14"></polyline>
-            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path>
-          </svg>
-        </button>
+        <div class="inst-actions">
+          ${inst.website ? `
+          <a class="inst-site-btn" href="${inst.website}" target="_blank" rel="noopener" title="Visit Official Website of ${inst.name}">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
+          </a>` : ''}
+          <button class="history-btn" data-cat="${category}" data-id="${inst.id}" title="View History">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path>
+            </svg>
+          </button>
+        </div>
       </td>
     `;
     tbody.appendChild(tr);
@@ -331,17 +428,30 @@ function renderUnifiedList(category) {
     card.dataset.name = inst.name.toLowerCase();
     card.innerHTML = `
       <div class="rate-card-top">
-        <div>
-          <div class="inst-name">${inst.name}${statusDot}</div>
-          ${noteHTML}
+        <div class="inst-cell">
+          ${renderLogoHTML(inst)}
+          <div>
+            <div class="inst-name">${inst.name}${statusDot}</div>
+            ${noteHTML}
+          </div>
         </div>
-        <button class="history-btn" data-cat="${category}" data-id="${inst.id}" title="View History">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;">
-            <circle cx="12" cy="12" r="10"></circle>
-            <polyline points="12 6 12 12 16 14"></polyline>
-            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path>
-          </svg>
-        </button>
+        <div class="inst-actions">
+          ${inst.website ? `
+          <a class="inst-site-btn" href="${inst.website}" target="_blank" rel="noopener" title="Visit Official Website of ${inst.name}">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
+          </a>` : ''}
+          <button class="history-btn" data-cat="${category}" data-id="${inst.id}" title="View History">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path>
+            </svg>
+          </button>
+        </div>
       </div>
       <div style="display:flex;gap:16px;margin-top:10px;flex-wrap:wrap">
         <div>
@@ -502,7 +612,7 @@ function renderScatter(scatCat) {
     if (b.problematic || b.excludeFromAvg) return;
     const s = spread.find(v => v.id === b.id) || spread.find(v => v.name === b.name);
     if (s && s.history && s.history.length > 0 && b.history && b.history.length > 0) {
-      pts.push({ name: b.name, bx: b.history[0].rate, sy: s.history[0].rate });
+      pts.push({ id: b.id, name: b.name, bx: b.history[0].rate, sy: s.history[0].rate });
     } else {
       unmatched.push(b.name);
     }
@@ -513,7 +623,7 @@ function renderScatter(scatCat) {
     subEl.textContent = 'No spread data for this category yet';
     svg.setAttribute('viewBox', '0 0 400 120');
     svg.setAttribute('height', 120);
-    svg.innerHTML = '<text x="200" y="60" text-anchor="middle" font-size="12" fill="#5A6478">No spread data available</text>';
+    svg.innerHTML = '<text x="200" y="60" text-anchor="middle" font-size="12" fill="var(--slate)">No spread data available</text>';
     return;
   }
 
@@ -522,7 +632,8 @@ function renderScatter(scatCat) {
   subEl.textContent = `${CATEGORY_LABELS[catKey]}s · ${pts.length} BFIs · ${fmtDate(GLOBAL_LATEST_DATE)}`;
 
   const W = chartWidth(svg);
-  const H = 300, padL = 42, padR = 16, padT = 16, padB = 40;
+  const isMobile = W < 520;
+  const H = 300, padL = isMobile ? 38 : 42, padR = 16, padT = 16, padB = 40;
   const plotW = W - padL - padR, plotH = H - padT - padB;
 
   const xsArr = pts.map(p => p.bx), ysArr = pts.map(p => p.sy);
@@ -536,28 +647,44 @@ function renderScatter(scatCat) {
   let grid = yGrid(y, yMin, yMax, padL, W - padR);
   for (let t = 0; t <= 4; t++) {
     const vx = xMin + (xMax - xMin) * t / 4;
-    grid += `<text x="${x(vx).toFixed(1)}" y="${H - padB + 16}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="#5A6478">${vx.toFixed(1)}</text>`;
+    grid += `<text x="${x(vx).toFixed(1)}" y="${H - padB + 16}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--slate)">${vx.toFixed(1)}</text>`;
   }
-  grid += `<text x="${(padL + plotW / 2).toFixed(1)}" y="${H - 4}" text-anchor="middle" font-size="10" fill="#5A6478">Base rate %</text>`;
-  grid += `<text x="12" y="${(padT + plotH / 2).toFixed(1)}" text-anchor="middle" font-size="10" fill="#5A6478" transform="rotate(-90 12 ${(padT + plotH / 2).toFixed(1)})">Spread %</text>`;
+  grid += `<text x="${(padL + plotW / 2).toFixed(1)}" y="${H - 4}" text-anchor="middle" font-size="10" fill="var(--slate)">Base rate %</text>`;
+  grid += `<text x="12" y="${(padT + plotH / 2).toFixed(1)}" text-anchor="middle" font-size="10" fill="var(--slate)" transform="rotate(-90 12 ${(padT + plotH / 2).toFixed(1)})">Spread %</text>`;
 
   // Category-average crosshairs → four quadrants relative to peers
   const cross =
-    `<line x1="${x(avgX).toFixed(1)}" x2="${x(avgX).toFixed(1)}" y1="${padT}" y2="${padT + plotH}" stroke="#1B2A4A" stroke-width="1" stroke-dasharray="4,3" opacity="0.3"/>` +
-    `<line x1="${padL}" x2="${padL + plotW}" y1="${y(avgY).toFixed(1)}" y2="${y(avgY).toFixed(1)}" stroke="#1B2A4A" stroke-width="1" stroke-dasharray="4,3" opacity="0.3"/>` +
-    `<text x="${(x(avgX) + 4).toFixed(1)}" y="${padT + 10}" font-family="IBM Plex Mono, monospace" font-size="9" fill="#5A6478">avg ${avgX.toFixed(2)}</text>` +
-    `<text x="${(padL + plotW - 2).toFixed(1)}" y="${(y(avgY) - 4).toFixed(1)}" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="9" fill="#5A6478">avg ${avgY.toFixed(2)}</text>`;
+    `<line x1="${x(avgX).toFixed(1)}" x2="${x(avgX).toFixed(1)}" y1="${padT}" y2="${padT + plotH}" stroke="var(--ink)" stroke-width="1" stroke-dasharray="4,3" opacity="0.25"/>` +
+    `<line x1="${padL}" x2="${padL + plotW}" y1="${y(avgY).toFixed(1)}" y2="${y(avgY).toFixed(1)}" stroke="var(--ink)" stroke-width="1" stroke-dasharray="4,3" opacity="0.25"/>` +
+    `<text x="${(x(avgX) + 4).toFixed(1)}" y="${padT + 10}" font-family="IBM Plex Mono, monospace" font-size="9" fill="var(--slate)">avg ${avgX.toFixed(2)}</text>` +
+    `<text x="${(padL + plotW - 2).toFixed(1)}" y="${(y(avgY) - 4).toFixed(1)}" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="9" fill="var(--slate)">avg ${avgY.toFixed(2)}</text>`;
 
   const color = CAT_COLORS[catKey];
-  let dotsHtml = '', hovers = '';
+  const rScat = isMobile ? 7 : 9;
+  let dotsHtml = '';
   pts.forEach((p, i) => {
-    dotsHtml += `<circle cx="${x(p.bx).toFixed(1)}" cy="${y(p.sy).toFixed(1)}" r="5.5" fill="${color}" fill-opacity="0.8" stroke="#fff" stroke-width="1.5"/>`;
-    hovers += `<circle class="sc-hover" data-idx="${i}" cx="${x(p.bx).toFixed(1)}" cy="${y(p.sy).toFixed(1)}" r="11" fill="transparent" style="cursor:pointer"/>`;
+    const px = x(p.bx).toFixed(1);
+    const py = y(p.sy).toFixed(1);
+    const initials = getInitials(p.name);
+    const clipId = `sc-clip-${catKey}-${i}`;
+    const imgRadius = rScat - 0.4;
+    const imgSize = imgRadius * 2;
+    const imgOffset = -imgRadius;
+    dotsHtml += `
+      <g class="chart-logo-node sc-hover" data-idx="${i}" style="cursor:pointer;--glow:${color};" transform="translate(${px}, ${py})">
+        <circle cx="0" cy="0" r="${rScat + 4}" fill="transparent" style="pointer-events:all"/>
+        <circle class="badge-disc" cx="0" cy="0" r="${rScat}" fill="#FFFFFF"/>
+        <clipPath id="${clipId}">
+          <circle cx="0" cy="0" r="${imgRadius}"/>
+        </clipPath>
+        <text x="0" y="${(rScat * 0.35).toFixed(1)}" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="${(rScat * 0.82).toFixed(1)}" font-weight="700" fill="${color}">${initials}</text>
+        <image href="/img/logos/${p.id}.png" x="${imgOffset.toFixed(1)}" y="${imgOffset.toFixed(1)}" width="${imgSize.toFixed(1)}" height="${imgSize.toFixed(1)}" clip-path="url(#${clipId})" preserveAspectRatio="xMidYMid meet" onerror="if(!this.dataset.icoTry){this.dataset.icoTry='1';this.setAttribute('href','/img/logos/${p.id}.ico');}else{this.style.display='none';}"/>
+      </g>`;
   });
 
   svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
   svg.setAttribute('height', H);
-  svg.innerHTML = grid + cross + dotsHtml + hovers;
+  svg.innerHTML = grid + cross + dotsHtml;
 
   attachTip(svg, '.sc-hover', 'scatTip', el => {
     const p = pts[parseInt(el.dataset.idx)];
@@ -757,23 +884,23 @@ function renderBeeswarm() {
   const svg = document.getElementById('beeswarmChart');
   const W = chartWidth(svg);
   const isMobile = W < 520;
-  const padL = isMobile ? 115 : 165;
+  const padL = isMobile ? 100 : 160;
   const padR = 20;
   const padT = 16;
   const padB = 32;
   const plotW = Math.max(100, W - padL - padR);
-  const tierH = 72;
+  const tierH = isMobile ? 76 : 86;
   const cats = ['commercial_banks', 'development_banks', 'finance_companies'];
   const SHORT_NAME = { commercial_banks: 'Commercial Banks', development_banks: 'Development Banks', finance_companies: 'Finance Companies' };
   const SHORT_CODE = { commercial_banks: 'Commercial', development_banks: 'Development', finance_companies: 'Finance' };
   const plotH = cats.length * tierH;
-  const r = 5.0;
+  const r = isMobile ? 6.5 : 8.5;
 
   const allInsts = [];
   cats.forEach(cat => {
     (DATA[cat] || []).forEach(inst => {
       if (inst.history && inst.history.length > 0 && !inst.problematic && !inst.excludeFromAvg) {
-        allInsts.push({ name: inst.name, rate: inst.history[0].rate, cat, color: CAT_COLORS[cat] });
+        allInsts.push({ id: inst.id, name: inst.name, rate: inst.history[0].rate, cat, color: CAT_COLORS[cat] });
       }
     });
   });
@@ -800,7 +927,7 @@ function renderBeeswarm() {
     svgContent += `<line x1="${padL}" y1="${tierCenterY}" x2="${padL + plotW}" y2="${tierCenterY}" stroke="${CAT_COLORS[cat]}" stroke-opacity="0.18" stroke-dasharray="3,3"/>`;
 
     const labelText = isMobile ? SHORT_CODE[cat] : SHORT_NAME[cat];
-    svgContent += `<text x="${labelX}" y="${tierCenterY + 4}" text-anchor="start" font-size="${isMobile ? '10' : '11'}" font-weight="600" fill="#1B2A4A">${labelText}</text>`;
+    svgContent += `<text x="${labelX}" y="${tierCenterY + 4}" text-anchor="start" font-size="${isMobile ? '10' : '11'}" font-weight="600" fill="var(--ink)">${labelText}</text>`;
   });
 
   // Vertical gridlines across tiers
@@ -812,12 +939,12 @@ function renderBeeswarm() {
     const x = xPos(rate);
     const anchor = i === 0 ? 'start' : (i === labelCount - 1 ? 'end' : 'middle');
 
-    svgContent += `<line x1="${x.toFixed(1)}" y1="${padT}" x2="${x.toFixed(1)}" y2="${padT + plotH}" stroke="#1B2A4A" stroke-opacity="0.06" stroke-dasharray="2,2"/>`;
-    svgContent += `<text x="${x.toFixed(1)}" y="${axisY + 16}" text-anchor="${anchor}" font-family="IBM Plex Mono, monospace" font-size="10" fill="#5A6478">${rate.toFixed(2)}%</text>`;
+    svgContent += `<line x1="${x.toFixed(1)}" y1="${padT}" x2="${x.toFixed(1)}" y2="${padT + plotH}" stroke="var(--ink)" stroke-opacity="0.08" stroke-dasharray="2,2"/>`;
+    svgContent += `<text x="${x.toFixed(1)}" y="${axisY + 16}" text-anchor="${anchor}" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--slate)">${rate.toFixed(2)}%</text>`;
   }
 
   // X axis base line
-  svgContent += `<line x1="${padL}" y1="${axisY}" x2="${padL + plotW}" y2="${axisY}" stroke="#E2DCCB" stroke-width="1"/>`;
+  svgContent += `<line x1="${padL}" y1="${axisY}" x2="${padL + plotW}" y2="${axisY}" stroke="var(--line)" stroke-width="1"/>`;
 
   // Plot dots by tier with zero-overlap 2D placement
   const dots = [];
@@ -825,8 +952,8 @@ function renderBeeswarm() {
     const tierCenterY = padT + tierIdx * tierH + tierH / 2;
     const insts = allInsts.filter(i => i.cat === cat).sort((a, b) => a.rate - b.rate);
     const placed = [];
-    const stepY = r * 2.1;
-    const maxYOffset = Math.floor((tierH / 2) - r - 3);
+    const stepY = r * 2.15;
+    const maxYOffset = Math.floor((tierH / 2) - r - 4);
 
     insts.forEach(inst => {
       const baseX = xPos(inst.rate);
@@ -863,15 +990,23 @@ function renderBeeswarm() {
     });
   });
 
-  // Render dots
-  dots.forEach((d) => {
-    const opacity = d.problematic ? '0.45' : '0.85';
-    svgContent += `<circle cx="${d.x.toFixed(1)}" cy="${d.y.toFixed(1)}" r="${r}" fill="${d.color}" fill-opacity="${opacity}" stroke="#FAF7F0" stroke-width="1.2"/>`;
-  });
-
-  // Hover targets
+  // Render logo badges
   dots.forEach((d, idx) => {
-    svgContent += `<circle class="bs-hover" data-idx="${idx}" cx="${d.x.toFixed(1)}" cy="${d.y.toFixed(1)}" r="10" fill="transparent" style="cursor:pointer"/>`;
+    const initials = getInitials(d.name);
+    const clipId = `bs-clip-${d.cat}-${idx}`;
+    const imgRadius = r - 0.4;
+    const imgSize = imgRadius * 2;
+    const imgOffset = -imgRadius;
+    svgContent += `
+      <g class="chart-logo-node bs-hover" data-idx="${idx}" style="cursor:pointer;--glow:${d.color};" transform="translate(${d.x.toFixed(1)}, ${d.y.toFixed(1)})">
+        <circle cx="0" cy="0" r="${r + 4}" fill="transparent" style="pointer-events:all"/>
+        <circle class="badge-disc" cx="0" cy="0" r="${r}" fill="#FFFFFF"/>
+        <clipPath id="${clipId}">
+          <circle cx="0" cy="0" r="${imgRadius}"/>
+        </clipPath>
+        <text x="0" y="${(r * 0.35).toFixed(1)}" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="${(r * 0.82).toFixed(1)}" font-weight="700" fill="${d.color}">${initials}</text>
+        <image href="/img/logos/${d.id}.png" x="${imgOffset.toFixed(1)}" y="${imgOffset.toFixed(1)}" width="${imgSize.toFixed(1)}" height="${imgSize.toFixed(1)}" clip-path="url(#${clipId})" preserveAspectRatio="xMidYMid meet" onerror="if(!this.dataset.icoTry){this.dataset.icoTry='1';this.setAttribute('href','/img/logos/${d.id}.ico');}else{this.style.display='none';}"/>
+      </g>`;
   });
 
   const totalH = axisY + padB;
@@ -946,7 +1081,7 @@ function renderDeviationChart(devCat) {
     if (dev >= 0 && labelX > svgW - 25) labelX = svgW - 25;
     const anchor = dev >= 0 ? 'start' : 'end';
 
-    rowsHtml += `<text x="${nameW}" y="${curY + BAR_H / 2 + 4}" text-anchor="end" font-size="10" fill="#1B2A4A">${displayNames[idx]}</text>`;
+    rowsHtml += `<text x="${nameW}" y="${curY + BAR_H / 2 + 4}" text-anchor="end" font-size="10" fill="var(--ink)">${displayNames[idx]}</text>`;
     rowsHtml += `<rect class="dev-bar" x="${barX.toFixed(1)}" y="${curY}" width="${Math.max(barW, 1.5).toFixed(1)}" height="${BAR_H}" rx="2" fill="${color}" fill-opacity="${isOutlier ? '0.5' : '0.8'}" style="cursor:pointer" data-name="${inst.name}" data-rate="${rate.toFixed(2)}" data-dev="${sign}${dev.toFixed(2)}" data-avg="${avg.toFixed(2)}"/>`;
     rowsHtml += `<text x="${labelX.toFixed(1)}" y="${curY + BAR_H / 2 + 4}" text-anchor="${anchor}" font-size="9.5" fill="${color}" font-weight="600">${devLabel}</text>`;
 
@@ -954,7 +1089,7 @@ function renderDeviationChart(devCat) {
   });
 
   // Centre dashed line (behind rows, drawn first)
-  const centreLine = `<line x1="${centerX}" y1="0" x2="${centerX}" y2="${curY}" stroke="#1B2A4A" stroke-width="1.2" stroke-dasharray="4,3" opacity="0.18"/>`;
+  const centreLine = `<line x1="${centerX}" y1="0" x2="${centerX}" y2="${curY}" stroke="var(--ink)" stroke-width="1.2" stroke-dasharray="4,3" opacity="0.25"/>`;
 
   // Avg badge at top of centre line (drawn last so it sits on top)
   const badgeLabel = avg.toFixed(2) + '%';
@@ -996,7 +1131,7 @@ function drawSpreadChart(history, range) {
   data.forEach((d,i) => { path += (i===0?'M':'L') + xPos(i).toFixed(2) + ' ' + yPos(d.rate).toFixed(2) + ' '; });
 
   let dots = '';
-  data.forEach((d,i) => { dots += `<circle class="spread-dot" cx="${xPos(i).toFixed(2)}" cy="${yPos(d.rate).toFixed(2)}" r="4" fill="var(--ink)" stroke="#FAF7F0" stroke-width="1.5"/>`; });
+  data.forEach((d,i) => { dots += `<circle class="spread-dot" cx="${xPos(i).toFixed(2)}" cy="${yPos(d.rate).toFixed(2)}" r="4" fill="var(--ink)" stroke="var(--card-bg)" stroke-width="1.5"/>`; });
 
   let hoverDots = '';
   data.forEach((d,i) => { hoverDots += `<circle class="hover-dot" data-idx="${i}" cx="${xPos(i).toFixed(2)}" cy="${yPos(d.rate).toFixed(2)}" r="10" fill="transparent"/>`; });
@@ -1007,22 +1142,22 @@ function drawSpreadChart(history, range) {
     const idx = Math.round((i/(labelCount-1||1))*(data.length-1));
     const d = data[idx];
     const anchor = i===0?'start':(i===labelCount-1?'end':'middle');
-    xLabels += `<text x="${xPos(idx).toFixed(2)}" y="${H-8}" text-anchor="${anchor}" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5A6478">${fmtDateShort(d.date)}</text>`;
+    xLabels += `<text x="${xPos(idx).toFixed(2)}" y="${H-8}" text-anchor="${anchor}" font-family="IBM Plex Mono, monospace" font-size="11" fill="var(--slate)">${fmtDateShort(d.date)}</text>`;
   }
 
-  const meanLabel = `<text x="${(W-padR).toFixed(2)}" y="${(meanY-5).toFixed(2)}" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10" fill="#5A6478">avg ${meanRate.toFixed(2)}%</text>`;
+  const meanLabel = `<text x="${(W-padR).toFixed(2)}" y="${(meanY-5).toFixed(2)}" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--slate)">avg ${meanRate.toFixed(2)}%</text>`;
 
   container.innerHTML = `
   <svg id="rhSvg" viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block;cursor:crosshair" preserveAspectRatio="xMidYMid meet">
     <rect x="${padL}" y="${bandTop.toFixed(2)}" width="${W-padL-padR}" height="${bandH.toFixed(2)}" fill="rgba(79,110,247,0.07)" rx="2"/>
-    <line x1="${padL}" y1="${meanY.toFixed(2)}" x2="${W-padR}" y2="${meanY.toFixed(2)}" stroke="#5A6478" stroke-width="1" stroke-dasharray="4,3"/>
+    <line x1="${padL}" y1="${meanY.toFixed(2)}" x2="${W-padR}" y2="${meanY.toFixed(2)}" stroke="var(--slate)" stroke-width="1" stroke-dasharray="4,3"/>
     ${meanLabel}
     <path d="${path}" fill="none" stroke="var(--ink)" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" opacity="0.2"/>
     ${dots}
     ${xLabels}
     <g id="crosshair" style="display:none">
-      <line id="chLine" x1="0" y1="${padT}" x2="0" y2="${H-padB}" stroke="#5A6478" stroke-width="1" stroke-dasharray="3,3"/>
-      <circle id="chDot" r="5" fill="var(--ink)" stroke="#FAF7F0" stroke-width="2"/>
+      <line id="chLine" x1="0" y1="${padT}" x2="0" y2="${H-padB}" stroke="var(--slate)" stroke-width="1" stroke-dasharray="3,3"/>
+      <circle id="chDot" r="5" fill="var(--ink)" stroke="var(--card-bg)" stroke-width="2"/>
     </g>
     ${hoverDots}
   </svg>`;
@@ -1104,7 +1239,7 @@ function drawRobinhoodChart(history, range) {
   for (let i = 0; i < labelCount; i++) {
     const idx = Math.round((i/(labelCount-1||1))*(data.length-1));
     const anchor = i===0?'start':(i===labelCount-1?'end':'middle');
-    xLabels += `<text x="${x(idx).toFixed(2)}" y="${H-8}" text-anchor="${anchor}" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5A6478">${fmtDateShort(data[idx].date)}</text>`;
+    xLabels += `<text x="${x(idx).toFixed(2)}" y="${H-8}" text-anchor="${anchor}" font-family="IBM Plex Mono, monospace" font-size="11" fill="var(--slate)">${fmtDateShort(data[idx].date)}</text>`;
   }
 
   let hoverDots = '';
@@ -1122,8 +1257,8 @@ function drawRobinhoodChart(history, range) {
     <path d="${path}" fill="none" stroke="var(--ink)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
     ${xLabels}
     <g id="crosshair" style="display:none">
-      <line id="chLine" x1="0" y1="${padT}" x2="0" y2="${H-padB}" stroke="#5A6478" stroke-width="1" stroke-dasharray="3,3"/>
-      <circle id="chDot" r="5" fill="var(--ink)" stroke="#FAF7F0" stroke-width="2"/>
+      <line id="chLine" x1="0" y1="${padT}" x2="0" y2="${H-padB}" stroke="var(--slate)" stroke-width="1" stroke-dasharray="3,3"/>
+      <circle id="chDot" r="5" fill="var(--ink)" stroke="var(--card-bg)" stroke-width="2"/>
     </g>
     ${hoverDots}
   </svg>`;
@@ -1174,90 +1309,217 @@ function renderRangePills(history) {
   });
 }
 
-/* ---- Detail panel (base rate) ---- */
-function renderDetailPanel(category, inst) {
-  document.getElementById('histCategory').textContent = CATEGORY_LABELS[category];
-  const curr = inst.history[0];
-  const isPending = GLOBAL_LATEST_DATE && curr.date < GLOBAL_LATEST_DATE;
-  const noteHTML = inst.note ? `<div class="inst-note" style="margin-top:4px">${inst.note}</div>` : '';
-  document.getElementById('histName').innerHTML = inst.name + noteHTML + (isPending ? `<span class="pending-badge" title="No rate reported for ${fmtDate(GLOBAL_LATEST_DATE)}">Pending update</span>` : '');
+/* ---- Base Rate & Spread Rate Top-Level Chart View ---- */
+function renderBRChart(category = activeCategory) {
+  activeCategory = category;
+  const insts = (DATA[category] || []).filter(i => i.history && i.history.length > 0).sort((a, b) => a.name.localeCompare(b.name));
+  const headingEl = document.getElementById('brChartHeading');
+  const subEl = document.getElementById('brChartSub');
+  if (headingEl) headingEl.textContent = `${CATEGORY_LABELS[category]}`;
+  if (subEl) subEl.textContent = `Historical interest rate trend analysis · ${insts.length} BFIs`;
 
-  const last12 = inst.history.slice(0,12);
-  const rates12 = last12.map(h => h.rate);
-  const avg3 = avg3Month(inst.history);
-  const avg3Tip = avg3MonthTooltip(inst.history);
-  document.getElementById('chartExtraStats').innerHTML =
-    `Applicable Rate: <b title="${avg3Tip}" style="cursor:help">${fmtRate(avg3)}</b> &nbsp;·&nbsp; 12-Mo Range: <b>${Math.min(...rates12).toFixed(2)}–${Math.max(...rates12).toFixed(2)}%</b>`;
+  const select = document.getElementById('brChartInstSelect');
+  if (select) {
+    select.innerHTML = insts.map(i => `<option value="${i.id}">${i.name}</option>`).join('');
+    if (activeBRChartInstId && insts.some(i => i.id === activeBRChartInstId)) {
+      select.value = activeBRChartInstId;
+    } else {
+      activeBRChartInstId = insts[0]?.id || null;
+      select.value = activeBRChartInstId || '';
+    }
+  }
 
-  const entriesEl = document.getElementById('histEntries');
-  entriesEl.innerHTML = '';
-
-  const headerRow = document.createElement('div');
-  headerRow.className = 'hist-entry hist-entry-header';
-  headerRow.innerHTML = `
-    <div class="he-date"></div>
-    <div class="he-right">
-      <div class="he-rate" style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--slate);font-weight:700">Base Rate</div>
-      <div class="he-applicable" style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--slate);font-weight:700;background:none;border:none;padding:0;cursor:default">3M Avg</div>
-    </div>`;
-  entriesEl.appendChild(headerRow);
-
-  inst.history.forEach((h,i) => {
-    const appRate = applicableRate(inst.history, i);
-    const row = document.createElement('div');
-    row.className = 'hist-entry';
-    row.innerHTML = `
-      <div class="he-date">${fmtDate(h.date)}</div>
-      <div class="he-right">
-        <div class="he-rate">${fmtRate(h.rate)}</div>
-        <div class="he-applicable" style="background:none;border:none;padding:0;color:var(--slate);cursor:default">${appRate !== null ? fmtRate(appRate) : '—'}</div>
-      </div>`;
-    entriesEl.appendChild(row);
+  // Sync indicator pills
+  document.querySelectorAll('#brChartIndicatorPills .hist-indicator-pill').forEach(b => {
+    b.classList.toggle('active', b.dataset.brchartInd === activeBRChartIndicator);
   });
 
-  currentHistory = inst.history;
-  currentRange = 'all';
-  renderRangePills(currentHistory);
-  drawRobinhoodChart(currentHistory, currentRange);
+  // Sync range pills
+  document.querySelectorAll('#brRangePills .range-pill').forEach(b => {
+    b.classList.toggle('active', b.dataset.brrange === activeBRChartRange);
+  });
+
+  drawBRRobinhoodChart();
 }
 
-/* ---- Detail panel (spread) ---- */
-function renderSpreadDetailPanel(category, inst) {
-  document.getElementById('histCategory').textContent = CATEGORY_LABELS[category] + ' — Interest Spread';
-  const noteHTML = inst.note ? `<div class="inst-note" style="margin-top:4px">${inst.note}</div>` : '';
-  document.getElementById('histName').innerHTML = inst.name + noteHTML;
+function drawBRRobinhoodChart() {
+  const container = document.getElementById('brRobinhoodChart');
+  const priceEl = document.getElementById('brChartPrice');
+  const changeEl = document.getElementById('brChartPriceChange');
+  const hoverDateEl = document.getElementById('brChartHoverDate');
+  const statsEl = document.getElementById('brChartExtraStats');
+  if (!container) return;
 
-  const last12 = inst.history.slice(0, Math.min(12, inst.history.length));
-  const rates12 = last12.map(h => h.rate);
-  const mean12 = (rates12.reduce((a,b) => a+b, 0) / rates12.length).toFixed(2);
-  document.getElementById('chartExtraStats').innerHTML =
-    `12M Mean: <b>${mean12}%</b> &nbsp;·&nbsp; Range: <b>${Math.min(...rates12).toFixed(2)}–${Math.max(...rates12).toFixed(2)}%</b>`;
+  const baseInst = DATA[activeCategory]?.find(x => x.id === activeBRChartInstId);
+  if (!baseInst || !baseInst.history || !baseInst.history.length) {
+    container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--slate)">No historical rate data available for this institution.</div>';
+    if (priceEl) priceEl.textContent = '—';
+    if (changeEl) changeEl.textContent = '—';
+    if (hoverDateEl) hoverDateEl.textContent = '';
+    if (statsEl) statsEl.textContent = '';
+    return;
+  }
 
-  const entriesEl = document.getElementById('histEntries');
-  entriesEl.innerHTML = '';
+  const spreadInst = SPREAD_DATA[activeCategory]?.find(x => x.id === activeBRChartInstId || x.name === baseInst.name);
 
-  const headerRow = document.createElement('div');
-  headerRow.className = 'hist-entry hist-entry-header';
-  headerRow.innerHTML = `
-    <div class="he-date"></div>
-    <div class="he-right">
-      <div class="he-rate" style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--slate);font-weight:700">Spread</div>
-    </div>`;
-  entriesEl.appendChild(headerRow);
+  let fullSeries = [];
+  if (activeBRChartIndicator === 'interest_spread') {
+    if (spreadInst && spreadInst.history && spreadInst.history.length) {
+      fullSeries = spreadInst.history.filter(s => s.rate !== null && s.rate !== undefined).map(s => ({ date: s.date, rate: s.rate }));
+    }
+  } else if (activeBRChartIndicator === 'avg3') {
+    fullSeries = baseInst.history.map((h, i) => {
+      const avg = applicableRate(baseInst.history, i);
+      return avg !== null ? { date: h.date, rate: avg } : null;
+    }).filter(Boolean);
+  } else {
+    fullSeries = baseInst.history.map(h => ({ date: h.date, rate: h.rate }));
+  }
 
-  inst.history.forEach(h => {
-    const row = document.createElement('div');
-    row.className = 'hist-entry';
-    row.innerHTML = `
-      <div class="he-date">${fmtDate(h.date)}</div>
-      <div class="he-right"><div class="he-rate">${fmtRate(h.rate)}</div></div>`;
-    entriesEl.appendChild(row);
+  if (!fullSeries.length) {
+    container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--slate)">No historical data reported for this indicator.</div>';
+    if (priceEl) priceEl.textContent = '—';
+    if (changeEl) changeEl.textContent = '—';
+    if (hoverDateEl) hoverDateEl.textContent = '';
+    if (statsEl) statsEl.textContent = '';
+    return;
+  }
+
+  const data = getRangeData(fullSeries, activeBRChartRange);
+  const W = 640, H = 180, padL = 8, padR = 8, padT = 10, padB = 22;
+
+  const rates = data.map(d => d.rate);
+  const min = Math.min(...rates), max = Math.max(...rates);
+  const span = (max - min) || 0.5;
+  const yMin = min - span * 0.18;
+  const yMax = max + span * 0.18;
+
+  const x = i => padL + (data.length === 1 ? (W - padL - padR) / 2 : (i / (data.length - 1)) * (W - padL - padR));
+  const y = v => padT + (1 - (v - yMin) / (yMax - yMin)) * (H - padT - padB);
+
+  let path = '', area = '';
+  data.forEach((d, i) => {
+    const px = x(i), py = y(d.rate);
+    path += (i === 0 ? 'M' : 'L') + px.toFixed(2) + ' ' + py.toFixed(2) + ' ';
+    area += (i === 0 ? 'M' + px.toFixed(2) + ' ' + (H - padB) + ' L' : 'L') + px.toFixed(2) + ' ' + py.toFixed(2) + ' ';
+  });
+  area += `L${x(data.length - 1).toFixed(2)} ${H - padB} Z`;
+
+  const isUp = data[data.length - 1].rate >= data[0].rate;
+  const gradColor = isUp ? '#4A7C59' : '#B8533E';
+
+  let xLabels = '';
+  const labelCount = Math.min(6, data.length);
+  for (let i = 0; i < labelCount; i++) {
+    const idx = Math.round((i / (labelCount - 1 || 1)) * (data.length - 1));
+    const anchor = i === 0 ? 'start' : (i === labelCount - 1 ? 'end' : 'middle');
+    xLabels += `<text x="${x(idx).toFixed(2)}" y="${H - 6}" text-anchor="${anchor}" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--slate)">${fmtDateShort(data[idx].date)}</text>`;
+  }
+
+  let hoverDots = '';
+  data.forEach((d, i) => {
+    hoverDots += `<circle class="hover-dot" data-idx="${i}" cx="${x(i).toFixed(2)}" cy="${y(d.rate).toFixed(2)}" r="12" fill="transparent"/>`;
   });
 
-  currentHistory = inst.history;
-  currentRange = 'all';
-  renderRangePills(currentHistory);
-  drawSpreadChart(currentHistory, currentRange);
+  container.innerHTML = `
+  <svg id="brRhSvg" viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block;cursor:crosshair" preserveAspectRatio="xMidYMid meet">
+    <defs>
+      <linearGradient id="brRhGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="${gradColor}" stop-opacity="0.22"/>
+        <stop offset="100%" stop-color="${gradColor}" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <path d="${area}" fill="url(#brRhGrad)"/>
+    <path d="${path}" fill="none" stroke="var(--ink)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+    ${xLabels}
+    <g id="brCrosshair" style="display:none">
+      <line id="brChLine" x1="0" y1="${padT}" x2="0" y2="${H - padB}" stroke="var(--slate)" stroke-width="1" stroke-dasharray="3,3"/>
+      <circle id="brChDot" r="5" fill="var(--ink)" stroke="var(--card-bg)" stroke-width="2"/>
+    </g>
+    ${hoverDots}
+  </svg>`;
+
+  const svg = document.getElementById('brRhSvg');
+  const crosshair = document.getElementById('brCrosshair');
+  const chLine = document.getElementById('brChLine');
+  const chDot = document.getElementById('brChDot');
+
+  const latest = data[data.length - 1];
+  const earliest = data[0];
+
+  if (statsEl) {
+    statsEl.innerHTML = `Min: <b>${min.toFixed(2)}%</b> &nbsp;·&nbsp; Max: <b>${max.toFixed(2)}%</b>`;
+  }
+
+  function setHeaderTo(point, isLive) {
+    if (priceEl) priceEl.textContent = fmtRate(point.rate);
+    if (changeEl) {
+      const diff = +(point.rate - earliest.rate).toFixed(2);
+      changeEl.className = 'chart-price-change ' + (diff > 0 ? 'pos' : diff < 0 ? 'neg' : 'flat');
+      changeEl.textContent = `${diff > 0 ? '+' : ''}${diff.toFixed(2)} pp since ${fmtDate(earliest.date)}`;
+    }
+    if (hoverDateEl) hoverDateEl.textContent = isLive ? '' : fmtDate(point.date);
+  }
+  setHeaderTo(latest, true);
+
+  svg.querySelectorAll('.hover-dot').forEach(dot => {
+    dot.addEventListener('mouseenter', () => {
+      const idx = parseInt(dot.dataset.idx, 10);
+      const point = data[idx];
+      const px = x(idx), py = y(point.rate);
+      if (chLine) { chLine.setAttribute('x1', px); chLine.setAttribute('x2', px); }
+      if (chDot) { chDot.setAttribute('cx', px); chDot.setAttribute('cy', py); }
+      if (crosshair) crosshair.style.display = 'block';
+      setHeaderTo(point, false);
+    });
+  });
+  svg.addEventListener('mouseleave', () => {
+    if (crosshair) crosshair.style.display = 'none';
+    setHeaderTo(latest, true);
+  });
+}
+
+/* ---- Detail panel (Unified 4-column history table) ---- */
+function renderDetailPanel(category, inst) {
+  document.getElementById('histCategory').textContent = `${CATEGORY_LABELS[category]} — Monthly Disclosures`;
+  const curr = inst.history[0] || {};
+  const isPending = GLOBAL_LATEST_DATE && curr.date < GLOBAL_LATEST_DATE;
+  const noteHTML = inst.note ? `<div class="inst-note" style="margin-top:4px">${inst.note}</div>` : '';
+  const logoHTML = renderLogoHTML(inst, 'hist-logo-large');
+  document.getElementById('histName').innerHTML = `<div class="inst-cell" style="gap:14px">${logoHTML}<div><span style="font-family:'Fraunces',serif;font-size:24px">${inst.name}</span>${noteHTML}</div></div>` + (isPending ? `<span class="pending-badge" title="No rate reported for ${fmtDate(GLOBAL_LATEST_DATE)}">Pending update</span>` : '');
+
+  const avg3 = avg3Month(inst.history);
+  const avg3Tip = avg3MonthTooltip(inst.history);
+  const spreadInst = SPREAD_DATA[category]?.find(x => x.id === inst.id || x.name === inst.name);
+  const latestSpread = spreadInst?.history?.[0]?.rate;
+  const spreadText = latestSpread !== undefined && latestSpread !== null ? ` &nbsp;·&nbsp; Latest Spread: <b>${fmtRate(latestSpread)}</b>` : '';
+
+  const extraStatsEl = document.getElementById('chartExtraStats');
+  if (extraStatsEl) {
+    extraStatsEl.innerHTML = `Latest Base Rate: <b>${fmtRate(curr.rate)}</b> &nbsp;·&nbsp; Applicable (3M Avg): <b title="${avg3Tip}" style="cursor:help">${fmtRate(avg3)}</b>${spreadText}`;
+  }
+
+  const tbody = document.getElementById('histEntries');
+  if (!tbody) return;
+
+  let rowsHTML = '';
+  inst.history.forEach((h, i) => {
+    const prev = inst.history[i + 1];
+    const chip = trendChip(h.rate, prev ? prev.rate : undefined);
+    const appRate = applicableRate(inst.history, i);
+    const spRecord = spreadInst?.history?.find(s => s.date === h.date);
+    const spVal = spRecord && spRecord.rate !== null && spRecord.rate !== undefined ? fmtRate(spRecord.rate) : '—';
+
+    rowsHTML += `
+      <tr>
+        <td><strong style="font-family:'IBM Plex Mono',monospace;font-size:13.5px">${fmtDate(h.date)}</strong></td>
+        <td class="num"><div><span class="rate-value">${fmtRate(h.rate)}</span>${chip}</div></td>
+        <td class="num"><span class="rate-value" style="font-size:15px">${appRate !== null ? fmtRate(appRate) : '—'}</span></td>
+        <td class="num"><span class="rate-value" style="font-size:15px">${spVal}</span></td>
+      </tr>`;
+  });
+
+  tbody.innerHTML = rowsHTML || '<tr><td colspan="4" style="text-align:center;padding:36px;color:var(--slate)">No historical records found.</td></tr>';
 }
 
 /* ---- Institution selection & History View ---- */
@@ -1266,6 +1528,7 @@ let activeInstId = null;
 
 function populateInstSelect(category, preserveSelection) {
   const select = document.getElementById('instSelect');
+  if (!select) return;
   const items = [...(DATA[category] || [])].sort((a,b) => a.name.localeCompare(b.name));
   select.innerHTML = items.map(inst => `<option value="${inst.id}">${inst.name}</option>`).join('');
   if (preserveSelection && items.some(i => i.id === activeInstId)) {
@@ -1275,61 +1538,58 @@ function populateInstSelect(category, preserveSelection) {
   }
 }
 
-function selectInstitutionHistory(category, id, indicator = activeHistoryIndicator || 'base_rate') {
+function selectInstitutionHistory(category, id) {
   const baseInst = DATA[category]?.find(x => x.id === id);
   if (!baseInst) return;
 
   activeCategory = category;
   activeInstId = id;
 
-  const spreadInst = SPREAD_DATA[category]?.find(x => x.id === id || x.name === baseInst.name);
-  const hasSpread = !!(spreadInst && spreadInst.history && spreadInst.history.length);
-
-  document.getElementById('categorySelect').value = category;
+  const catSel = document.getElementById('categorySelect');
+  if (catSel) catSel.value = category;
   populateInstSelect(category, true);
-  document.getElementById('instSelect').value = id;
+  const instSel = document.getElementById('instSelect');
+  if (instSel) instSel.value = id;
 
-  const basePill = document.querySelector('.hist-indicator-pill[data-hist-ind="base_rate"]');
-  const spreadPill = document.querySelector('.hist-indicator-pill[data-hist-ind="interest_spread"]');
+  renderDetailPanel(category, baseInst);
 
-  if (spreadPill) {
-    spreadPill.classList.toggle('disabled', !hasSpread);
-    spreadPill.title = hasSpread ? '' : 'No interest spread data available for this institution';
-  }
-
-  if (indicator === 'interest_spread' && !hasSpread) {
-    indicator = 'base_rate';
-  }
-  activeHistoryIndicator = indicator;
-
-  if (basePill) basePill.classList.toggle('active', activeHistoryIndicator === 'base_rate');
-  if (spreadPill) spreadPill.classList.toggle('active', activeHistoryIndicator === 'interest_spread');
-
-  const titleEl = document.getElementById('histSectionTitle');
-  if (titleEl) titleEl.textContent = activeHistoryIndicator === 'interest_spread' ? 'Spread Rate History' : 'Base Rate History';
-
-  if (activeHistoryIndicator === 'interest_spread' && spreadInst) {
-    renderSpreadDetailPanel(category, spreadInst);
-  } else {
-    renderDetailPanel(category, baseInst);
-  }
-
-  const lvEl = document.getElementById('listViews');
-  if (lvEl) lvEl.style.display = 'none';
+  const brDataContainer = document.getElementById('brDataContainer');
+  if (brDataContainer) brDataContainer.style.display = 'none';
+  const brControlsHeader = document.getElementById('brControlsHeader');
+  if (brControlsHeader) brControlsHeader.style.display = 'none';
   const subNavEl = document.getElementById('subNav');
   if (subNavEl) subNavEl.style.display = 'none';
   const histViewEl = document.getElementById('historyView');
-  if (histViewEl) histViewEl.classList.add('active');
+  if (histViewEl) {
+    histViewEl.classList.add('active');
+    histViewEl.style.display = 'block';
+  }
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function showListViews() {
   const histViewEl = document.getElementById('historyView');
-  if (histViewEl) histViewEl.classList.remove('active');
-  const lvEl = document.getElementById('listViews');
-  if (lvEl) lvEl.style.display = 'block';
+  if (histViewEl) {
+    histViewEl.classList.remove('active');
+    histViewEl.style.display = 'none';
+  }
+  const brDataContainer = document.getElementById('brDataContainer');
+  if (brDataContainer) brDataContainer.style.display = 'block';
+  const brControlsHeader = document.getElementById('brControlsHeader');
+  if (brControlsHeader) brControlsHeader.style.display = 'flex';
   const subNavEl = document.getElementById('subNav');
   if (subNavEl) subNavEl.style.display = '';
+
+  const listViews = document.getElementById('listViews');
+  const chartView = document.getElementById('brChartView');
+  if (activeBRView === 'data') {
+    if (listViews) listViews.style.display = 'block';
+    if (chartView) chartView.style.display = 'none';
+  } else {
+    if (listViews) listViews.style.display = 'none';
+    if (chartView) chartView.style.display = 'block';
+    renderBRChart(activeCategory);
+  }
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -1375,6 +1635,7 @@ function updateAsofStatus(cat) {
 function setActiveSubTab(tab, opts = {}) {
   sortState = { col: null, dir: null };
   activeSubTab = tab;
+  activeCategory = tab;
   document.querySelectorAll('.cat-pill-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === tab));
   document.querySelectorAll('.tab-view').forEach(v => {
     const isMatch = v.dataset.tabView === tab;
@@ -1382,6 +1643,10 @@ function setActiveSubTab(tab, opts = {}) {
     v.style.display = isMatch ? '' : 'none';
   });
   updateAsofStatus(tab);
+
+  if (activeBRView === 'chart') {
+    renderBRChart(tab);
+  }
 
   if (opts.pushState !== false && (currentPage === 'base_rate_spread' || currentPage === 'base_rate' || currentPage === 'interest_spread')) {
     const url = urlForPage(currentPage, tab);
@@ -1635,19 +1900,34 @@ function renderQuarterlyTable(category, qData, cfg, latestQ) {
 
       rowsHTML += `
         <tr${rowClass}>
-          <td><div class="inst-name">${inst.name}${statusDot}</div></td>
+          <td>
+            <div class="inst-cell">
+              ${renderLogoHTML(inst)}
+              <div class="inst-name">${inst.name}${statusDot}</div>
+            </div>
+          </td>
           <td class="num"><span class="rate-value">${carVal}</span></td>
           <td class="num"><span class="rate-value">${tier1Val}</span></td>
           <td class="num"><span class="rate-value">${cet1Val}</span></td>
           <td class="num"><span class="${dateClass}">${fmtQuarterLabel(curr.quarter)}${auditBadge}</span></td>
           <td style="text-align:right">
-            <button class="history-btn" data-qhist-cat="${category}" data-qhist-id="${inst.id}" title="View Quarterly History">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;">
-                <circle cx="12" cy="12" r="10"></circle>
-                <polyline points="12 6 12 12 16 14"></polyline>
-                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path>
-              </svg>
-            </button>
+            <div class="inst-actions">
+              ${inst.website ? `
+              <a class="inst-site-btn" href="${inst.website}" target="_blank" rel="noopener" title="Visit Official Website of ${inst.name}">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="2" y1="12" x2="22" y2="12"></line>
+                  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                </svg>
+              </a>` : ''}
+              <button class="history-btn" data-qhist-cat="${category}" data-qhist-id="${inst.id}" title="View Quarterly History">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                  <path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path>
+                </svg>
+              </button>
+            </div>
           </td>
         </tr>`;
     } else {
@@ -1691,19 +1971,34 @@ function renderQuarterlyTable(category, qData, cfg, latestQ) {
 
       rowsHTML += `
         <tr${rowClass}>
-          <td><div class="inst-name">${inst.name}${statusDot}</div></td>
+          <td>
+            <div class="inst-cell">
+              ${renderLogoHTML(inst)}
+              <div class="inst-name">${inst.name}${statusDot}</div>
+            </div>
+          </td>
           <td class="num"><span class="rate-value">${val !== null ? fmtRate(val) : '—'}</span></td>
           <td class="num">${qoqHTML}</td>
           <td class="num">${yoyHTML}</td>
           <td class="num"><span class="${dateClass}">${fmtQuarterLabel(curr.quarter)}${auditBadge}</span></td>
           <td style="text-align:right">
-            <button class="history-btn" data-qhist-cat="${category}" data-qhist-id="${inst.id}" title="View Quarterly History">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;">
-                <circle cx="12" cy="12" r="10"></circle>
-                <polyline points="12 6 12 12 16 14"></polyline>
-                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path>
-              </svg>
-            </button>
+            <div class="inst-actions">
+              ${inst.website ? `
+              <a class="inst-site-btn" href="${inst.website}" target="_blank" rel="noopener" title="Visit Official Website of ${inst.name}">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="2" y1="12" x2="22" y2="12"></line>
+                  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                </svg>
+              </a>` : ''}
+              <button class="history-btn" data-qhist-cat="${category}" data-qhist-id="${inst.id}" title="View Quarterly History">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                  <path d="M3.51 9a9 9 0 0 1 14.85-3.36L21 8M21 3v5h-5"></path>
+                </svg>
+              </button>
+            </div>
           </td>
         </tr>`;
     }
@@ -1738,7 +2033,7 @@ function renderQuarterlyTable(category, qData, cfg, latestQ) {
     <div class="rate-table-wrap">
       <table class="rate-table">
         <thead>${theadHTML}</thead>
-        <tbody>${rowsHTML}</tbody>
+        <tbody>${rowsHTML || '<tr><td colspan="6" style="text-align:center;padding:36px;color:var(--slate)">No quarterly data reported yet for this category.</td></tr>'}</tbody>
       </table>
     </div>`;
 
@@ -1782,7 +2077,8 @@ function showQuarterlyHistory(category, instId) {
   if (controlsHeader) controlsHeader.style.display = 'none';
   if (historyView) historyView.style.display = 'block';
 
-  document.getElementById('qHistBankName').textContent = inst.name;
+  const logoHTML = renderLogoHTML(inst, 'hist-logo-large');
+  document.getElementById('qHistBankName').innerHTML = `<div class="inst-cell" style="gap:14px">${logoHTML}<div><span style="font-family:'Fraunces',serif;font-size:24px">${inst.name}</span></div></div>`;
   document.getElementById('qHistBankCat').textContent = `${CATEGORY_LABELS[category]} — Quarterly Financial History across Key Indicators`;
 
   const latestQ = inst.history[0]?.quarter || 'Q3 2082';
@@ -1859,15 +2155,16 @@ function renderQuarterlyChart(category, qData, cfg, latestQ) {
   svg.setAttribute('height', chartH);
   svg.style.height = chartH + 'px';
 
-  const maxVal = Math.max(...validItems.map(i => i.history[0][activeQMetric]), (cfg.threshold || 0) * 1.2, 10);
+  const avgVal = validItems.length ? validItems.reduce((s, i) => s + (i.history[0][activeQMetric] || 0), 0) / validItems.length : 0;
+  const maxVal = Math.max(...validItems.map(i => i.history[0][activeQMetric]), avgVal * 1.15, 10);
   const xScale = val => padding.left + (val / maxVal) * innerW;
 
   let elements = '';
 
-  if (cfg.threshold != null) {
-    const threshX = xScale(cfg.threshold);
-    elements += `<line x1="${threshX}" y1="${padding.top - 10}" x2="${threshX}" y2="${chartH - padding.bottom}" stroke="var(--slate)" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.6"/>`;
-    elements += `<text x="${threshX}" y="${padding.top - 16}" fill="var(--slate)" font-size="11" font-weight="600" text-anchor="middle" font-family="IBM Plex Mono, monospace">${cfg.thresholdLabel}</text>`;
+  if (validItems.length > 0) {
+    const avgX = xScale(avgVal);
+    elements += `<line x1="${avgX.toFixed(1)}" y1="${padding.top - 10}" x2="${avgX.toFixed(1)}" y2="${chartH - padding.bottom}" stroke="var(--gold)" stroke-width="1.8" stroke-dasharray="4 4" opacity="0.9"/>`;
+    elements += `<text x="${avgX.toFixed(1)}" y="${padding.top - 16}" fill="var(--gold)" font-size="11" font-weight="700" text-anchor="middle" font-family="IBM Plex Mono, monospace">Avg: ${fmtRate(avgVal)}</text>`;
   }
 
   validItems.forEach((inst, idx) => {
@@ -1915,9 +2212,24 @@ function navigateTo(page, opts = {}) {
   if (page === 'dashboard') {
     renderDashboard();
   } else if (isDataPage) {
-    if (histView) histView.classList.remove('active');
+    if (histView) {
+      histView.classList.remove('active');
+      histView.style.display = 'none';
+    }
+    const brDataContainer = document.getElementById('brDataContainer');
+    if (brDataContainer) brDataContainer.style.display = 'block';
+    const brControlsHeader = document.getElementById('brControlsHeader');
+    if (brControlsHeader) brControlsHeader.style.display = 'flex';
     const listViews = document.getElementById('listViews');
-    if (listViews) listViews.style.display = 'block';
+    const chartView = document.getElementById('brChartView');
+    if (activeBRView === 'data') {
+      if (listViews) listViews.style.display = 'block';
+      if (chartView) chartView.style.display = 'none';
+    } else {
+      if (listViews) listViews.style.display = 'none';
+      if (chartView) chartView.style.display = 'block';
+      renderBRChart(activeSubTab || 'commercial_banks');
+    }
     if (subNav) subNav.style.display = '';
     applyIndicatorUI(page);
     setActiveSubTab(activeSubTab || 'commercial_banks', { pushState: false });
@@ -1978,6 +2290,7 @@ function getMostRecentDate() {
 
 /* ---- Init ---- */
 function init() {
+  updateThemeToggleIcon(getTheme());
   GLOBAL_LATEST_DATE = getMostRecentDate();
 
   updateAsofStatus(activeSubTab);
@@ -2002,6 +2315,51 @@ function init() {
     input.addEventListener('input', e => applySearch(input.dataset.search, e.target.value));
   });
 
+  // Base Rate view switcher (Data View vs Chart View)
+  document.querySelectorAll('[data-brview]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeBRView = btn.dataset.brview;
+      document.querySelectorAll('[data-brview]').forEach(b => b.classList.toggle('active', b.dataset.brview === activeBRView));
+      const listViews = document.getElementById('listViews');
+      const chartView = document.getElementById('brChartView');
+      if (activeBRView === 'data') {
+        if (listViews) listViews.style.display = 'block';
+        if (chartView) chartView.style.display = 'none';
+      } else {
+        if (listViews) listViews.style.display = 'none';
+        if (chartView) chartView.style.display = 'block';
+        renderBRChart(activeSubTab || activeCategory);
+      }
+    });
+  });
+
+  // Base Rate Chart institution select
+  const brChartInstSel = document.getElementById('brChartInstSelect');
+  if (brChartInstSel) {
+    brChartInstSel.addEventListener('change', e => {
+      activeBRChartInstId = e.target.value;
+      drawBRRobinhoodChart();
+    });
+  }
+
+  // Base Rate Chart indicator toggle pills
+  document.querySelectorAll('[data-brchart-ind]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeBRChartIndicator = btn.dataset.brchartInd;
+      document.querySelectorAll('[data-brchart-ind]').forEach(b => b.classList.toggle('active', b.dataset.brchartInd === activeBRChartIndicator));
+      drawBRRobinhoodChart();
+    });
+  });
+
+  // Base Rate Chart range selector pills
+  document.querySelectorAll('[data-brrange]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeBRChartRange = btn.dataset.brrange;
+      document.querySelectorAll('[data-brrange]').forEach(b => b.classList.toggle('active', b.dataset.brrange === activeBRChartRange));
+      drawBRRobinhoodChart();
+    });
+  });
+
   // View history buttons - delegated globally
   document.addEventListener('click', e => {
     const qbtn = e.target.closest('[data-qhist-id]');
@@ -2013,15 +2371,6 @@ function init() {
     if (btn) {
       selectInstitutionHistory(btn.dataset.cat, btn.dataset.id);
     }
-  });
-
-  // History view indicator toggle pills
-  document.querySelectorAll('.hist-indicator-pill').forEach(btn => {
-    btn.addEventListener('click', () => {
-      if (btn.classList.contains('disabled')) return;
-      activeHistoryIndicator = btn.dataset.histInd;
-      selectInstitutionHistory(activeCategory, activeInstId, activeHistoryIndicator);
-    });
   });
 
   const backBtn = document.getElementById('backBtn');
@@ -2036,14 +2385,14 @@ function init() {
       const category = e.target.value;
       populateInstSelect(category, false);
       const instSel = document.getElementById('instSelect');
-      selectInstitutionHistory(category, instSel ? instSel.value : '', activeHistoryIndicator);
+      selectInstitutionHistory(category, instSel ? instSel.value : '');
     });
   }
 
   const instSel = document.getElementById('instSelect');
   if (instSel) {
     instSel.addEventListener('change', e => {
-      selectInstitutionHistory(activeCategory, e.target.value, activeHistoryIndicator);
+      selectInstitutionHistory(activeCategory, e.target.value);
     });
   }
 
@@ -2136,12 +2485,10 @@ window.addEventListener('resize', () => {
     } else if (currentPage === 'quarterly_indicators') {
       renderQuarterlyView(activeQCat);
     } else if (document.getElementById('historyView') && document.getElementById('historyView').classList.contains('active') && activeInstId) {
-      const source = currentIndicator === 'interest_spread' ? SPREAD_DATA : DATA;
-      const inst = source[activeCategory]?.find(i => i.id === activeInstId);
-      if (inst) {
-        if (currentIndicator === 'interest_spread') renderSpreadDetailPanel(activeCategory, inst);
-        else renderDetailPanel(activeCategory, inst);
-      }
+      const inst = DATA[activeCategory]?.find(i => i.id === activeInstId);
+      if (inst) renderDetailPanel(activeCategory, inst);
+    } else if (activeBRView === 'chart') {
+      drawBRRobinhoodChart();
     }
   }, 150);
 });
@@ -2209,8 +2556,8 @@ Promise.all([
           sHistory.push({ date: h.date, rate: h.interest_spread });
         }
       });
-      baseData[cat].push({ id: inst.id, name: inst.name, note: inst.note, problematic: inst.problematic, excludeFromAvg: inst.excludeFromAvg, history: bHistory });
-      spreadData[cat].push({ id: inst.id, name: inst.name, note: inst.note, problematic: inst.problematic, excludeFromAvg: inst.excludeFromAvg, history: sHistory });
+      baseData[cat].push({ id: inst.id, name: inst.name, website: inst.website || '', note: inst.note, problematic: inst.problematic, excludeFromAvg: inst.excludeFromAvg, history: bHistory });
+      spreadData[cat].push({ id: inst.id, name: inst.name, website: inst.website || '', note: inst.note, problematic: inst.problematic, excludeFromAvg: inst.excludeFromAvg, history: sHistory });
     });
   });
 

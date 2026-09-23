@@ -3,6 +3,7 @@
     {
       "id": "ebl",
       "name": "Everest Bank",
+      "website": "https://everestbankltd.com",
       "history": [
         {
           "quarter": "Q4 2083",
@@ -15,7 +16,7 @@
           "llp_npl": 295.25,
           "cost_of_fund": 3.15,
           "cd_ratio": 77.57,
-          "roe": 15.10,
+          "roe": 15.1,
           "roa": 1.36
         },
         {
@@ -79,6 +80,7 @@
     {
       "id": "ctzn",
       "name": "Citizens Bank International",
+      "website": "https://www.ctznbank.com",
       "history": [
         {
           "quarter": "Q4 2083",
@@ -155,6 +157,7 @@
     {
       "id": "hbl",
       "name": "Himalayan Bank",
+      "website": "https://www.himalayanbank.com",
       "history": [
         {
           "quarter": "Q4 2083",
@@ -231,6 +234,7 @@
     {
       "id": "adbl",
       "name": "Agriculture Development Bank",
+      "website": "https://adbl.gov.np",
       "history": [
         {
           "quarter": "Q4 2083",
@@ -307,12 +311,13 @@
     {
       "id": "rbb",
       "name": "Rastriya Banijya Bank",
+      "website": "https://rbb.com.np",
       "history": [
         {
           "quarter": "Q4 2083",
           "date": "2083-03",
           "audited": false,
-          "car": 11.40,
+          "car": 11.4,
           "tier1": 9.19,
           "cet1": 9.19,
           "npl": 3.95,
@@ -383,6 +388,7 @@
     {
       "id": "nabil",
       "name": "Nabil Bank",
+      "website": "https://www.nabilbank.com",
       "history": [
         {
           "quarter": "Q4 2083",
@@ -391,7 +397,7 @@
           "car": 12.37,
           "tier1": 9.68,
           "cet1": 8.87,
-          "npl": 4.20,
+          "npl": 4.2,
           "llp_npl": 119.73,
           "cost_of_fund": 3.09,
           "cd_ratio": 80.18,
@@ -459,6 +465,7 @@
     {
       "id": "kbl",
       "name": "Kumari Bank",
+      "website": "https://www.kumaribank.com",
       "history": [
         {
           "quarter": "Q4 2083",
@@ -535,14 +542,15 @@
     {
       "id": "lsbl",
       "name": "Laxmi Sunrise Bank",
+      "website": "https://laxmisunrise.com",
       "history": [
         {
           "quarter": "Q4 2083",
           "date": "2083-03",
           "audited": false,
           "car": 12.03,
-          "tier1": 9.90,
-          "cet1": 9.90,
+          "tier1": 9.9,
+          "cet1": 9.9,
           "npl": 5.23,
           "llp_npl": 101.41,
           "cost_of_fund": 3.28,
@@ -611,6 +619,7 @@
     {
       "id": "pcbl",
       "name": "Prime Commercial Bank",
+      "website": "https://www.primebank.com.np",
       "history": [
         {
           "quarter": "Q4 2083",
@@ -620,10 +629,10 @@
           "tier1": 9.88,
           "cet1": 9.88,
           "npl": 6.69,
-          "llp_npl": 89.70,
+          "llp_npl": 89.7,
           "cost_of_fund": 3.81,
           "cd_ratio": 83.36,
-          "roe": 11.80,
+          "roe": 11.8,
           "roa": 1.26
         },
         {
@@ -687,6 +696,7 @@
     {
       "id": "prabhu",
       "name": "Prabhu Bank",
+      "website": "https://www.prabhubank.com",
       "history": [
         {
           "quarter": "Q4 2083",
@@ -763,6 +773,7 @@
     {
       "id": "mbl",
       "name": "Machhapuchhre Bank",
+      "website": "https://www.machbank.com",
       "history": [
         {
           "quarter": "Q4 2083",
@@ -770,7 +781,7 @@
           "audited": false,
           "car": 13.21,
           "tier1": 10.04,
-          "cet1": 8.60,
+          "cet1": 8.6,
           "npl": 3.98,
           "llp_npl": 103.84,
           "cost_of_fund": 3.27,
@@ -839,12 +850,13 @@
     {
       "id": "gbime",
       "name": "Global IME Bank",
+      "website": "https://globalimebank.com",
       "history": [
         {
           "quarter": "Q4 2083",
           "date": "2083-03",
           "audited": false,
-          "car": 12.10,
+          "car": 12.1,
           "tier1": 10.04,
           "cet1": 10.04,
           "npl": 4.96,
@@ -915,6 +927,7 @@
     {
       "id": "nbl",
       "name": "Nepal Bank",
+      "website": "https://nepalbank.com.np",
       "history": [
         {
           "quarter": "Q4 2083",
@@ -924,7 +937,7 @@
           "tier1": 11.27,
           "cet1": 11.27,
           "npl": 4.18,
-          "llp_npl": 111.70,
+          "llp_npl": 111.7,
           "cost_of_fund": 2.92,
           "cd_ratio": 62.85,
           "roe": 11.27,
@@ -991,6 +1004,7 @@
     {
       "id": "nimb",
       "name": "Nepal Investment Mega Bank",
+      "website": "https://www.nimb.com.np",
       "history": [
         {
           "quarter": "Q4 2083",
@@ -1067,6 +1081,7 @@
     {
       "id": "sbi",
       "name": "Nepal SBI Bank",
+      "website": "https://nsbl.statebank",
       "history": [
         {
           "quarter": "Q4 2083",
@@ -1143,12 +1158,13 @@
     {
       "id": "nicasia",
       "name": "NIC Asia Bank",
+      "website": "https://www.nicasiabank.com",
       "history": [
         {
           "quarter": "Q4 2083",
           "date": "2083-03",
           "audited": false,
-          "car": 11.10,
+          "car": 11.1,
           "tier1": 6.27,
           "cet1": 6.27,
           "npl": 9.26,
@@ -1219,13 +1235,14 @@
     {
       "id": "nmb",
       "name": "NMB Bank",
+      "website": "https://nmb.com.np",
       "history": [
         {
           "quarter": "Q4 2083",
           "date": "2083-03",
           "audited": false,
           "car": 12.73,
-          "tier1": 9.90,
+          "tier1": 9.9,
           "cet1": 8.99,
           "npl": 4.91,
           "llp_npl": 92.57,
@@ -1295,6 +1312,7 @@
     {
       "id": "sanima",
       "name": "Sanima Bank",
+      "website": "https://www.sanimabank.com",
       "history": [
         {
           "quarter": "Q4 2083",
@@ -1360,10 +1378,10 @@
           "tier1": 9.86,
           "cet1": 9.86,
           "npl": 3.01,
-          "llp_npl": 121.80,
-          "cost_of_fund": 4.70,
+          "llp_npl": 121.8,
+          "cost_of_fund": 4.7,
           "cd_ratio": 81.36,
-          "roe": 11.70,
+          "roe": 11.7,
           "roa": 1.03
         }
       ]
@@ -1371,6 +1389,7 @@
     {
       "id": "sbl",
       "name": "Siddhartha Bank",
+      "website": "https://siddharthabank.com",
       "history": [
         {
           "quarter": "Q4 2083",
@@ -1378,7 +1397,7 @@
           "audited": false,
           "car": 13.19,
           "tier1": 10.88,
-          "cet1": 9.70,
+          "cet1": 9.7,
           "npl": 3.53,
           "llp_npl": 104.69,
           "cost_of_fund": 3.42,
@@ -1447,6 +1466,7 @@
     {
       "id": "scb",
       "name": "Standard Chartered Bank Nepal",
+      "website": "https://www.sc.com/np",
       "history": [
         {
           "quarter": "Q4 2083",
@@ -1460,7 +1480,7 @@
           "cost_of_fund": 2.53,
           "cd_ratio": 47.24,
           "roe": 12.85,
-          "roa": 1.70
+          "roa": 1.7
         },
         {
           "quarter": "Q3 2082",
@@ -1525,6 +1545,7 @@
     {
       "id": "corporate",
       "name": "Corporate Development Bank",
+      "website": "https://cdbl.com.np",
       "history": [
         {
           "quarter": "Q4 2083",
@@ -1533,7 +1554,7 @@
           "car": 39.73,
           "npl": 6.24,
           "llp_npl": 103.61,
-          "cost_of_fund": 5.50,
+          "cost_of_fund": 5.5,
           "cd_ratio": 58.14
         },
         {
@@ -1581,6 +1602,7 @@
     {
       "id": "excel",
       "name": "Excel Development Bank",
+      "website": "https://edb.com.np",
       "history": [
         {
           "quarter": "Q4 2083",
@@ -1591,7 +1613,7 @@
           "npl": 4.57,
           "llp_npl": 104.74,
           "cost_of_fund": 2.89,
-          "cd_ratio": 73.50,
+          "cd_ratio": 73.5,
           "roe": 14.85,
           "roa": 1.53
         },
@@ -1652,6 +1674,7 @@
     {
       "id": "garima",
       "name": "Garima Bikas Bank",
+      "website": "https://garimabank.com.np",
       "history": [
         {
           "quarter": "Q4 2083",
@@ -1728,6 +1751,7 @@
     {
       "id": "green",
       "name": "Green Development Bank",
+      "website": "https://greenbank.com.np",
       "history": [
         {
           "quarter": "Q4 2083",
@@ -1799,6 +1823,7 @@
     {
       "id": "jbbl",
       "name": "Jyoti Bikash Bank",
+      "website": "https://jbbl.com.np",
       "history": [
         {
           "quarter": "Q4 2083",
@@ -1875,6 +1900,7 @@
     {
       "id": "kamana",
       "name": "Kamana Sewa Bikas Bank",
+      "website": "https://kamanasewabank.com",
       "history": [
         {
           "quarter": "Q4 2083",
@@ -1951,6 +1977,7 @@
     {
       "id": "lumbini",
       "name": "Lumbini Bikas Bank",
+      "website": "https://lumbinibikasbank.com",
       "history": [
         {
           "quarter": "Q4 2083",
@@ -2024,6 +2051,7 @@
     {
       "id": "miteri",
       "name": "Miteri Development Bank",
+      "website": "https://miteribank.com.np",
       "history": [
         {
           "quarter": "Q4 2083",
@@ -2095,6 +2123,7 @@
     {
       "id": "mahalaxmi",
       "name": "Mahalaxmi Development Bank",
+      "website": "https://mahalaxmibank.com",
       "history": [
         {
           "quarter": "Q4 2083",
@@ -2171,14 +2200,15 @@
     {
       "id": "muktinath",
       "name": "Muktinath Bikash Bank",
+      "website": "https://muktinathbank.com.np",
       "history": [
         {
           "quarter": "Q4 2083",
           "date": "2083-03",
           "audited": false,
           "car": 13.47,
-          "tier1": 11.40,
-          "cet1": 11.40,
+          "tier1": 11.4,
+          "cet1": 11.4,
           "npl": 4.77,
           "llp_npl": 84.08,
           "cost_of_fund": 3.53,
@@ -2247,6 +2277,7 @@
     {
       "id": "narayani",
       "name": "Narayani Development Bank",
+      "website": "https://narayanibank.com.np",
       "history": [
         {
           "quarter": "Q4 2083",
@@ -2303,6 +2334,7 @@
     {
       "id": "salapa",
       "name": "Salapa Bikas Bank",
+      "website": "https://salapabikasbank.com.np",
       "history": [
         {
           "quarter": "Q4 2083",
@@ -2371,8 +2403,9 @@
     {
       "id": "saptakoshi",
       "name": "Saptakoshi Development Bank",
+      "website": "https://saptakoshibank.com.np",
       "history": [
-         {
+        {
           "quarter": "Q4 2083",
           "date": "2083-03",
           "audited": false,
@@ -2380,9 +2413,9 @@
           "tier1": 7.26,
           "npl": 7.68,
           "llp_npl": 89.46,
-          "cost_of_fund": 3.70,
+          "cost_of_fund": 3.7,
           "cd_ratio": 67.63,
-          "roe": 20.80,
+          "roe": 20.8,
           "roa": 1.49
         },
         {
@@ -2442,6 +2475,7 @@
     {
       "id": "shangrila",
       "name": "Shangrila Development Bank",
+      "website": "https://shangrilabank.com",
       "history": [
         {
           "quarter": "Q4 2083",
@@ -2518,12 +2552,13 @@
     {
       "id": "shine",
       "name": "Shine Resunga Development Bank",
+      "website": "https://srdb.com.np",
       "history": [
         {
           "quarter": "Q4 2083",
           "date": "2083-03",
           "audited": false,
-          "car": 13.70,
+          "car": 13.7,
           "tier1": 10.85,
           "cet1": 10.85,
           "npl": 4.93,
@@ -2594,6 +2629,7 @@
     {
       "id": "sindu",
       "name": "Sindhu Bikash Bank",
+      "website": "https://sindhubikashbank.com.np",
       "history": [
         {
           "quarter": "Q4 2083",

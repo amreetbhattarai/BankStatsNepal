@@ -3,11 +3,17 @@
     {
       "id": "adbl",
       "name": "Agriculture Development Bank",
+      "website": "https://adbl.gov.np/en/base-rate",
       "history": [
+        {
+          "date": "2083-05",
+          "base_rate": 4.54,
+          "interest_spread": null
+        },
         {
           "date": "2083-04",
           "base_rate": 4.55,
-          "interest_spread": null
+          "interest_spread": 3.61
         },
         {
           "date": "2083-03",
@@ -254,7 +260,13 @@
     {
       "id": "ctzn",
       "name": "Citizens Bank International",
+      "website": "https://www.ctznbank.com/interest-rate/base-rate",
       "history": [
+        {
+          "date": "2083-05",
+          "base_rate": 4.91,
+          "interest_spread": 3.50
+        },
         {
           "date": "2083-04",
           "base_rate": 4.96,
@@ -505,7 +517,13 @@
     {
       "id": "ebl",
       "name": "Everest Bank",
+      "website": "https://everestbankltd.com/supports/interest-and-rates/base-spread-rate/",
       "history": [
+        {
+          "date": "2083-05",
+          "base_rate": 4.13,
+          "interest_spread": 3.08
+        },
         {
           "date": "2083-04",
           "base_rate": 4.17,
@@ -756,6 +774,7 @@
     {
       "id": "gbime",
       "name": "Global IME Bank",
+      "website": "https://www.globalimebank.com/base-rate/",
       "history": [
         {
           "date": "2083-05",
@@ -764,7 +783,7 @@
         },
         {
           "date": "2083-04",
-          "base_rate": 4.60,
+          "base_rate": 4.6,
           "interest_spread": 3.25
         },
         {
@@ -1012,6 +1031,7 @@
     {
       "id": "hbl",
       "name": "Himalayan Bank",
+      "website": "https://himalayanbank.com/en/rates/base-rate",
       "history": [
         {
           "date": "2083-05",
@@ -1268,6 +1288,7 @@
     {
       "id": "kbl",
       "name": "Kumari Bank",
+      "website": "https://www.kumaribank.com/base-rate",
       "history": [
         {
           "date": "2083-05",
@@ -1524,6 +1545,7 @@
     {
       "id": "lsbl",
       "name": "Laxmi Sunrise Bank",
+      "website": "https://www.laxmisunrise.com/additional-disclosures/base-rates/",
       "history": [
         {
           "date": "2083-05",
@@ -1533,7 +1555,7 @@
         {
           "date": "2083-04",
           "base_rate": 4.82,
-          "interest_spread": 3.30
+          "interest_spread": 3.3
         },
         {
           "date": "2083-03",
@@ -1780,11 +1802,12 @@
     {
       "id": "mbl",
       "name": "Machhapuchhre Bank",
+      "website": "https://www.machbank.com/base-rate/",
       "history": [
         {
           "date": "2083-05",
           "base_rate": 4.96,
-          "interest_spread": 3.40
+          "interest_spread": 3.4
         },
         {
           "date": "2083-04",
@@ -2036,6 +2059,7 @@
     {
       "id": "nicasia",
       "name": "NIC Asia Bank",
+      "website": "https://www.nicasiabank.com/interest-rates/",
       "history": [
         {
           "date": "2083-05",
@@ -2292,7 +2316,13 @@
     {
       "id": "nmb",
       "name": "NMB Bank",
+      "website": "https://www.nmb.com.np/en/base-rate",
       "history": [
+        {
+          "date": "2083-05",
+          "base_rate": 4.95,
+          "interest_spread": 3.47
+        },
         {
           "date": "2083-04",
           "base_rate": 5.05,
@@ -2543,6 +2573,7 @@
     {
       "id": "nabil",
       "name": "Nabil Bank",
+      "website": "https://www.nabilbank.com/report/disclosures",
       "history": [
         {
           "date": "2083-05",
@@ -2799,8 +2830,14 @@
     {
       "id": "nbl",
       "name": "Nepal Bank",
+      "website": "https://nepalbank.com.np/personal/base-rate-history",
       "history": [
-         {
+        {
+          "date": "2083-05",
+          "base_rate": 4.37,
+          "interest_spread": 3.42
+        },
+        {
           "date": "2083-04",
           "base_rate": 4.42,
           "interest_spread": 3.45
@@ -3050,6 +3087,7 @@
     {
       "id": "nimb",
       "name": "Nepal Investment Mega Bank",
+      "website": "https://www.nimb.com.np/personal-banking/base-rate-and-interest-rate-spread-(3-years-data)",
       "history": [
         {
           "date": "2083-04",
@@ -3256,8 +3294,14 @@
     {
       "id": "sbi",
       "name": "Nepal SBI Bank",
+      "website": "https://nsbl.statebank/base-rates",
       "history": [
-          {
+        {
+          "date": "2083-05",
+          "base_rate": 5.10,
+          "interest_spread": 3.27
+        },
+        {
           "date": "2083-04",
           "base_rate": 5.05,
           "interest_spread": 3.27
@@ -3507,11 +3551,17 @@
     {
       "id": "prabhu",
       "name": "Prabhu Bank",
+      "website": "https://www.prabhubank.com/financials/base-rate--interest-spread",
       "history": [
+         {
+          "date": "2083-05",
+          "base_rate": 4.98,
+          "interest_spread": 3.19
+        },
         {
           "date": "2083-04",
           "base_rate": 4.85,
-          "interest_spread": 3.30
+          "interest_spread": 3.3
         },
         {
           "date": "2083-03",
@@ -3758,8 +3808,14 @@
     {
       "id": "pcbl",
       "name": "Prime Commercial Bank",
+      "website": "https://www.primebank.com.np/investor-relation/base-rate-and-interest-rates",
       "history": [
-         {
+        {
+          "date": "2083-05",
+          "base_rate": 4.80,
+          "interest_spread": 3.57
+        },
+        {
           "date": "2083-04",
           "base_rate": 4.86,
           "interest_spread": 3.65
@@ -4009,6 +4065,7 @@
     {
       "id": "sanima",
       "name": "Sanima Bank",
+      "website": "https://www.sanimabank.com/know-us/interest-rate",
       "history": [
         {
           "date": "2083-05",
@@ -4018,7 +4075,7 @@
         {
           "date": "2083-04",
           "base_rate": 4.58,
-          "interest_spread": 3.50
+          "interest_spread": 3.5
         },
         {
           "date": "2083-03",
@@ -4265,6 +4322,7 @@
     {
       "id": "sbl",
       "name": "Siddhartha Bank",
+      "website": "https://www.siddharthabank.com/rates-charges-limit/base-rate--interest-spread-rate",
       "history": [
         {
           "date": "2083-05",
@@ -4521,6 +4579,7 @@
     {
       "id": "scb",
       "name": "Standard Chartered Bank Nepal",
+      "website": "https://www.sc.com/np/important-information/historical-base-rate-interest/",
       "history": [
         {
           "date": "2083-04",
@@ -4772,8 +4831,9 @@
     {
       "id": "rbb",
       "name": "Rastriya Banijya Bank",
+      "website": "https://www.rbb.com.np/content/base-rate-and-spread-rate",
       "history": [
-         {
+        {
           "date": "2083-05",
           "base_rate": 3.83,
           "interest_spread": 3.39
@@ -5030,7 +5090,13 @@
     {
       "id": "corporate",
       "name": "Corporate Development Bank",
+      "website": "https://www.corporatebank.com.np/financials/base-spread-rate",
       "history": [
+        {
+          "date": "2083-05",
+          "base_rate": 7.42,
+          "interest_spread": 4.57
+        },
         {
           "date": "2083-04",
           "base_rate": 7.44,
@@ -5221,11 +5287,17 @@
     {
       "id": "excel",
       "name": "Excel Development Bank",
+      "website": "https://edb.com.np/base-rate/",
       "history": [
+        {
+          "date": "2083-05",
+          "base_rate": 4.88,
+          "interest_spread": 4.36
+        },
         {
           "date": "2083-04",
           "base_rate": 5.23,
-          "interest_spread": null
+          "interest_spread": 4.44
         },
         {
           "date": "2083-03",
@@ -5472,6 +5544,7 @@
     {
       "id": "garima",
       "name": "Garima Bikas Bank",
+      "website": "https://garimabank.com.np/disclosure/base-rate",
       "history": [
         {
           "date": "2083-05",
@@ -5728,7 +5801,13 @@
     {
       "id": "green",
       "name": "Green Development Bank",
+      "website": "https://greenbank.com.np/disclosure/rates",
       "history": [
+        {
+          "date": "2083-05",
+          "base_rate": 6.03,
+          "interest_spread": 4.37
+        },
         {
           "date": "2083-04",
           "base_rate": 6.02,
@@ -5979,6 +6058,7 @@
     {
       "id": "kamana",
       "name": "Kamana Sewa Bikas Bank",
+      "website": "https://kamanasewabank.com/financial-data/",
       "history": [
         {
           "date": "2083-04",
@@ -6230,8 +6310,9 @@
     {
       "id": "lumbini",
       "name": "Lumbini Bikas Bank",
+      "website": "https://www.lumbinibikasbank.com/rates--charges-footer/base--spread-rates",
       "history": [
-         {
+        {
           "date": "2083-04",
           "base_rate": 5.54,
           "interest_spread": 3.86
@@ -6481,6 +6562,7 @@
     {
       "id": "mahalaxmi",
       "name": "Mahalaxmi Development Bank",
+      "website": "https://www.mahalaxmibank.com/disclosures/base-rates--interest-spread",
       "history": [
         {
           "date": "2083-05",
@@ -6737,6 +6819,7 @@
     {
       "id": "miteri",
       "name": "Miteri Development Bank",
+      "website": "https://miteribank.com.np//control/pages/base-and-spread-rate/",
       "history": [
         {
           "date": "2083-05",
@@ -6993,8 +7076,10 @@
     {
       "id": "muktinath",
       "name": "Muktinath Bikash Bank",
+      "website": "https://www.muktinathbank.com.np/disclosures",
+      "note": "MoU Signed with Sindhu Bikas Bank & Janaki Finance for merger.",
       "history": [
-         {
+        {
           "date": "2083-05",
           "base_rate": 5.51,
           "interest_spread": null
@@ -7249,11 +7334,12 @@
     {
       "id": "narayani",
       "name": "Narayani Development Bank",
+      "website": "https://ndbl.com.np/base-rates/",
       "excludeFromAvg": true,
       "history": [
         {
           "date": "2083-04",
-          "base_rate": 10.80,
+          "base_rate": 10.8,
           "interest_spread": 3.86
         },
         {
@@ -7321,7 +7407,13 @@
     {
       "id": "salapa",
       "name": "Salapa Bikash Bank",
+      "website": "https://salapabikasbank.com.np/main/ZGlzY2xvc3VyZQ==",
       "history": [
+        {
+          "date": "2083-05",
+          "base_rate": 9.14,
+          "interest_spread": 4.58
+        },
         {
           "date": "2083-04",
           "base_rate": 9.79,
@@ -7329,7 +7421,7 @@
         },
         {
           "date": "2083-03",
-          "base_rate": 9.90,
+          "base_rate": 9.9,
           "interest_spread": 4.58
         },
         {
@@ -7512,6 +7604,7 @@
     {
       "id": "saptakoshi",
       "name": "Saptakoshi Development Bank",
+      "website": "https://skdbl.com.np/rates/base-rate",
       "history": [
         {
           "date": "2083-04",
@@ -7521,7 +7614,7 @@
         {
           "date": "2083-03",
           "base_rate": 5.85,
-          "interest_spread": 4.20
+          "interest_spread": 4.2
         },
         {
           "date": "2083-02",
@@ -7758,7 +7851,13 @@
     {
       "id": "shangrila",
       "name": "Shangrila Development Bank",
+      "website": "https://www.shangrilabank.com/base-rate/base-rate",
       "history": [
+        {
+          "date": "2083-05",
+          "base_rate": 5.62,
+          "interest_spread": 4.14
+        },
         {
           "date": "2083-04",
           "base_rate": 5.51,
@@ -8009,11 +8108,12 @@
     {
       "id": "shine",
       "name": "Shine Resunga Development Bank",
+      "website": "https://srdb.com.np/Base-Rate",
       "history": [
         {
           "date": "2083-04",
           "base_rate": 5.53,
-          "interest_spread": 3.90
+          "interest_spread": 3.9
         },
         {
           "date": "2083-03",
@@ -8260,6 +8360,7 @@
     {
       "id": "jbbl",
       "name": "Jyoti Bikash Bank",
+      "website": "https://jbbl.com.np/reports",
       "history": [
         {
           "date": "2083-04",
@@ -8511,6 +8612,8 @@
     {
       "id": "sindu",
       "name": "Sindhu Bikash Bank",
+      "website": "https://www.sindhubank.com.np/base-rate/",
+      "note": "MoU Signed for merger with Muktinath Bikas Bank",
       "history": [
         {
           "date": "2083-04",
@@ -8764,6 +8867,7 @@
     {
       "id": "best",
       "name": "Best Finance",
+      "website": "https://bestfinance.com.np/base-rate-and-spread-rate",
       "history": [
         {
           "date": "2083-04",
@@ -8773,7 +8877,7 @@
         {
           "date": "2083-03",
           "base_rate": 8.23,
-          "interest_spread": 4.10
+          "interest_spread": 4.1
         },
         {
           "date": "2083-02",
@@ -9015,11 +9119,12 @@
     {
       "id": "central",
       "name": "Central Finance",
+      "website": "https://centralfinance.com.np/base-rate",
       "history": [
         {
           "date": "2083-05",
           "base_rate": 6.18,
-          "interest_spread": 4.40
+          "interest_spread": 4.4
         },
         {
           "date": "2083-04",
@@ -9271,11 +9376,12 @@
     {
       "id": "goodwill",
       "name": "Goodwill Finance",
+      "website": "https://goodwillfinance.com.np/rates/base-rates-and-spread-rates",
       "history": [
         {
           "date": "2083-04",
           "base_rate": 6.61,
-          "interest_spread": 4.10
+          "interest_spread": 4.1
         },
         {
           "date": "2083-03",
@@ -9522,6 +9628,7 @@
     {
       "id": "guheshwori",
       "name": "Guheshwori Merchant Banking & Finance",
+      "website": "https://www.gmbf.com.np/rates/base-rate",
       "history": [
         {
           "date": "2083-04",
@@ -9773,6 +9880,7 @@
     {
       "id": "gurkhas",
       "name": "Gurkhas Finance",
+      "website": "https://gurkhasfinance.com.np/base-rate-and-net-spread-interest-rate",
       "history": [
         {
           "date": "2083-04",
@@ -9979,6 +10087,7 @@
     {
       "id": "icfc",
       "name": "ICFC Finance",
+      "website": "https://www.icfcbank.com/investor/base_rates",
       "history": [
         {
           "date": "2083-05",
@@ -9998,7 +10107,7 @@
         {
           "date": "2083-02",
           "base_rate": 5.97,
-          "interest_spread": 4.40
+          "interest_spread": 4.4
         },
         {
           "date": "2083-01",
@@ -10235,6 +10344,8 @@
     {
       "id": "janaki",
       "name": "Janaki Finance",
+      "website": "https://www.jfcjanakpur.com.np/monthly-base-rate",
+      "note": "MoU Signed for merger with Muktinath Bikas Bank",
       "history": [
         {
           "date": "2083-04",
@@ -10381,8 +10492,9 @@
     {
       "id": "manjushree",
       "name": "Manjushree Finance",
+      "website": "https://www.manjushreefinance.com.np/base-and-spread-rate",
       "history": [
-         {
+        {
           "date": "2083-05",
           "base_rate": 5.74,
           "interest_spread": 4.39
@@ -10627,7 +10739,13 @@
     {
       "id": "multipurpose",
       "name": "Multipurpose Finance",
+      "website": "https://multipurposefinance.com/rate/base-rate",
       "history": [
+        {
+          "date": "2083-05",
+          "base_rate": 7.53,
+          "interest_spread": 4.59
+        },
         {
           "date": "2083-04",
           "base_rate": 7.69,
@@ -10797,8 +10915,14 @@
     },
     {
       "id": "nepalfinance",
-      "name": "Nepal Finance",   
+      "name": "Nepal Finance",
+      "website": "https://nepalfinance.com.np/base-rate",
       "history": [
+        {
+          "date": "2083-05",
+          "base_rate": 7.27,
+          "interest_spread": 4.49
+        },
         {
           "date": "2083-04",
           "base_rate": 7.21,
@@ -11049,6 +11173,7 @@
     {
       "id": "pokhara",
       "name": "Pokhara Finance",
+      "website": "https://www.pokharafinance.com.np/base-rate-and-spread-rate",
       "note": "Merged with Samriddhi Finance on 26 Ashar 2083",
       "history": [
         {
@@ -11301,12 +11426,13 @@
     {
       "id": "progressive",
       "name": "Progressive Finance",
+      "website": "https://www.pfltd.com.np/investor-relation",
       "history": [
         {
           "date": "2083-04",
           "base_rate": 7.04,
           "interest_spread": 4.54
-        }, 
+        },
         {
           "date": "2083-03",
           "base_rate": 7.2,
@@ -11507,6 +11633,7 @@
     {
       "id": "reliance",
       "name": "Reliance Finance",
+      "website": "https://reliancenepal.com.np/base-rate-spread-rate",
       "history": [
         {
           "date": "2083-05",
@@ -11763,6 +11890,7 @@
     {
       "id": "samriddhi",
       "name": "Samriddhi Finance",
+      "website": "https://sfcl.com.np",
       "inactive": true,
       "history": [
         {
@@ -12005,8 +12133,9 @@
     {
       "id": "shreeinvestment",
       "name": "Shree Investment & Finance",
+      "website": "https://www.shreefinance.com.np/base-rate-and-intrest-sprea-sheet/",
       "history": [
-         {
+        {
           "date": "2083-04",
           "base_rate": 6.31,
           "interest_spread": 3.67
