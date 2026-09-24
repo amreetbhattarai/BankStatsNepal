@@ -3090,6 +3090,11 @@
       "website": "https://www.nimb.com.np/personal-banking/base-rate-and-interest-rate-spread-(3-years-data)",
       "history": [
         {
+          "date": "2083-05",
+          "base_rate": 4.63,
+          "interest_spread": 2.99
+        },
+        {
           "date": "2083-04",
           "base_rate": 4.67,
           "interest_spread": 3.07
@@ -4582,6 +4587,11 @@
       "website": "https://www.sc.com/np/important-information/historical-base-rate-interest/",
       "history": [
         {
+          "date": "2083-05",
+          "base_rate": 4.03,
+          "interest_spread": 3.78
+        },
+        {
           "date": "2083-04",
           "base_rate": 3.91,
           "interest_spread": 3.71
@@ -6060,6 +6070,11 @@
       "name": "Kamana Sewa Bikas Bank",
       "website": "https://kamanasewabank.com/financial-data/",
       "history": [
+        {
+          "date": "2083-05",
+          "base_rate": 5.44,
+          "interest_spread": 3.97
+        },
         {
           "date": "2083-04",
           "base_rate": 5.42,
@@ -8111,6 +8126,11 @@
       "website": "https://srdb.com.np/Base-Rate",
       "history": [
         {
+          "date": "2083-05",
+          "base_rate": 5.49,
+          "interest_spread": 3.84
+        },
+        {
           "date": "2083-04",
           "base_rate": 5.53,
           "interest_spread": 3.9
@@ -9883,6 +9903,11 @@
       "website": "https://gurkhasfinance.com.np/base-rate-and-net-spread-interest-rate",
       "history": [
         {
+          "date": "2083-05",
+          "base_rate": 6.11,
+          "interest_spread": 4.45
+        },
+        {
           "date": "2083-04",
           "base_rate": 6.09,
           "interest_spread": 4.55
@@ -10347,6 +10372,11 @@
       "website": "https://www.jfcjanakpur.com.np/monthly-base-rate",
       "note": "MoU Signed for merger with Muktinath Bikas Bank",
       "history": [
+        {
+          "date": "2083-05",
+          "base_rate": 9.54,
+          "interest_spread": 4.6
+        },
         {
           "date": "2083-04",
           "base_rate": 9.42,
@@ -11176,6 +11206,11 @@
       "website": "https://www.pokharafinance.com.np/base-rate-and-spread-rate",
       "note": "Merged with Samriddhi Finance on 26 Ashar 2083",
       "history": [
+        {
+          "date": "2083-05",
+          "base_rate": 6.47,
+          "interest_spread": 3.85
+        },
         {
           "date": "2083-04",
           "base_rate": 6.77,
