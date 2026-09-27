@@ -136,7 +136,7 @@
           "cost_of_fund": 4.05,
           "cd_ratio": 81.9,
           "roe": -3.87,
-          "roa": -36
+          "roa": -0.36
         },
         {
           "quarter": "Q4 2082",
@@ -2680,8 +2680,8 @@
           "llp_npl": 84.95,
           "cost_of_fund": 5.05,
           "cd_ratio": 64.68,
-          "roe": 0,
-          "roa": 0
+          "roe": null,
+          "roa": null
         },
         {
           "quarter": "Q4 2082",
@@ -2700,5 +2700,911 @@
       ]
     }
   ],
-  "finance_companies": []
+  "finance_companies": [
+    {
+      "id": "best",
+      "name": "Best Finance",
+      "website": "https://bestfinance.com.np/base-rate-and-spread-rate",
+      "history": [
+        {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "car": 15.56,
+          "tier1": null,
+          "cet1": null,
+          "npl": 10.7,
+          "llp_npl": 74.33,
+          "cost_of_fund": 4.91,
+          "cd_ratio": 70.53,
+          "roe": null,
+          "roa": null
+        },
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 13.93,
+          "tier1": null,
+          "cet1": null,
+          "npl": 13.08,
+          "llp_npl": 72.83,
+          "cost_of_fund": 5.17,
+          "cd_ratio": 68.95,
+          "roe": null,
+          "roa": null
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 12.13,
+          "tier1": null,
+          "cet1": null,
+          "npl": 13.87,
+          "llp_npl": 83.84,
+          "cost_of_fund": 5.64,
+          "cd_ratio": 67.94,
+          "roe": null,
+          "roa": null
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 15.82,
+          "tier1": null,
+          "cet1": null,
+          "npl": 10.19,
+          "llp_npl": 72.53,
+          "cost_of_fund": 6.17,
+          "cd_ratio": 69.07,
+          "roe": null,
+          "roa": null
+        }
+      ]
+    },
+    {
+      "id": "central",
+      "name": "Central Finance",
+      "website": "https://centralfinance.com.np/base-rate",
+      "history": [
+        {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "car": 15.03,
+          "tier1": 12.99,
+          "cet1": 12.99,
+          "npl": 10.12,
+          "llp_npl": 85.33,
+          "cost_of_fund": 4.24,
+          "cd_ratio": 59.89,
+          "roe": null,
+          "roa": null
+        },
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 13.23,
+          "tier1": 11.21,
+          "cet1": 11.21,
+          "npl": 14.17,
+          "llp_npl": 79.74,
+          "cost_of_fund": 4.72,
+          "cd_ratio": 58.1,
+          "roe": null,
+          "roa": null
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 13.77,
+          "tier1": 11.87,
+          "cet1": 11.87,
+          "npl": 14.18,
+          "llp_npl": 10.64,
+          "cost_of_fund": 5.36,
+          "cd_ratio": 60.96,
+          "roe": null,
+          "roa": null
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": null,
+          "tier1": 12.26,
+          "cet1": 12.26,
+          "npl": 12.09,
+          "llp_npl": 84.33,
+          "cost_of_fund": 5.57,
+          "cd_ratio": 65.01,
+          "roe": null,
+          "roa": null
+        }
+      ]
+    },
+    {
+      "id": "goodwill",
+      "name": "Goodwill Finance",
+      "website": "https://goodwillfinance.com.np/rates/base-rates-and-spread-rates",
+      "history": [
+        {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "car": 15.35,
+          "tier1": null,
+          "cet1": null,
+          "npl": 6.27,
+          "llp_npl": 99.33,
+          "cost_of_fund": 4.65,
+          "cd_ratio": 69.3,
+          "roe": null,
+          "roa": null
+        },
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 13.88,
+          "tier1": null,
+          "cet1": null,
+          "npl": 9.69,
+          "llp_npl": 81.84,
+          "cost_of_fund": 5.1,
+          "cd_ratio": 68.56,
+          "roe": null,
+          "roa": null
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 11.15,
+          "tier1": null,
+          "cet1": null,
+          "npl": 6.7,
+          "llp_npl": 110.52,
+          "cost_of_fund": 5.52,
+          "cd_ratio": 72.24,
+          "roe": null,
+          "roa": null
+        },
+        {
+          "quarter": "Q1 2082",
+          "date": "2082-06",
+          "audited": false,
+          "car": 13.95,
+          "tier1": null,
+          "cet1": null,
+          "npl": 6.33,
+          "llp_npl": 104.19,
+          "cost_of_fund": 5.91,
+          "cd_ratio": 73.59,
+          "roe": null,
+          "roa": null
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 14.38,
+          "tier1": null,
+          "cet1": null,
+          "npl": 5.76,
+          "llp_npl": 114.34,
+          "cost_of_fund": 6.12,
+          "cd_ratio": 72.27,
+          "roe": null,
+          "roa": null
+        }
+      ]
+    },
+    {
+      "id": "guheshwori",
+      "name": "Guheshwori Merchant Banking & Finance",
+      "website": "https://www.gmbf.com.np/rates/base-rate",
+      "history": [
+        {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "car": 19.35,
+          "tier1": null,
+          "cet1": null,
+          "npl": 5.2,
+          "llp_npl": 108.05,
+          "cost_of_fund": 4.04,
+          "cd_ratio": 66.24,
+          "roe": null,
+          "roa": null
+        },
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 18.61,
+          "tier1": null,
+          "cet1": null,
+          "npl": 6.37,
+          "llp_npl": 97.21,
+          "cost_of_fund": 4.42,
+          "cd_ratio": 66.08,
+          "roe": null,
+          "roa": null
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 17.98,
+          "tier1": null,
+          "cet1": null,
+          "npl": 6.94,
+          "llp_npl": 86.28,
+          "cost_of_fund": 4.94,
+          "cd_ratio": 66.57,
+          "roe": null,
+          "roa": null
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 16.86,
+          "tier1": null,
+          "cet1": null,
+          "npl": 8.08,
+          "llp_npl": 78.93,
+          "cost_of_fund": 5.38,
+          "cd_ratio": 68.83,
+          "roe": null,
+          "roa": null
+        }
+      ]
+    },
+    {
+      "id": "gurkhas",
+      "name": "Gurkhas Finance",
+      "website": "https://gurkhasfinance.com.np/base-rate-and-net-spread-interest-rate",
+      "history": [
+        {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "car": 16.42,
+          "tier1": 13.53,
+          "cet1": null,
+          "npl": 13.32,
+          "llp_npl": 96.41,
+          "cost_of_fund": 3.43,
+          "cd_ratio": 72.62,
+          "roe": 15.1,
+          "roa": 1.96
+        },
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 14.42,
+          "tier1": 11.79,
+          "cet1": null,
+          "npl": 17.71,
+          "llp_npl": 87.14,
+          "cost_of_fund": 3.85,
+          "cd_ratio": 72.52,
+          "roe": 12.6,
+          "roa": 1.6
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 13.03,
+          "tier1": 10.89,
+          "cet1": null,
+          "npl": 17.46,
+          "llp_npl": 89.55,
+          "cost_of_fund": 4.61,
+          "cd_ratio": 73.25,
+          "roe": 9.56,
+          "roa": 1.14
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 10.78,
+          "tier1": 8.37,
+          "cet1": null,
+          "npl": 20.94,
+          "llp_npl": 84.96,
+          "cost_of_fund": 4.64,
+          "cd_ratio": 71.3,
+          "roe": -14.57,
+          "roa": -1.61
+        }
+      ]
+    },
+    {
+      "id": "icfc",
+      "name": "ICFC Finance",
+      "website": "https://www.icfcbank.com/investor/base_rates",
+      "history": [
+        {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "car": 14.38,
+          "tier1": 9.47,
+          "cet1": null,
+          "npl": 1.55,
+          "llp_npl": 131.54,
+          "cost_of_fund": 4.22,
+          "cd_ratio": 85.59,
+          "roe": 11.79,
+          "roa": 1.01
+        },
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 14.55,
+          "tier1": 9.09,
+          "cet1": null,
+          "npl": 2.68,
+          "llp_npl": 102.6,
+          "cost_of_fund": 4.67,
+          "cd_ratio": 83.34,
+          "roe": 6.58,
+          "roa": 0.54
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 12.21,
+          "tier1": 9.1,
+          "cet1": null,
+          "npl": 3.51,
+          "llp_npl": 83.11,
+          "cost_of_fund": 5.15,
+          "cd_ratio": 80.06,
+          "roe": 3.18,
+          "roa": 0.25
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 13.1,
+          "tier1": 9.88,
+          "cet1": null,
+          "npl": 2.77,
+          "llp_npl": 89.38,
+          "cost_of_fund": 5.88,
+          "cd_ratio": 82.65,
+          "roe": 4.13,
+          "roa": 0.37
+        }
+      ]
+    },
+    {
+      "id": "janaki",
+      "name": "Janaki Finance",
+      "website": "https://www.jfcjanakpur.com.np/monthly-base-rate",
+      "history": [
+        {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "car": -6.14,
+          "tier1": null,
+          "cet1": null,
+          "npl": 61.55,
+          "llp_npl": 90.6,
+          "cost_of_fund": 6.89,
+          "cd_ratio": 93.39,
+          "roe": null,
+          "roa": null
+        },
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": -6.73,
+          "tier1": null,
+          "cet1": null,
+          "npl": 59.12,
+          "llp_npl": 90.76,
+          "cost_of_fund": 6.96,
+          "cd_ratio": 96.39,
+          "roe": null,
+          "roa": null
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": -6.53,
+          "tier1": null,
+          "cet1": null,
+          "npl": 55.26,
+          "llp_npl": 94.35,
+          "cost_of_fund": 7.24,
+          "cd_ratio": 96.27,
+          "roe": null,
+          "roa": null
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": -5.74,
+          "tier1": null,
+          "cet1": null,
+          "npl": 53.8,
+          "llp_npl": 89.78,
+          "cost_of_fund": 7.59,
+          "cd_ratio": 94.01,
+          "roe": null,
+          "roa": null
+        }
+      ],
+      "note": "MoU Signed for merger with Muktinath Bikas Bank"
+    },
+    {
+      "id": "manjushree",
+      "name": "Manjushree Finance",
+      "website": "https://www.manjushreefinance.com.np/base-and-spread-rate",
+      "history": [
+        {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "car": 12.79,
+          "tier1": null,
+          "cet1": 3.43,
+          "npl": 1.08,
+          "llp_npl": 104.42,
+          "cost_of_fund": 4.42,
+          "cd_ratio": 82.99,
+          "roe": null,
+          "roa": null
+        },
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 12.69,
+          "tier1": null,
+          "cet1": null,
+          "npl": 3.99,
+          "llp_npl": 97.36,
+          "cost_of_fund": 4.56,
+          "cd_ratio": 84.99,
+          "roe": null,
+          "roa": null
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 12.81,
+          "tier1": null,
+          "cet1": null,
+          "npl": 3.64,
+          "llp_npl": 105.83,
+          "cost_of_fund": 4.99,
+          "cd_ratio": 84.84,
+          "roe": null,
+          "roa": null
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 12.3,
+          "tier1": null,
+          "cet1": null,
+          "npl": 4.13,
+          "llp_npl": 95.97,
+          "cost_of_fund": 5.22,
+          "cd_ratio": 83.83,
+          "roe": null,
+          "roa": null
+        }
+      ]
+    },
+    {
+      "id": "multipurpose",
+      "name": "Multipurpose Finance",
+      "website": "https://multipurposefinance.com/rate/base-rate",
+      "history": [
+        {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "car": 22.67,
+          "tier1": null,
+          "cet1": null,
+          "npl": 3.3,
+          "llp_npl": 123.69,
+          "cost_of_fund": 4.59,
+          "cd_ratio": 64.49,
+          "roe": null,
+          "roa": null
+        },
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 22.19,
+          "tier1": null,
+          "cet1": null,
+          "npl": 7.44,
+          "llp_npl": 88.51,
+          "cost_of_fund": 4.98,
+          "cd_ratio": 59.04,
+          "roe": null,
+          "roa": null
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 19.9,
+          "tier1": null,
+          "cet1": null,
+          "npl": 8.3,
+          "llp_npl": 78.09,
+          "cost_of_fund": 5.43,
+          "cd_ratio": 59.98,
+          "roe": null,
+          "roa": null
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 18.52,
+          "tier1": null,
+          "cet1": null,
+          "npl": 6.93,
+          "llp_npl": 79.43,
+          "cost_of_fund": 5.79,
+          "cd_ratio": 60.9,
+          "roe": null,
+          "roa": null
+        }
+      ]
+    },
+    {
+      "id": "nepalfinance",
+      "name": "Nepal Finance",
+      "website": "https://nepalfinance.com.np/base-rate",
+      "history": [
+        {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "car": 26.74,
+          "tier1": 23.34,
+          "cet1": 23.34,
+          "npl": 13.83,
+          "llp_npl": 78.16,
+          "cost_of_fund": 5.02,
+          "cd_ratio": 59.71,
+          "roe": -7.05,
+          "roa": -1.28
+        },
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 27.24,
+          "tier1": 23.62,
+          "cet1": 23.62,
+          "npl": 14.32,
+          "llp_npl": 78.78,
+          "cost_of_fund": 5.5,
+          "cd_ratio": 59.08,
+          "roe": -7.99,
+          "roa": -1.45
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 24.57,
+          "tier1": 21.18,
+          "cet1": 21.18,
+          "npl": 16.73,
+          "llp_npl": 66.46,
+          "cost_of_fund": 6.02,
+          "cd_ratio": 65.15,
+          "roe": -8.92,
+          "roa": -1.65
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 28.27,
+          "tier1": 24.7,
+          "cet1": 24.7,
+          "npl": 13.1,
+          "llp_npl": 79.26,
+          "cost_of_fund": 6.5,
+          "cd_ratio": 66.59,
+          "roe": -6.08,
+          "roa": -1.15
+        }
+      ]
+    },
+    {
+      "id": "pokhara",
+      "name": "Pokhara Finance",
+      "website": "https://www.pokharafinance.com.np/base-rate-and-spread-rate",
+      "history": [
+        {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "car": 12.87,
+          "tier1": 7.25,
+          "cet1": 7.25,
+          "npl": 20.84,
+          "llp_npl": 83.42,
+          "cost_of_fund": 3.81,
+          "cd_ratio": 66.43,
+          "roe": 19.1,
+          "roa": 2.11
+        },
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": -0.7,
+          "tier1": -0.7,
+          "cet1": -0.7,
+          "npl": 34.34,
+          "llp_npl": 81.82,
+          "cost_of_fund": 4.51,
+          "cd_ratio": 66.29,
+          "roe": 14.93,
+          "roa": 1.2
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 6.71,
+          "tier1": 3.35,
+          "cet1": 3.35,
+          "npl": 25.1,
+          "llp_npl": 85.96,
+          "cost_of_fund": 5.32,
+          "cd_ratio": 70.21,
+          "roe": 63.8,
+          "roa": 5.66
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": -4.82,
+          "tier1": -4.82,
+          "cet1": -4.82,
+          "npl": 38.11,
+          "llp_npl": 75.22,
+          "cost_of_fund": 6.16,
+          "cd_ratio": 74.74,
+          "roe": -46.86,
+          "roa": -3.18
+        }
+      ],
+      "note": "Merged with Samriddhi Finance on 26 Ashar 2083"
+    },
+    {
+      "id": "progressive",
+      "name": "Progressive Finance",
+      "website": "https://www.pfltd.com.np/investor-relation",
+      "history": [
+        {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "car": 12.25,
+          "tier1": 9.67,
+          "cet1": 9.67,
+          "npl": 3.01,
+          "llp_npl": 102.07,
+          "cost_of_fund": 4.1,
+          "cd_ratio": 69.6,
+          "roe": 7.06,
+          "roa": 0.56
+        },
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 10.91,
+          "tier1": 8.19,
+          "cet1": 8.91,
+          "npl": 5.58,
+          "llp_npl": 93.59,
+          "cost_of_fund": 4.45,
+          "cd_ratio": 68.04,
+          "roe": -3.89,
+          "roa": -0.29
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 11.17,
+          "tier1": 8,
+          "cet1": 8,
+          "npl": 7.39,
+          "llp_npl": 71.68,
+          "cost_of_fund": 4.7,
+          "cd_ratio": 70.33,
+          "roe": -4.06,
+          "roa": -0.35
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 11.32,
+          "tier1": 7.68,
+          "cet1": 7.68,
+          "npl": 6.67,
+          "llp_npl": 83.04,
+          "cost_of_fund": 4.84,
+          "cd_ratio": 70.7,
+          "roe": -6.26,
+          "roa": -0.48
+        }
+      ]
+    },
+    {
+      "id": "reliance",
+      "name": "Reliance Finance",
+      "website": "https://reliancenepal.com.np/base-rate-spread-rate",
+      "history": [
+        {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "car": 12.49,
+          "tier1": 10.74,
+          "cet1": 6.55,
+          "npl": null,
+          "llp_npl": 81.27,
+          "cost_of_fund": 4.54,
+          "cd_ratio": 85.02,
+          "roe": null,
+          "roa": null
+        },
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 13.65,
+          "tier1": 10.95,
+          "cet1": null,
+          "npl": 10.34,
+          "llp_npl": 58.52,
+          "cost_of_fund": 5.15,
+          "cd_ratio": 81.84,
+          "roe": null,
+          "roa": null
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 14.54,
+          "tier1": null,
+          "cet1": null,
+          "npl": 9.09,
+          "llp_npl": 69.7,
+          "cost_of_fund": 5.3,
+          "cd_ratio": 79.11,
+          "roe": null,
+          "roa": null
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 13.37,
+          "tier1": null,
+          "cet1": null,
+          "npl": 10.67,
+          "llp_npl": 81.34,
+          "cost_of_fund": 5.56,
+          "cd_ratio": 82.83,
+          "roe": null,
+          "roa": null
+        }
+      ]
+    },
+    {
+      "id": "samriddhi",
+      "name": "Samriddhi Finance",
+      "website": "https://sfcl.com.np",
+      "inactive": true,
+      "history": []
+    },
+    {
+      "id": "shreeinvestment",
+      "name": "Shree Investment & Finance",
+      "website": "https://www.shreefinance.com.np/base-rate-and-intrest-sprea-sheet/",
+      "history": [
+        {
+          "quarter": "Q4 2083",
+          "date": "2083-03",
+          "audited": false,
+          "car": 19.12,
+          "tier1": 18.16,
+          "cet1": null,
+          "npl": 3.74,
+          "llp_npl": 110.63,
+          "cost_of_fund": 4.9,
+          "cd_ratio": 71.39,
+          "roe": 3.29,
+          "roa": 0.45
+        },
+        {
+          "quarter": "Q3 2082",
+          "date": "2082-12",
+          "audited": false,
+          "car": 18.47,
+          "tier1": 17.44,
+          "cet1": null,
+          "npl": 4.02,
+          "llp_npl": 91.29,
+          "cost_of_fund": 5.26,
+          "cd_ratio": 72.92,
+          "roe": 2.42,
+          "roa": 0.33
+        },
+        {
+          "quarter": "Q2 2082",
+          "date": "2082-09",
+          "audited": false,
+          "car": 17.64,
+          "tier1": 16.59,
+          "cet1": null,
+          "npl": 3.83,
+          "llp_npl": 90.65,
+          "cost_of_fund": 5.87,
+          "cd_ratio": 75.26,
+          "roe": 1.79,
+          "roa": 0.24
+        },
+        {
+          "quarter": "Q4 2082",
+          "date": "2082-03",
+          "audited": false,
+          "car": 18.5,
+          "tier1": 17.57,
+          "cet1": null,
+          "npl": 3.34,
+          "llp_npl": 97.77,
+          "cost_of_fund": 6.23,
+          "cd_ratio": 79.6,
+          "roe": 0.99,
+          "roa": 0.14
+        }
+      ]
+    }
+  ]
 }

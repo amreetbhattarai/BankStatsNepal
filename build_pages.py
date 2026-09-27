@@ -294,7 +294,7 @@ def build_subnav_html(indicator, category, base_data):
     btns = []
     slug_ind = INDICATOR_SLUG.get(indicator, 'base-rate-spread')
     for cat in CATEGORIES:
-        cnt = len(base_data.get(cat, []))
+        cnt = len([i for i in base_data.get(cat, []) if not i.get('inactive')])
         is_active = ' active' if cat == category else ''
         slug_cat = CATEGORY_SLUG[cat]
         btns.append(f'        <a class="cat-pill-btn{is_active}" data-cat="{cat}" href="/{slug_ind}/{slug_cat}/">{CATEGORY_LABEL_PLURAL[cat]} <span class="cat-count" id="count-{cat}">{cnt}</span></a>')
@@ -304,7 +304,7 @@ def build_subnav_html(indicator, category, base_data):
 def build_subnav_quarterly_html(category, q_data):
     btns = []
     for cat in CATEGORIES:
-        cnt = len(q_data.get(cat, []))
+        cnt = len([i for i in q_data.get(cat, []) if not i.get('inactive')])
         is_active = ' active' if cat == category else ''
         slug_cat = CATEGORY_SLUG[cat]
         btns.append(f'        <a class="cat-pill-btn{is_active}" data-qcat="{cat}" href="/quarterly-indicators/{slug_cat}/">{CATEGORY_LABEL_PLURAL[cat]} <span class="cat-count" id="qcount-{cat}">{cnt}</span></a>')
@@ -332,6 +332,7 @@ def build_quarterly_table_html(category, q_data):
 
         val = curr.get('npl')
         val_str = f"{val:.2f}%" if val is not None else '—'
+        val_cls = 'rate-value neg-rate' if val is not None and val < 0 else 'rate-value'
         q_label = fmt_quarter_label(curr.get('quarter'))
 
         # QoQ
@@ -394,7 +395,7 @@ def build_quarterly_table_html(category, q_data):
         rows.append(
             f'<tr>'
             f'<td><div class="inst-cell">{render_logo_html(inst)}<div><div class="inst-name">{esc(inst["name"])}{status_dot}</div>{note_html}</div></div></td>'
-            f'<td class="num"><span class="rate-value">{val_str}</span></td>'
+            f'<td class="num"><span class="{val_cls}">{val_str}</span></td>'
             f'<td class="num">{qoq_str}</td>'
             f'<td class="num">{yoy_str}</td>'
             f'<td class="num"><span class="{date_cls}">{q_label}{audit_badge}</span></td>'
@@ -608,7 +609,8 @@ NOT_FOUND_HTML = '''<!DOCTYPE html>
 def main():
     template = (ROOT / 'index.html').read_text()
     monthly_raw = json.loads((ROOT / 'data' / 'monthly-indicators.json').read_text())
-    q_data = json.loads((ROOT / 'data' / 'quarterly-indicators.json').read_text())
+    q_data_raw = json.loads((ROOT / 'data' / 'quarterly-indicators.json').read_text())
+    q_data = {c: [inst for inst in q_data_raw.get(c, []) if not inst.get('inactive')] for c in CATEGORIES}
 
     base_data = {c: [] for c in CATEGORIES}
     spread_data = {c: [] for c in CATEGORIES}

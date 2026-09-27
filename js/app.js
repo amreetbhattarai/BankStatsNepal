@@ -95,6 +95,8 @@ function applyTheme(theme, isInit = false) {
       const cfg = Q_METRIC_CONFIG[activeQMetric] || Q_METRIC_CONFIG.npl;
       const latestQ = (qData[0] && qData[0].history && qData[0].history[0]?.quarter) || 'Q3 2082';
       renderQuarterlyChart(activeQCat, qData, cfg, latestQ);
+    } else if (activeBRView === 'chart') {
+      drawBRRobinhoodChart();
     }
   }
 }
@@ -141,6 +143,14 @@ let activeBRView = 'data';
 let activeBRChartInstId = null;
 let activeBRChartIndicator = 'base_rate';
 let activeBRChartRange = 'all';
+let activeBeeswarmCats = ['commercial_banks', 'development_banks', 'finance_companies'];
+let brCompareInstIds = [];
+function getCompareColors() {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  return isDark
+    ? ['#F8FAFC', '#60A5FA', '#FBBF24', '#C084FC', '#34D399']
+    : ['#1B2A4A', '#2563EB', '#D97706', '#7C3AED', '#059669'];
+}
 let sortState = { col: null, dir: null };
 let qSortState = { col: null, dir: null };
 let qChartSortDir = 'desc'; // 'desc', 'asc', 'name'
@@ -164,7 +174,10 @@ function fmtDateShort(d) {
   return `${BS_MONTHS_SHORT[mIndex] || parts[1]} ${parts[0].slice(2)}`;
 }
 
-function fmtRate(r) { return r.toFixed(2) + '%'; }
+function fmtRate(r) {
+  if (r === null || r === undefined || isNaN(r)) return '—';
+  return r.toFixed(2) + '%';
+}
 
 function getInitials(name) {
   if (!name) return 'BK';
@@ -280,7 +293,7 @@ function cycleSortDir(col) {
 }
 
 function sortItems(category) {
-  const baseItems = DATA[category] || [];
+  const baseItems = (DATA[category] || []).filter(b => !b.inactive);
   const spreadItems = (SPREAD_DATA && SPREAD_DATA[category]) || [];
 
   const combined = baseItems.map(b => {
@@ -479,6 +492,7 @@ function renderUnifiedList(category) {
 function renderDashboard() {
   if (!DATA) return;
   renderDashboardStats();
+  syncBeeswarmPills();
   renderBeeswarm();
   renderDeviationChart(currentDevCat);
   renderIRC();
@@ -495,7 +509,7 @@ function renderTrend() {
   const byCat = {}, dateSet = new Set();
   cats.forEach(cat => {
     const m = {};
-    DATA[cat].filter(inst => !inst.excludeFromAvg && !inst.problematic).forEach(inst => inst.history.forEach(h => { (m[h.date] = m[h.date] || []).push(h.rate); }));
+    (DATA[cat] || []).filter(inst => !inst.excludeFromAvg && !inst.problematic).forEach(inst => (inst.history || []).forEach(h => { (m[h.date] = m[h.date] || []).push(h.rate); }));
     byCat[cat] = m;
     Object.keys(m).forEach(d => dateSet.add(d));
   });
@@ -504,7 +518,7 @@ function renderTrend() {
 
   const series = cats.map(cat => ({
     cat,
-    total: DATA[cat].length,
+    total: (DATA[cat] || []).filter(i => !i.inactive).length,
     cnt: dates.map(d => (byCat[cat][d] || []).length),
     vals: dates.map(d => {
       const arr = byCat[cat][d];
@@ -609,7 +623,7 @@ function renderScatter(scatCat) {
   const pts = [];
   const unmatched = [];
   base.forEach(b => {
-    if (b.problematic || b.excludeFromAvg) return;
+    if (b.problematic || b.excludeFromAvg || b.inactive) return;
     const s = spread.find(v => v.id === b.id) || spread.find(v => v.name === b.name);
     if (s && s.history && s.history.length > 0 && b.history && b.history.length > 0) {
       pts.push({ id: b.id, name: b.name, bx: b.history[0].rate, sy: s.history[0].rate });
@@ -665,7 +679,6 @@ function renderScatter(scatCat) {
   pts.forEach((p, i) => {
     const px = x(p.bx).toFixed(1);
     const py = y(p.sy).toFixed(1);
-    const initials = getInitials(p.name);
     const clipId = `sc-clip-${catKey}-${i}`;
     const imgRadius = rScat - 0.4;
     const imgSize = imgRadius * 2;
@@ -677,8 +690,8 @@ function renderScatter(scatCat) {
         <clipPath id="${clipId}">
           <circle cx="0" cy="0" r="${imgRadius}"/>
         </clipPath>
-        <text x="0" y="${(rScat * 0.35).toFixed(1)}" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="${(rScat * 0.82).toFixed(1)}" font-weight="700" fill="${color}">${initials}</text>
         <image href="/img/logos/${p.id}.png" x="${imgOffset.toFixed(1)}" y="${imgOffset.toFixed(1)}" width="${imgSize.toFixed(1)}" height="${imgSize.toFixed(1)}" clip-path="url(#${clipId})" preserveAspectRatio="xMidYMid meet" onerror="if(!this.dataset.icoTry){this.dataset.icoTry='1';this.setAttribute('href','/img/logos/${p.id}.ico');}else{this.style.display='none';}"/>
+        <circle class="badge-border" cx="0" cy="0" r="${rScat}" fill="none"/>
       </g>`;
   });
 
@@ -835,7 +848,7 @@ function renderDashboardStats() {
 
   // Category averages with month-over-month delta
   cats.forEach(cat => {
-    const validInsts = (DATA[cat] || []).filter(i => i.history && i.history.length > 0 && !i.excludeFromAvg && !i.problematic);
+    const validInsts = (DATA[cat] || []).filter(i => !i.inactive && !i.excludeFromAvg && !i.problematic && i.history && i.history.length > 0);
     if (!validInsts.length) return;
     const curr = avg(validInsts.map(i => i.history[0].rate));
     const prevArr = validInsts.filter(i => i.history[1]).map(i => i.history[1].rate);
@@ -847,7 +860,7 @@ function renderDashboardStats() {
   // Breadth: how many BFIs cut / raised / held vs their previous month
   let cut = 0, raised = 0, flat = 0;
   cats.forEach(cat => {
-    (DATA[cat] || []).forEach(i => {
+    (DATA[cat] || []).filter(i => !i.inactive && !i.excludeFromAvg && !i.problematic).forEach(i => {
       if (!i.history || i.history.length < 2) return;
       const d = i.history[0].rate - i.history[1].rate;
       if (d < -0.001) cut++;
@@ -864,7 +877,7 @@ function renderDashboardStats() {
   const spreadCats = cats.filter(c => SPREAD_DATA && SPREAD_DATA[c] && SPREAD_DATA[c].length);
   if (spreadCats.length) {
     const currAll = [], prevAll = [];
-    spreadCats.forEach(c => SPREAD_DATA[c].forEach(i => {
+    spreadCats.forEach(c => (SPREAD_DATA[c] || []).filter(i => !i.inactive && !i.excludeFromAvg && !i.problematic).forEach(i => {
       if (i.history && i.history.length > 0) {
         currAll.push(i.history[0].rate);
         if (i.history[1]) prevAll.push(i.history[1].rate);
@@ -880,8 +893,24 @@ function renderDashboardStats() {
   }
 }
 
+function syncBeeswarmPills() {
+  const isAll = activeBeeswarmCats.length === 3;
+  document.querySelectorAll('[data-bscat]').forEach(btn => {
+    const cat = btn.dataset.bscat;
+    if (cat === 'all') {
+      btn.classList.toggle('active-all', isAll);
+    } else {
+      const isActive = activeBeeswarmCats.includes(cat);
+      btn.classList.toggle('active-cb', isActive && cat === 'commercial_banks');
+      btn.classList.toggle('active-db', isActive && cat === 'development_banks');
+      btn.classList.toggle('active-fc', isActive && cat === 'finance_companies');
+    }
+  });
+}
+
 function renderBeeswarm() {
   const svg = document.getElementById('beeswarmChart');
+  if (!svg) return;
   const W = chartWidth(svg);
   const isMobile = W < 520;
   const padL = isMobile ? 100 : 160;
@@ -889,25 +918,41 @@ function renderBeeswarm() {
   const padT = 16;
   const padB = 32;
   const plotW = Math.max(100, W - padL - padR);
-  const tierH = isMobile ? 76 : 86;
-  const cats = ['commercial_banks', 'development_banks', 'finance_companies'];
+
+  const allCats = ['commercial_banks', 'development_banks', 'finance_companies'];
+  const cats = activeBeeswarmCats.length ? activeBeeswarmCats : allCats;
+  const numCats = cats.length;
+
+  // Dynamic tier height and logo sizing:
+  // When only 1 category is selected, logos are significantly bigger and tier is spacious
+  let tierH, r;
+  if (numCats === 1) {
+    tierH = isMobile ? 96 : 130;
+    r = isMobile ? 8.5 : 12.0; // 24px diameter badges on desktop, 17px on mobile
+  } else if (numCats === 2) {
+    tierH = isMobile ? 84 : 102;
+    r = isMobile ? 7.5 : 10.0; // 20px diameter badges on desktop, 15px on mobile
+  } else {
+    tierH = isMobile ? 76 : 86;
+    r = isMobile ? 6.5 : 8.5;  // 17px diameter badges on desktop, 13px on mobile
+  }
+
   const SHORT_NAME = { commercial_banks: 'Commercial Banks', development_banks: 'Development Banks', finance_companies: 'Finance Companies' };
   const SHORT_CODE = { commercial_banks: 'Commercial', development_banks: 'Development', finance_companies: 'Finance' };
   const plotH = cats.length * tierH;
-  const r = isMobile ? 6.5 : 8.5;
 
   const allInsts = [];
   cats.forEach(cat => {
     (DATA[cat] || []).forEach(inst => {
-      if (inst.history && inst.history.length > 0 && !inst.problematic && !inst.excludeFromAvg) {
+      if (inst.history && inst.history.length > 0 && !inst.problematic && !inst.excludeFromAvg && !inst.inactive) {
         allInsts.push({ id: inst.id, name: inst.name, rate: inst.history[0].rate, cat, color: CAT_COLORS[cat] });
       }
     });
   });
 
   const rates = allInsts.map(i => i.rate);
-  const minRate = Math.min(...rates);
-  const maxRate = Math.max(...rates);
+  const minRate = rates.length ? Math.min(...rates) : 0;
+  const maxRate = rates.length ? Math.max(...rates) : 10;
   const rateSpan = (maxRate - minRate) || 1;
 
   const xPos = rate => padL + ((Math.min(Math.max(rate, minRate), maxRate) - minRate) / rateSpan) * plotW;
@@ -935,7 +980,7 @@ function renderBeeswarm() {
   const axisY = padT + plotH + 4;
 
   for (let i = 0; i < labelCount; i++) {
-    const rate = minRate + (i / (labelCount - 1)) * rateSpan;
+    const rate = minRate + (i / (labelCount - 1 || 1)) * rateSpan;
     const x = xPos(rate);
     const anchor = i === 0 ? 'start' : (i === labelCount - 1 ? 'end' : 'middle');
 
@@ -992,7 +1037,6 @@ function renderBeeswarm() {
 
   // Render logo badges
   dots.forEach((d, idx) => {
-    const initials = getInitials(d.name);
     const clipId = `bs-clip-${d.cat}-${idx}`;
     const imgRadius = r - 0.4;
     const imgSize = imgRadius * 2;
@@ -1004,8 +1048,8 @@ function renderBeeswarm() {
         <clipPath id="${clipId}">
           <circle cx="0" cy="0" r="${imgRadius}"/>
         </clipPath>
-        <text x="0" y="${(r * 0.35).toFixed(1)}" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="${(r * 0.82).toFixed(1)}" font-weight="700" fill="${d.color}">${initials}</text>
         <image href="/img/logos/${d.id}.png" x="${imgOffset.toFixed(1)}" y="${imgOffset.toFixed(1)}" width="${imgSize.toFixed(1)}" height="${imgSize.toFixed(1)}" clip-path="url(#${clipId})" preserveAspectRatio="xMidYMid meet" onerror="if(!this.dataset.icoTry){this.dataset.icoTry='1';this.setAttribute('href','/img/logos/${d.id}.ico');}else{this.style.display='none';}"/>
+        <circle class="badge-border" cx="0" cy="0" r="${r}" fill="none"/>
       </g>`;
   });
 
@@ -1014,7 +1058,11 @@ function renderBeeswarm() {
   svg.setAttribute('height', totalH);
   svg.innerHTML = svgContent;
 
-  document.getElementById('beeswarmSub').textContent = `3 Tiers · ${allInsts.length} BFIs · ${fmtDate(GLOBAL_LATEST_DATE)}`;
+  const subEl = document.getElementById('beeswarmSub');
+  if (subEl) {
+    const tierText = cats.length === 1 ? '1 Tier' : `${cats.length} Tiers`;
+    subEl.textContent = `${tierText} · ${allInsts.length} BFIs · ${fmtDate(GLOBAL_LATEST_DATE)}`;
+  }
 
   attachTip(svg, '.bs-hover', 'bsTip', el => {
     const d = dots[parseInt(el.dataset.idx)];
@@ -1026,7 +1074,7 @@ function renderBeeswarm() {
 function renderDeviationChart(devCat) {
   currentDevCat = devCat;
   const catKey = DEV_CAT_MAP[devCat];
-  const group = (DATA[catKey] || []).filter(i => i.history && i.history.length > 0 && !i.problematic && !i.excludeFromAvg);
+  const group = (DATA[catKey] || []).filter(i => i.history && i.history.length > 0 && !i.problematic && !i.excludeFromAvg && !i.inactive);
   if (!group.length) return;
   const avg = group.reduce((s, i) => s + i.history[0].rate, 0) / group.length;
 
@@ -1037,7 +1085,7 @@ function renderDeviationChart(devCat) {
   const W = chartWidth(svg);
 
   const sorted = [...group].sort((a, b) => a.history[0].rate - b.history[0].rate);
-  const scaleGroup = sorted.filter(i => !i.excludeFromAvg && !i.problematic);
+  const scaleGroup = sorted.filter(i => !i.excludeFromAvg && !i.problematic && !i.inactive);
   const maxDev = Math.max(...scaleGroup.map(i => Math.abs(i.history[0].rate - avg)), 1);
 
   // Measure actual text widths to avoid overlap
@@ -1311,8 +1359,11 @@ function renderRangePills(history) {
 
 /* ---- Base Rate & Spread Rate Top-Level Chart View ---- */
 function renderBRChart(category = activeCategory) {
+  if (activeCategory !== category) {
+    brCompareInstIds = [];
+  }
   activeCategory = category;
-  const insts = (DATA[category] || []).filter(i => i.history && i.history.length > 0).sort((a, b) => a.name.localeCompare(b.name));
+  const insts = (DATA[category] || []).filter(i => !i.inactive && !i.excludeFromAvg && !i.problematic && i.history && i.history.length > 0).sort((a, b) => a.name.localeCompare(b.name));
   const headingEl = document.getElementById('brChartHeading');
   const subEl = document.getElementById('brChartSub');
   if (headingEl) headingEl.textContent = `${CATEGORY_LABELS[category]}`;
@@ -1329,6 +1380,11 @@ function renderBRChart(category = activeCategory) {
     }
   }
 
+  // Filter out any compareInstIds that are invalid or match activeBRChartInstId
+  brCompareInstIds = brCompareInstIds.filter(id => id !== activeBRChartInstId && insts.some(i => i.id === id));
+
+  updateBRCompareSelect();
+
   // Sync indicator pills
   document.querySelectorAll('#brChartIndicatorPills .hist-indicator-pill').forEach(b => {
     b.classList.toggle('active', b.dataset.brchartInd === activeBRChartIndicator);
@@ -1342,140 +1398,317 @@ function renderBRChart(category = activeCategory) {
   drawBRRobinhoodChart();
 }
 
+function updateBRCompareSelect() {
+  const sel = document.getElementById('brCompareSelect');
+  if (!sel) return;
+  const insts = (DATA[activeCategory] || []).filter(i => !i.inactive && !i.excludeFromAvg && !i.problematic && i.history && i.history.length > 0).sort((a, b) => a.name.localeCompare(b.name));
+  
+  if (brCompareInstIds.length >= 3) {
+    sel.innerHTML = '<option value="" disabled>Max 4 banks compared</option>';
+    sel.disabled = true;
+    return;
+  }
+  sel.disabled = false;
+
+  const available = insts.filter(i => i.id !== activeBRChartInstId && !brCompareInstIds.includes(i.id));
+  const countText = brCompareInstIds.length > 0 ? ` (${brCompareInstIds.length + 1}/4)` : '';
+  sel.innerHTML = `<option value="">+ Add Bank to Compare${countText}</option>` + 
+    available.map(i => `<option value="${i.id}">${i.name}</option>`).join('');
+  sel.value = '';
+}
+
+function renderBRCompareList(seriesList = [], activeDateIdx = null, allDates = []) {
+  const listContainer = document.getElementById('brCompareList');
+  const countEl = document.getElementById('brCompareCount');
+  if (!listContainer) return;
+
+  const insts = (DATA[activeCategory] || []);
+  const primary = insts.find(x => x.id === activeBRChartInstId);
+  if (!primary) {
+    listContainer.innerHTML = '';
+    if (countEl) countEl.textContent = '0/4';
+    return;
+  }
+
+  const allItems = [
+    { inst: primary, isPrimary: true },
+    ...brCompareInstIds.map(id => ({ inst: insts.find(x => x.id === id), isPrimary: false })).filter(x => x.inst)
+  ];
+
+  if (countEl) countEl.textContent = `${allItems.length}/4`;
+
+  const colors = getCompareColors();
+  const date = (allDates && activeDateIdx !== null && activeDateIdx >= 0)
+    ? allDates[activeDateIdx]
+    : (allDates && allDates.length ? allDates[allDates.length - 1] : null);
+
+  let html = '';
+  allItems.forEach((item, idx) => {
+    const inst = item.inst;
+    const color = colors[idx % colors.length];
+    const s = seriesList.find(x => x.id === inst.id);
+    const rate = (s && date) ? s.dateToRate.get(date) : (inst.history?.[0]?.rate);
+    const rateStr = rate !== undefined && rate !== null ? `${rate.toFixed(2)}%` : '—';
+    const removeBtn = !item.isPrimary ? `
+      <button class="br-compare-remove-btn" data-remove-compare="${inst.id}" title="Remove ${inst.name}">✕</button>
+    ` : '';
+
+    html += `
+      <div class="br-compare-item${item.isPrimary ? ' is-primary' : ''}" data-compare-inst="${inst.id}">
+        <div class="br-compare-item-left">
+          <span class="br-compare-color-bar" style="background:${color};"></span>
+          <span class="br-compare-name" title="${inst.name}">${inst.name}</span>
+        </div>
+        <div class="br-compare-item-right">
+          <span class="br-compare-rate">${rateStr}</span>
+          ${removeBtn}
+        </div>
+      </div>
+    `;
+  });
+
+  listContainer.innerHTML = html;
+
+  // Hover item to highlight line on SVG chart
+  listContainer.querySelectorAll('.br-compare-item').forEach(itemEl => {
+    const instId = itemEl.dataset.compareInst;
+    itemEl.addEventListener('mouseenter', () => {
+      const svg = document.getElementById('brRhSvg');
+      if (svg) {
+        svg.querySelectorAll('.br-chart-line').forEach(line => {
+          if (line.dataset.instId === instId) {
+            line.classList.add('is-highlighted');
+            line.setAttribute('stroke-width', '3.5');
+            line.style.opacity = '1';
+          } else {
+            line.classList.remove('is-highlighted');
+            line.style.opacity = '0.22';
+          }
+        });
+      }
+    });
+    itemEl.addEventListener('mouseleave', () => {
+      const svg = document.getElementById('brRhSvg');
+      if (svg) {
+        svg.querySelectorAll('.br-chart-line').forEach(line => {
+          line.classList.remove('is-highlighted');
+          line.setAttribute('stroke-width', line.dataset.isPrimary === 'true' ? '2.6' : '2.2');
+          line.style.opacity = '1';
+        });
+      }
+    });
+  });
+
+  // Remove comparison button
+  listContainer.querySelectorAll('[data-remove-compare]').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const removeId = btn.dataset.removeCompare;
+      brCompareInstIds = brCompareInstIds.filter(id => id !== removeId);
+      updateBRCompareSelect();
+      drawBRRobinhoodChart();
+    });
+  });
+}
+
 function drawBRRobinhoodChart() {
   const container = document.getElementById('brRobinhoodChart');
-  const priceEl = document.getElementById('brChartPrice');
-  const changeEl = document.getElementById('brChartPriceChange');
-  const hoverDateEl = document.getElementById('brChartHoverDate');
-  const statsEl = document.getElementById('brChartExtraStats');
   if (!container) return;
 
-  const baseInst = DATA[activeCategory]?.find(x => x.id === activeBRChartInstId);
-  if (!baseInst || !baseInst.history || !baseInst.history.length) {
-    container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--slate)">No historical rate data available for this institution.</div>';
-    if (priceEl) priceEl.textContent = '—';
-    if (changeEl) changeEl.textContent = '—';
-    if (hoverDateEl) hoverDateEl.textContent = '';
-    if (statsEl) statsEl.textContent = '';
-    return;
-  }
+  const allInstIds = [activeBRChartInstId, ...brCompareInstIds].filter(Boolean);
+  
+  function getInstSeries(instId) {
+    const baseInst = DATA[activeCategory]?.find(x => x.id === instId);
+    if (!baseInst || !baseInst.history || !baseInst.history.length) return null;
+    const spreadInst = SPREAD_DATA[activeCategory]?.find(x => x.id === instId || x.name === baseInst.name);
 
-  const spreadInst = SPREAD_DATA[activeCategory]?.find(x => x.id === activeBRChartInstId || x.name === baseInst.name);
-
-  let fullSeries = [];
-  if (activeBRChartIndicator === 'interest_spread') {
-    if (spreadInst && spreadInst.history && spreadInst.history.length) {
-      fullSeries = spreadInst.history.filter(s => s.rate !== null && s.rate !== undefined).map(s => ({ date: s.date, rate: s.rate }));
+    let fullSeries = [];
+    if (activeBRChartIndicator === 'interest_spread') {
+      if (spreadInst && spreadInst.history && spreadInst.history.length) {
+        fullSeries = spreadInst.history.filter(s => s.rate !== null && s.rate !== undefined).map(s => ({ date: s.date, rate: s.rate }));
+      }
+    } else if (activeBRChartIndicator === 'avg3') {
+      fullSeries = baseInst.history.map((h, i) => {
+        const avg = applicableRate(baseInst.history, i);
+        return avg !== null ? { date: h.date, rate: avg } : null;
+      }).filter(Boolean);
+    } else {
+      fullSeries = baseInst.history.map(h => ({ date: h.date, rate: h.rate }));
     }
-  } else if (activeBRChartIndicator === 'avg3') {
-    fullSeries = baseInst.history.map((h, i) => {
-      const avg = applicableRate(baseInst.history, i);
-      return avg !== null ? { date: h.date, rate: avg } : null;
-    }).filter(Boolean);
-  } else {
-    fullSeries = baseInst.history.map(h => ({ date: h.date, rate: h.rate }));
+
+    if (!fullSeries.length) return null;
+    const rangeData = getRangeData(fullSeries, activeBRChartRange);
+    if (!rangeData.length) return null;
+    return {
+      id: instId,
+      name: baseInst.name,
+      series: rangeData,
+      dateToRate: new Map(rangeData.map(d => [d.date, d.rate]))
+    };
   }
 
-  if (!fullSeries.length) {
-    container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--slate)">No historical data reported for this indicator.</div>';
-    if (priceEl) priceEl.textContent = '—';
-    if (changeEl) changeEl.textContent = '—';
-    if (hoverDateEl) hoverDateEl.textContent = '';
-    if (statsEl) statsEl.textContent = '';
+  const bankSeriesList = allInstIds.map(getInstSeries).filter(Boolean);
+  const colors = getCompareColors();
+
+  if (!bankSeriesList.length) {
+    container.innerHTML = '<div style="text-align:center;padding:50px 20px;color:var(--slate)">No historical rate data available for the selected institution(s).</div>';
+    renderBRCompareList([], null, []);
     return;
   }
 
-  const data = getRangeData(fullSeries, activeBRChartRange);
-  const W = 640, H = 180, padL = 8, padR = 8, padT = 10, padB = 22;
-
-  const rates = data.map(d => d.rate);
-  const min = Math.min(...rates), max = Math.max(...rates);
-  const span = (max - min) || 0.5;
-  const yMin = min - span * 0.18;
-  const yMax = max + span * 0.18;
-
-  const x = i => padL + (data.length === 1 ? (W - padL - padR) / 2 : (i / (data.length - 1)) * (W - padL - padR));
-  const y = v => padT + (1 - (v - yMin) / (yMax - yMin)) * (H - padT - padB);
-
-  let path = '', area = '';
-  data.forEach((d, i) => {
-    const px = x(i), py = y(d.rate);
-    path += (i === 0 ? 'M' : 'L') + px.toFixed(2) + ' ' + py.toFixed(2) + ' ';
-    area += (i === 0 ? 'M' + px.toFixed(2) + ' ' + (H - padB) + ' L' : 'L') + px.toFixed(2) + ' ' + py.toFixed(2) + ' ';
+  bankSeriesList.forEach((b, idx) => {
+    b.color = colors[idx % colors.length];
   });
-  area += `L${x(data.length - 1).toFixed(2)} ${H - padB} Z`;
 
-  const isUp = data[data.length - 1].rate >= data[0].rate;
-  const gradColor = isUp ? '#4A7C59' : '#B8533E';
+  const allDates = Array.from(new Set(bankSeriesList.flatMap(b => b.series.map(d => d.date)))).sort();
+  if (!allDates.length) {
+    container.innerHTML = '<div style="text-align:center;padding:50px 20px;color:var(--slate)">No historical data reported for this indicator.</div>';
+    renderBRCompareList(bankSeriesList, null, []);
+    return;
+  }
+
+  const allRates = bankSeriesList.flatMap(b => b.series.map(d => d.rate));
+  let min = Math.min(...allRates), max = Math.max(...allRates);
+  const span = (max - min) || 0.5;
+  const yMin = min - span * 0.12;
+  const yMax = max + span * 0.12;
+
+  const W = 680, H = 290, padL = 44, padR = 16, padT = 24, padB = 26;
+  const plotW = W - padL - padR;
+  const plotH = H - padT - padB;
+
+  const x = dateIdx => padL + (allDates.length === 1 ? plotW / 2 : (dateIdx / (allDates.length - 1)) * plotW);
+  const y = v => padT + (1 - (v - yMin) / (yMax - yMin)) * plotH;
+
+  // Horizontal Y Gridlines (4 levels)
+  let gridHTML = '';
+  for (let g = 0; g <= 4; g++) {
+    const rateVal = yMin + (g / 4) * (yMax - yMin);
+    const gy = y(rateVal);
+    gridHTML += `
+      <line x1="${padL}" y1="${gy.toFixed(1)}" x2="${(padL + plotW).toFixed(1)}" y2="${gy.toFixed(1)}" stroke="var(--ink)" stroke-opacity="0.08" stroke-dasharray="3,3"/>
+      <text x="${(padL - 6).toFixed(1)}" y="${(gy + 3.5).toFixed(1)}" text-anchor="end" font-family="'IBM Plex Mono', monospace" font-size="9.5" fill="var(--slate)">${rateVal.toFixed(2)}%</text>
+    `;
+  }
+
+  const isMulti = bankSeriesList.length > 1;
+  let pathsHTML = '';
+
+  if (!isMulti) {
+    const singleData = bankSeriesList[0].series;
+    let path = '', area = '';
+    singleData.forEach((d, i) => {
+      const dateIdx = allDates.indexOf(d.date);
+      const px = x(dateIdx), py = y(d.rate);
+      path += (i === 0 ? 'M' : 'L') + px.toFixed(2) + ' ' + py.toFixed(2) + ' ';
+      area += (i === 0 ? 'M' + px.toFixed(2) + ' ' + (H - padB) + ' L' : 'L') + px.toFixed(2) + ' ' + py.toFixed(2) + ' ';
+    });
+    area += `L${x(allDates.length - 1).toFixed(2)} ${H - padB} Z`;
+    const isUp = singleData[singleData.length - 1].rate >= singleData[0].rate;
+    const gradColor = isUp ? '#4A7C59' : '#B8533E';
+
+    pathsHTML = `
+      <defs>
+        <linearGradient id="brRhGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="${gradColor}" stop-opacity="0.2"/>
+          <stop offset="100%" stop-color="${gradColor}" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <path d="${area}" fill="url(#brRhGrad)"/>
+      <path class="br-chart-line" data-inst-id="${bankSeriesList[0].id}" data-is-primary="true" d="${path}" fill="none" stroke="${bankSeriesList[0].color}" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
+    `;
+  } else {
+    pathsHTML = bankSeriesList.map((b, bIdx) => {
+      let p = '';
+      let first = true;
+      allDates.forEach((date, dateIdx) => {
+        if (b.dateToRate.has(date)) {
+          const px = x(dateIdx), py = y(b.dateToRate.get(date));
+          p += (first ? 'M' : 'L') + px.toFixed(2) + ' ' + py.toFixed(2) + ' ';
+          first = false;
+        }
+      });
+      return `<path class="br-chart-line" data-inst-id="${b.id}" data-is-primary="${bIdx === 0}" d="${p}" fill="none" stroke="${b.color}" stroke-width="${bIdx === 0 ? '2.6' : '2.2'}" stroke-linejoin="round" stroke-linecap="round"/>`;
+    }).join('');
+  }
 
   let xLabels = '';
-  const labelCount = Math.min(6, data.length);
+  const labelCount = Math.min(6, allDates.length);
   for (let i = 0; i < labelCount; i++) {
-    const idx = Math.round((i / (labelCount - 1 || 1)) * (data.length - 1));
+    const idx = Math.round((i / (labelCount - 1 || 1)) * (allDates.length - 1));
     const anchor = i === 0 ? 'start' : (i === labelCount - 1 ? 'end' : 'middle');
-    xLabels += `<text x="${x(idx).toFixed(2)}" y="${H - 6}" text-anchor="${anchor}" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--slate)">${fmtDateShort(data[idx].date)}</text>`;
+    xLabels += `<text x="${x(idx).toFixed(2)}" y="${H - 8}" text-anchor="${anchor}" font-family="'IBM Plex Mono', monospace" font-size="10" fill="var(--slate)">${fmtDateShort(allDates[idx])}</text>`;
   }
 
-  let hoverDots = '';
-  data.forEach((d, i) => {
-    hoverDots += `<circle class="hover-dot" data-idx="${i}" cx="${x(i).toFixed(2)}" cy="${y(d.rate).toFixed(2)}" r="12" fill="transparent"/>`;
+  let hoverSlices = '';
+  const sliceW = allDates.length > 1 ? plotW / (allDates.length - 1) : plotW;
+  allDates.forEach((date, i) => {
+    const sliceX = Math.max(0, x(i) - sliceW / 2);
+    hoverSlices += `<rect class="hover-slice" data-idx="${i}" x="${sliceX.toFixed(2)}" y="0" width="${sliceW.toFixed(2)}" height="${H}" fill="transparent" style="cursor:crosshair;"/>`;
   });
+
+  const crosshairDots = bankSeriesList.map((b, idx) => `<circle id="brChDot${idx}" r="5" fill="${b.color}" stroke="var(--card-bg)" stroke-width="2.5" style="display:none"/>`).join('');
 
   container.innerHTML = `
   <svg id="brRhSvg" viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block;cursor:crosshair" preserveAspectRatio="xMidYMid meet">
-    <defs>
-      <linearGradient id="brRhGrad" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="${gradColor}" stop-opacity="0.22"/>
-        <stop offset="100%" stop-color="${gradColor}" stop-opacity="0"/>
-      </linearGradient>
-    </defs>
-    <path d="${area}" fill="url(#brRhGrad)"/>
-    <path d="${path}" fill="none" stroke="var(--ink)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+    ${gridHTML}
+    ${pathsHTML}
     ${xLabels}
-    <g id="brCrosshair" style="display:none">
-      <line id="brChLine" x1="0" y1="${padT}" x2="0" y2="${H - padB}" stroke="var(--slate)" stroke-width="1" stroke-dasharray="3,3"/>
-      <circle id="brChDot" r="5" fill="var(--ink)" stroke="var(--card-bg)" stroke-width="2"/>
+    <g id="brCrosshair" style="display:none" pointer-events="none">
+      <line id="brChLine" x1="0" y1="${padT}" x2="0" y2="${H - padB}" stroke="var(--ink)" stroke-opacity="0.32" stroke-width="1.2" stroke-dasharray="3,3"/>
+      ${crosshairDots}
+      <g id="brChDateBadge" transform="translate(0, 0)">
+        <rect id="brChDateBadgeBg" x="-42" y="2" width="84" height="18" rx="4" fill="var(--paper-dim)" stroke="var(--line)" stroke-width="1"/>
+        <text id="brChDateBadgeText" x="0" y="14.5" text-anchor="middle" font-family="'IBM Plex Mono', monospace" font-size="9.5" font-weight="600" fill="var(--ink)">—</text>
+      </g>
     </g>
-    ${hoverDots}
+    ${hoverSlices}
   </svg>`;
 
   const svg = document.getElementById('brRhSvg');
   const crosshair = document.getElementById('brCrosshair');
   const chLine = document.getElementById('brChLine');
-  const chDot = document.getElementById('brChDot');
+  const dateBadge = document.getElementById('brChDateBadge');
+  const dateBadgeBg = document.getElementById('brChDateBadgeBg');
+  const dateBadgeText = document.getElementById('brChDateBadgeText');
 
-  const latest = data[data.length - 1];
-  const earliest = data[0];
+  renderBRCompareList(bankSeriesList, allDates.length - 1, allDates);
 
-  if (statsEl) {
-    statsEl.innerHTML = `Min: <b>${min.toFixed(2)}%</b> &nbsp;·&nbsp; Max: <b>${max.toFixed(2)}%</b>`;
-  }
-
-  function setHeaderTo(point, isLive) {
-    if (priceEl) priceEl.textContent = fmtRate(point.rate);
-    if (changeEl) {
-      const diff = +(point.rate - earliest.rate).toFixed(2);
-      changeEl.className = 'chart-price-change ' + (diff > 0 ? 'pos' : diff < 0 ? 'neg' : 'flat');
-      changeEl.textContent = `${diff > 0 ? '+' : ''}${diff.toFixed(2)} pp since ${fmtDate(earliest.date)}`;
-    }
-    if (hoverDateEl) hoverDateEl.textContent = isLive ? '' : fmtDate(point.date);
-  }
-  setHeaderTo(latest, true);
-
-  svg.querySelectorAll('.hover-dot').forEach(dot => {
-    dot.addEventListener('mouseenter', () => {
-      const idx = parseInt(dot.dataset.idx, 10);
-      const point = data[idx];
-      const px = x(idx), py = y(point.rate);
+  svg.querySelectorAll('.hover-slice').forEach(slice => {
+    slice.addEventListener('mouseenter', () => {
+      const idx = parseInt(slice.dataset.idx, 10);
+      const date = allDates[idx];
+      const px = x(idx);
       if (chLine) { chLine.setAttribute('x1', px); chLine.setAttribute('x2', px); }
-      if (chDot) { chDot.setAttribute('cx', px); chDot.setAttribute('cy', py); }
+      bankSeriesList.forEach((b, bIdx) => {
+        const dot = document.getElementById('brChDot' + bIdx);
+        if (dot) {
+          if (b.dateToRate.has(date)) {
+            dot.style.display = 'block';
+            dot.setAttribute('cx', px);
+            dot.setAttribute('cy', y(b.dateToRate.get(date)));
+          } else {
+            dot.style.display = 'none';
+          }
+        }
+      });
+      if (dateBadge && dateBadgeBg && dateBadgeText) {
+        const dateStr = fmtDate(date);
+        dateBadgeText.textContent = dateStr;
+        const badgeW = Math.max(78, dateStr.length * 7.2 + 14);
+        dateBadgeBg.setAttribute('width', badgeW.toFixed(1));
+        dateBadgeBg.setAttribute('x', (-badgeW / 2).toFixed(1));
+        const badgeX = Math.max(padL + badgeW / 2, Math.min(W - padR - badgeW / 2, px));
+        dateBadge.setAttribute('transform', `translate(${badgeX.toFixed(1)}, 0)`);
+      }
       if (crosshair) crosshair.style.display = 'block';
-      setHeaderTo(point, false);
+      renderBRCompareList(bankSeriesList, idx, allDates);
     });
   });
+
   svg.addEventListener('mouseleave', () => {
     if (crosshair) crosshair.style.display = 'none';
-    setHeaderTo(latest, true);
+    renderBRCompareList(bankSeriesList, allDates.length - 1, allDates);
   });
 }
 
@@ -1529,7 +1762,7 @@ let activeInstId = null;
 function populateInstSelect(category, preserveSelection) {
   const select = document.getElementById('instSelect');
   if (!select) return;
-  const items = [...(DATA[category] || [])].sort((a,b) => a.name.localeCompare(b.name));
+  const items = [...(DATA[category] || [])].filter(b => !b.inactive).sort((a,b) => a.name.localeCompare(b.name));
   select.innerHTML = items.map(inst => `<option value="${inst.id}">${inst.name}</option>`).join('');
   if (preserveSelection && items.some(i => i.id === activeInstId)) {
     select.value = activeInstId;
@@ -1604,9 +1837,9 @@ function updateAsofStatus(cat) {
   // Dashboard overall summary
   let totalBFIs = 0, updatedBFIs = 0;
   ['commercial_banks','development_banks','finance_companies'].forEach(c => {
-    (DATA[c] || []).forEach(inst => {
+    (DATA[c] || []).filter(i => !i.inactive).forEach(inst => {
       totalBFIs++;
-      if (inst.history[0].date >= GLOBAL_LATEST_DATE) updatedBFIs++;
+      if (inst.history && inst.history[0] && inst.history[0].date >= GLOBAL_LATEST_DATE) updatedBFIs++;
     });
   });
   const overallPending = totalBFIs - updatedBFIs;
@@ -1618,7 +1851,7 @@ function updateAsofStatus(cat) {
 
   // Category specific tab status
   const targetCat = cat || activeSubTab || 'commercial_banks';
-  const items = DATA[targetCat] || [];
+  const items = (DATA[targetCat] || []).filter(i => !i.inactive);
   const totalInCat = items.length;
   const catLatestDate = getLatestDateForCategory(targetCat);
   const updatedInCat = catLatestDate ? items.filter(i => i.history[0] && i.history[0].date >= catLatestDate).length : totalInCat;
@@ -1786,12 +2019,13 @@ function renderQuarterlyView(category = activeQCat) {
   hideQuarterlyHistory();
 
   const qData = (QUARTERLY_DATA && QUARTERLY_DATA[category]) || [];
+  const activeQData = qData.filter(i => !i.inactive);
   const cfg = Q_METRIC_CONFIG[activeQMetric] || Q_METRIC_CONFIG.npl;
 
   // Update counts
   ['commercial_banks','development_banks','finance_companies'].forEach(c => {
     const el = document.getElementById('qcount-' + c);
-    if (el && QUARTERLY_DATA && QUARTERLY_DATA[c]) el.textContent = QUARTERLY_DATA[c].length;
+    if (el && QUARTERLY_DATA && QUARTERLY_DATA[c]) el.textContent = QUARTERLY_DATA[c].filter(i => !i.inactive).length;
   });
 
   // Update category buttons & view buttons
@@ -1800,11 +2034,11 @@ function renderQuarterlyView(category = activeQCat) {
   document.querySelectorAll('.q-view-btn').forEach(b => b.classList.toggle('active', b.dataset.qview === activeQView));
 
   // Compute status pill (chronologically resolve absolute latest quarter)
-  const allLatestQuarters = qData.map(i => i.history[0]?.quarter).filter(Boolean);
+  const allLatestQuarters = activeQData.map(i => i.history[0]?.quarter).filter(Boolean);
   allLatestQuarters.sort((a, b) => parseQuarterKey(b) - parseQuarterKey(a));
   const latestQ = allLatestQuarters[0] || 'Q3 2082';
-  const updatedCount = qData.filter(i => i.history[0]?.quarter === latestQ).length;
-  const pendingCount = qData.length - updatedCount;
+  const updatedCount = activeQData.filter(i => i.history[0]?.quarter === latestQ).length;
+  const pendingCount = activeQData.length - updatedCount;
 
   const dot = pendingCount > 0 ? '<span class="asof-dot blinking"></span>' : '<span class="asof-dot"></span>';
   const statusEl = document.getElementById('dataAsOfQuarterly');
@@ -1817,11 +2051,11 @@ function renderQuarterlyView(category = activeQCat) {
   if (activeQView === 'data') {
     if (tableContainer) tableContainer.style.display = 'block';
     if (chartContainer) chartContainer.style.display = 'none';
-    renderQuarterlyTable(category, qData, cfg, latestQ);
+    renderQuarterlyTable(category, activeQData, cfg, latestQ);
   } else {
     if (tableContainer) tableContainer.style.display = 'none';
     if (chartContainer) chartContainer.style.display = 'block';
-    renderQuarterlyChart(category, qData, cfg, latestQ);
+    renderQuarterlyChart(category, activeQData, cfg, latestQ);
   }
 }
 
@@ -1846,7 +2080,7 @@ function renderQuarterlyTable(category, qData, cfg, latestQ) {
   const container = document.getElementById('qTableView');
   if (!container) return;
 
-  let items = [...qData];
+  let items = qData.filter(i => !i.inactive);
 
   if (qSortState.col) {
     items.sort((a, b) => {
@@ -1894,9 +2128,12 @@ function renderQuarterlyTable(category, qData, cfg, latestQ) {
     }
 
     if (isMultiCap) {
-      const carVal = curr.car !== undefined ? fmtRate(curr.car) : '—';
-      const tier1Val = curr.tier1 !== undefined ? fmtRate(curr.tier1) : '—';
-      const cet1Val = curr.cet1 !== undefined ? fmtRate(curr.cet1) : '—';
+      const carCls = curr.car !== undefined && curr.car !== null && curr.car < 0 ? 'rate-value neg-rate' : 'rate-value';
+      const tier1Cls = curr.tier1 !== undefined && curr.tier1 !== null && curr.tier1 < 0 ? 'rate-value neg-rate' : 'rate-value';
+      const cet1Cls = curr.cet1 !== undefined && curr.cet1 !== null && curr.cet1 < 0 ? 'rate-value neg-rate' : 'rate-value';
+      const carVal = curr.car !== undefined && curr.car !== null ? fmtRate(curr.car) : '—';
+      const tier1Val = curr.tier1 !== undefined && curr.tier1 !== null ? fmtRate(curr.tier1) : '—';
+      const cet1Val = curr.cet1 !== undefined && curr.cet1 !== null ? fmtRate(curr.cet1) : '—';
 
       rowsHTML += `
         <tr${rowClass}>
@@ -1906,9 +2143,9 @@ function renderQuarterlyTable(category, qData, cfg, latestQ) {
               <div class="inst-name">${inst.name}${statusDot}</div>
             </div>
           </td>
-          <td class="num"><span class="rate-value">${carVal}</span></td>
-          <td class="num"><span class="rate-value">${tier1Val}</span></td>
-          <td class="num"><span class="rate-value">${cet1Val}</span></td>
+          <td class="num"><span class="${carCls}">${carVal}</span></td>
+          <td class="num"><span class="${tier1Cls}">${tier1Val}</span></td>
+          <td class="num"><span class="${cet1Cls}">${cet1Val}</span></td>
           <td class="num"><span class="${dateClass}">${fmtQuarterLabel(curr.quarter)}${auditBadge}</span></td>
           <td style="text-align:right">
             <div class="inst-actions">
@@ -1932,6 +2169,7 @@ function renderQuarterlyTable(category, qData, cfg, latestQ) {
         </tr>`;
     } else {
       const val = curr[activeQMetric] !== undefined ? curr[activeQMetric] : null;
+      const valCls = val !== null && val < 0 ? 'rate-value neg-rate' : 'rate-value';
 
       // QoQ calculation
       let qoqHTML = '<span style="color:var(--slate)">—</span>';
@@ -1977,7 +2215,7 @@ function renderQuarterlyTable(category, qData, cfg, latestQ) {
               <div class="inst-name">${inst.name}${statusDot}</div>
             </div>
           </td>
-          <td class="num"><span class="rate-value">${val !== null ? fmtRate(val) : '—'}</span></td>
+          <td class="num"><span class="${valCls}">${val !== null ? fmtRate(val) : '—'}</span></td>
           <td class="num">${qoqHTML}</td>
           <td class="num">${yoyHTML}</td>
           <td class="num"><span class="${dateClass}">${fmtQuarterLabel(curr.quarter)}${auditBadge}</span></td>
@@ -2087,6 +2325,12 @@ function showQuarterlyHistory(category, instId) {
   const tbody = document.getElementById('qHistTbody');
   if (!tbody) return;
 
+  const fmtHistCell = v => {
+    if (v === undefined || v === null) return '—';
+    const cls = v < 0 ? 'rate-value neg-rate' : 'rate-value';
+    return `<span class="${cls}">${fmtRate(v)}</span>`;
+  };
+
   let rowsHTML = '';
   inst.history.forEach(curr => {
     let auditBadge = '';
@@ -2097,15 +2341,15 @@ function showQuarterlyHistory(category, instId) {
     rowsHTML += `
       <tr>
         <td><strong style="font-family:'IBM Plex Mono',monospace;font-size:13.5px">${fmtQuarterLabel(curr.quarter)}</strong>${auditBadge}</td>
-        <td class="num"><span class="rate-value">${curr.npl !== undefined ? fmtRate(curr.npl) : '—'}</span></td>
-        <td class="num"><span class="rate-value">${curr.car !== undefined ? fmtRate(curr.car) : '—'}</span></td>
-        <td class="num"><span class="rate-value">${curr.tier1 !== undefined ? fmtRate(curr.tier1) : '—'}</span></td>
-        <td class="num"><span class="rate-value">${curr.cet1 !== undefined ? fmtRate(curr.cet1) : '—'}</span></td>
-        <td class="num"><span class="rate-value">${curr.cd_ratio !== undefined ? fmtRate(curr.cd_ratio) : '—'}</span></td>
-        <td class="num"><span class="rate-value">${curr.cost_of_fund !== undefined ? fmtRate(curr.cost_of_fund) : '—'}</span></td>
-        <td class="num"><span class="rate-value">${curr.llp_npl !== undefined ? fmtRate(curr.llp_npl) : '—'}</span></td>
-        <td class="num"><span class="rate-value">${curr.roe !== undefined ? fmtRate(curr.roe) : '—'}</span></td>
-        <td class="num"><span class="rate-value">${curr.roa !== undefined ? fmtRate(curr.roa) : '—'}</span></td>
+        <td class="num">${fmtHistCell(curr.npl)}</td>
+        <td class="num">${fmtHistCell(curr.car)}</td>
+        <td class="num">${fmtHistCell(curr.tier1)}</td>
+        <td class="num">${fmtHistCell(curr.cet1)}</td>
+        <td class="num">${fmtHistCell(curr.cd_ratio)}</td>
+        <td class="num">${fmtHistCell(curr.cost_of_fund)}</td>
+        <td class="num">${fmtHistCell(curr.llp_npl)}</td>
+        <td class="num">${fmtHistCell(curr.roe)}</td>
+        <td class="num">${fmtHistCell(curr.roa)}</td>
       </tr>`;
   });
 
@@ -2135,7 +2379,7 @@ function renderQuarterlyChart(category, qData, cfg, latestQ) {
   const svg = document.getElementById('qChartSvg');
   if (!svg) return;
 
-  const validItems = qData.filter(i => i.history[0] && i.history[0][activeQMetric] !== undefined);
+  const validItems = qData.filter(i => !i.inactive && !i.excludeFromAvg && !i.problematic && i.history[0] && i.history[0][activeQMetric] !== undefined && i.history[0][activeQMetric] !== null);
 
   if (qChartSortDir === 'asc') {
     validItems.sort((a,b) => (a.history[0][activeQMetric] || 0) - (b.history[0][activeQMetric] || 0));
@@ -2145,22 +2389,54 @@ function renderQuarterlyChart(category, qData, cfg, latestQ) {
     validItems.sort((a,b) => (b.history[0][activeQMetric] || 0) - (a.history[0][activeQMetric] || 0));
   }
 
-  const rowHeight = 36;
-  const padding = { top: 35, right: 90, bottom: 30, left: 220 };
   const chartW = chartWidth(svg);
-  const innerW = chartW - padding.left - padding.right;
+  const isMobile = chartW < 640;
+  const leftPad = isMobile ? 180 : 300;
+  const rightPad = 90;
+  const topPad = 35;
+  const bottomPad = 30;
+  const padding = { top: topPad, right: rightPad, bottom: bottomPad, left: leftPad };
+  const innerW = Math.max(chartW - padding.left - padding.right, 140);
+  const rowHeight = 36;
   const chartH = Math.max(validItems.length * rowHeight + padding.top + padding.bottom, 200);
 
   svg.setAttribute('width', chartW);
   svg.setAttribute('height', chartH);
   svg.style.height = chartH + 'px';
 
-  const avgVal = validItems.length ? validItems.reduce((s, i) => s + (i.history[0][activeQMetric] || 0), 0) / validItems.length : 0;
-  const maxVal = Math.max(...validItems.map(i => i.history[0][activeQMetric]), avgVal * 1.15, 10);
-  const xScale = val => padding.left + (val / maxVal) * innerW;
+  const values = validItems.map(i => i.history[0][activeQMetric]);
+  const avgVal = values.length ? values.reduce((s, v) => s + v, 0) / values.length : 0;
+  const rawMin = values.length ? Math.min(...values) : 0;
+  const rawMax = values.length ? Math.max(...values) : 10;
+  const hasNegative = rawMin < 0;
+
+  // Dedicated gutter for negative labels so they never collide with the institution names column
+  const negGutter = hasNegative ? (isMobile ? 56 : 70) : 0;
+  const plotStartX = padding.left + negGutter;
+  const plotW = Math.max(innerW - negGutter, 80);
+
+  let xScale, zeroX;
+  if (hasNegative) {
+    const minVal = rawMin;
+    const maxVal = Math.max(rawMax, 10);
+    const valSpan = (maxVal - minVal) || 1;
+    xScale = val => plotStartX + ((val - minVal) / valSpan) * plotW;
+    zeroX = xScale(0);
+  } else {
+    const maxVal = Math.max(rawMax, avgVal * 1.15, 10);
+    xScale = val => padding.left + (val / maxVal) * innerW;
+    zeroX = padding.left;
+  }
 
   let elements = '';
 
+  // Zero axis baseline when there are negative values
+  if (hasNegative) {
+    elements += `<line x1="${zeroX.toFixed(1)}" y1="${padding.top - 12}" x2="${zeroX.toFixed(1)}" y2="${chartH - padding.bottom + 4}" stroke="var(--ink)" stroke-width="1.5" stroke-opacity="0.3"/>`;
+    elements += `<text x="${zeroX.toFixed(1)}" y="${chartH - padding.bottom + 18}" fill="var(--slate)" font-size="10.5" font-weight="600" text-anchor="middle" font-family="IBM Plex Mono, monospace">0.00%</text>`;
+  }
+
+  // Average line
   if (validItems.length > 0) {
     const avgX = xScale(avgVal);
     elements += `<line x1="${avgX.toFixed(1)}" y1="${padding.top - 10}" x2="${avgX.toFixed(1)}" y2="${chartH - padding.bottom}" stroke="var(--gold)" stroke-width="1.8" stroke-dasharray="4 4" opacity="0.9"/>`;
@@ -2170,11 +2446,24 @@ function renderQuarterlyChart(category, qData, cfg, latestQ) {
   validItems.forEach((inst, idx) => {
     const y = padding.top + idx * rowHeight + 16;
     const val = inst.history[0][activeQMetric];
-    const barW = (val / maxVal) * innerW;
+    let displayName = inst.name;
+    if (isMobile && displayName.length > 20) {
+      displayName = displayName.slice(0, 19) + '…';
+    }
 
-    elements += `<text x="${padding.left - 12}" y="${y + 5}" fill="var(--ink)" font-size="12" font-weight="600" text-anchor="end" font-family="Fraunces, serif">${inst.name}</text>`;
-    elements += `<rect x="${padding.left}" y="${y - 8}" width="${barW}" height="14" rx="4" fill="var(--cb)" opacity="0.85"/>`;
-    elements += `<text x="${padding.left + barW + 8}" y="${y + 4}" fill="var(--ink)" font-size="12" font-weight="700" font-family="IBM Plex Mono, monospace">${fmtRate(val)}</text>`;
+    elements += `<text x="${padding.left - 16}" y="${y + 5}" fill="var(--ink)" font-size="${isMobile ? '11' : '12'}" font-weight="600" text-anchor="end" font-family="Fraunces, serif">${displayName}</text>`;
+
+    if (val >= 0) {
+      const barX = zeroX;
+      const barW = Math.max(xScale(val) - zeroX, 2);
+      elements += `<rect x="${barX.toFixed(1)}" y="${y - 8}" width="${barW.toFixed(1)}" height="14" rx="3" fill="var(--cb)" opacity="0.88"/>`;
+      elements += `<text x="${(barX + barW + 8).toFixed(1)}" y="${y + 4}" fill="var(--ink)" font-size="12" font-weight="700" font-family="IBM Plex Mono, monospace">${fmtRate(val)}</text>`;
+    } else {
+      const barX = xScale(val);
+      const barW = Math.max(zeroX - barX, 2);
+      elements += `<rect x="${barX.toFixed(1)}" y="${y - 8}" width="${barW.toFixed(1)}" height="14" rx="3" fill="var(--neg-color, #DC2626)" opacity="0.88"/>`;
+      elements += `<text x="${(barX - 8).toFixed(1)}" y="${y + 4}" fill="var(--neg-color, #DC2626)" font-size="12" font-weight="700" text-anchor="end" font-family="IBM Plex Mono, monospace">${fmtRate(val)}</text>`;
+    }
   });
 
   svg.innerHTML = elements;
@@ -2265,7 +2554,7 @@ function applySearch(category, query) {
 function getLatestDateForCategory(cat) {
   let latest = null;
   if (DATA && DATA[cat]) {
-    DATA[cat].forEach(inst => {
+    (DATA[cat] || []).filter(i => !i.inactive).forEach(inst => {
       if (inst.history && inst.history[0]) {
         const d = inst.history[0].date;
         if (!latest || d > latest) latest = d;
@@ -2278,7 +2567,7 @@ function getLatestDateForCategory(cat) {
 function getMostRecentDate() {
   let latest = null;
   ['commercial_banks','development_banks','finance_companies'].forEach(cat => {
-    (DATA[cat] || []).forEach(inst => {
+    (DATA[cat] || []).filter(i => !i.inactive).forEach(inst => {
       if (inst.history && inst.history[0]) {
         const d = inst.history[0].date;
         if (!latest || d > latest) latest = d;
@@ -2333,12 +2622,27 @@ function init() {
     });
   });
 
-  // Base Rate Chart institution select
+  // Base Rate Chart institution select (Primary)
   const brChartInstSel = document.getElementById('brChartInstSelect');
   if (brChartInstSel) {
     brChartInstSel.addEventListener('change', e => {
       activeBRChartInstId = e.target.value;
+      brCompareInstIds = brCompareInstIds.filter(id => id !== activeBRChartInstId);
+      updateBRCompareSelect();
       drawBRRobinhoodChart();
+    });
+  }
+
+  // Base Rate Chart comparison select
+  const brCompSel = document.getElementById('brCompareSelect');
+  if (brCompSel) {
+    brCompSel.addEventListener('change', e => {
+      const newId = e.target.value;
+      if (newId && !brCompareInstIds.includes(newId) && brCompareInstIds.length < 3) {
+        brCompareInstIds.push(newId);
+        updateBRCompareSelect();
+        drawBRRobinhoodChart();
+      }
     });
   }
 
@@ -2395,6 +2699,42 @@ function init() {
       selectInstitutionHistory(activeCategory, e.target.value);
     });
   }
+
+  // Dashboard beeswarm chart category filter pills (Excel Slicer behavior)
+  document.querySelectorAll('[data-bscat]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const cat = btn.dataset.bscat;
+      const allCats = ['commercial_banks', 'development_banks', 'finance_companies'];
+
+      if (cat === 'all') {
+        // Reset to all categories
+        activeBeeswarmCats = [...allCats];
+      } else {
+        if (activeBeeswarmCats.length === 3) {
+          // If all were active, single click isolates only the clicked category
+          activeBeeswarmCats = [cat];
+        } else {
+          const idx = activeBeeswarmCats.indexOf(cat);
+          if (idx >= 0) {
+            if (activeBeeswarmCats.length === 1) {
+              // Clicking the only active category toggles back to All
+              activeBeeswarmCats = [...allCats];
+            } else {
+              // Remove this category from multi-selection
+              activeBeeswarmCats.splice(idx, 1);
+            }
+          } else {
+            // Add category to multi-selection
+            activeBeeswarmCats.push(cat);
+            // Maintain canonical tier order
+            activeBeeswarmCats = allCats.filter(c => activeBeeswarmCats.includes(c));
+          }
+        }
+      }
+      syncBeeswarmPills();
+      renderBeeswarm();
+    });
+  });
 
   // Dashboard deviation chart category pills
   document.querySelectorAll('[data-devcat]').forEach(btn => {
@@ -2545,7 +2885,6 @@ Promise.all([
 
   ['commercial_banks', 'development_banks', 'finance_companies'].forEach(cat => {
     ((monthlyData && monthlyData[cat]) || []).forEach(inst => {
-      if (inst.inactive) return;
       const bHistory = [];
       const sHistory = [];
       (inst.history || []).forEach(h => {
@@ -2556,15 +2895,49 @@ Promise.all([
           sHistory.push({ date: h.date, rate: h.interest_spread });
         }
       });
-      baseData[cat].push({ id: inst.id, name: inst.name, website: inst.website || '', note: inst.note, problematic: inst.problematic, excludeFromAvg: inst.excludeFromAvg, history: bHistory });
-      spreadData[cat].push({ id: inst.id, name: inst.name, website: inst.website || '', note: inst.note, problematic: inst.problematic, excludeFromAvg: inst.excludeFromAvg, history: sHistory });
+      const isProblematic = Boolean(inst.problematic);
+      const isExcludeFromAvg = Boolean(inst.excludeFromAvg || inst.excludeFromAverage);
+      const isInactive = Boolean(inst.inactive);
+
+      baseData[cat].push({
+        id: inst.id,
+        name: inst.name,
+        website: inst.website || '',
+        note: inst.note,
+        problematic: isProblematic,
+        excludeFromAvg: isExcludeFromAvg,
+        inactive: isInactive,
+        history: bHistory
+      });
+      spreadData[cat].push({
+        id: inst.id,
+        name: inst.name,
+        website: inst.website || '',
+        note: inst.note,
+        problematic: isProblematic,
+        excludeFromAvg: isExcludeFromAvg,
+        inactive: isInactive,
+        history: sHistory
+      });
     });
   });
 
   DATA = baseData;
   SPREAD_DATA = spreadData;
   IRC_DATA = (refData && refData.interest_rate_corridor) || [];
-  QUARTERLY_DATA = qData || {};
+
+  const cleanQData = { commercial_banks: [], development_banks: [], finance_companies: [] };
+  ['commercial_banks', 'development_banks', 'finance_companies'].forEach(cat => {
+    ((qData && qData[cat]) || []).forEach(inst => {
+      cleanQData[cat].push({
+        ...inst,
+        problematic: Boolean(inst.problematic),
+        excludeFromAvg: Boolean(inst.excludeFromAvg || inst.excludeFromAverage),
+        inactive: Boolean(inst.inactive)
+      });
+    });
+  });
+  QUARTERLY_DATA = cleanQData;
 
   GLOBAL_LATEST_DATE = getMostRecentDate();
 
