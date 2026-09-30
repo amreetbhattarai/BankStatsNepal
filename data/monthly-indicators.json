@@ -6328,6 +6328,11 @@
       "website": "https://www.lumbinibikasbank.com/rates--charges-footer/base--spread-rates",
       "history": [
         {
+          "date": "2083-05",
+          "base_rate": 5.36,
+          "interest_spread": 3.91
+        },
+        {
           "date": "2083-04",
           "base_rate": 5.54,
           "interest_spread": 3.86
@@ -8383,6 +8388,11 @@
       "website": "https://jbbl.com.np/reports",
       "history": [
         {
+          "date": "2083-05",
+          "base_rate": 5.44,
+          "interest_spread": 4.35
+        },
+        {
           "date": "2083-04",
           "base_rate": 5.27,
           "interest_spread": 4.15
@@ -8635,6 +8645,11 @@
       "website": "https://www.sindhubank.com.np/base-rate/",
       "note": "MoU Signed for merger with Muktinath Bikas Bank",
       "history": [
+        {
+          "date": "2083-05",
+          "base_rate": 7.30,
+          "interest_spread": 4.58
+        },
         {
           "date": "2083-04",
           "base_rate": 7.17,
@@ -9650,6 +9665,11 @@
       "name": "Guheshwori Merchant Banking & Finance",
       "website": "https://www.gmbf.com.np/rates/base-rate",
       "history": [
+        {
+          "date": "2083-05",
+          "base_rate": 5.89,
+          "interest_spread": null
+        },
         {
           "date": "2083-04",
           "base_rate": 6.19,
@@ -12170,6 +12190,11 @@
       "name": "Shree Investment & Finance",
       "website": "https://www.shreefinance.com.np/base-rate-and-intrest-sprea-sheet/",
       "history": [
+        {
+          "date": "2083-05",
+          "base_rate": 6.24,
+          "interest_spread": 3.66
+        },
         {
           "date": "2083-04",
           "base_rate": 6.31,
