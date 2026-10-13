@@ -8904,6 +8904,11 @@
       "name": "Best Finance",
       "website": "https://bestfinance.com.np/base-rate-and-spread-rate",
       "history": [
+         {
+          "date": "2083-05",
+          "base_rate": 7.74,
+          "interest_spread": 4.38
+        },
         {
           "date": "2083-04",
           "base_rate": 7.84,
@@ -9413,6 +9418,11 @@
       "name": "Goodwill Finance",
       "website": "https://goodwillfinance.com.np/rates/base-rates-and-spread-rates",
       "history": [
+        {
+          "date": "2083-05",
+          "base_rate": 6.07,
+          "interest_spread": 4.49
+        },
         {
           "date": "2083-04",
           "base_rate": 6.61,
