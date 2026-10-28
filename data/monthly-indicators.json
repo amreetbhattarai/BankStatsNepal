@@ -263,6 +263,11 @@
       "website": "https://www.ctznbank.com/interest-rate/base-rate",
       "history": [
         {
+          "date": "2083-06",
+          "base_rate": 4.87,
+          "interest_spread": 3.39
+        },
+        {
           "date": "2083-05",
           "base_rate": 4.91,
           "interest_spread": 3.50
@@ -1553,6 +1558,11 @@
       "website": "https://www.laxmisunrise.com/additional-disclosures/base-rates/",
       "history": [
         {
+          "date": "2083-06",
+          "base_rate": 4.89,
+          "interest_spread": 3.15
+        },
+        {
           "date": "2083-05",
           "base_rate": 4.94,
           "interest_spread": 3.13
@@ -1809,6 +1819,11 @@
       "name": "Machhapuchhre Bank",
       "website": "https://www.machbank.com/base-rate/",
       "history": [
+        {
+          "date": "2083-06",
+          "base_rate": 4.99,
+          "interest_spread": 3.41
+        },
         {
           "date": "2083-05",
           "base_rate": 4.96,
@@ -2843,6 +2858,11 @@
       "website": "https://nepalbank.com.np/personal/base-rate-history",
       "history": [
         {
+          "date": "2083-06",
+          "base_rate": 4.37,
+          "interest_spread": 3.38
+        },
+        {
           "date": "2083-05",
           "base_rate": 4.37,
           "interest_spread": 3.42
@@ -3311,6 +3331,11 @@
       "name": "Nepal SBI Bank",
       "website": "https://nsbl.statebank/base-rates",
       "history": [
+        {
+          "date": "2083-06",
+          "base_rate": 5.09,
+          "interest_spread": 3.27
+        },
         {
           "date": "2083-05",
           "base_rate": 5.10,
@@ -10479,6 +10504,11 @@
       "note": "MoU Signed for merger with Muktinath Bikas Bank",
       "history": [
         {
+          "date": "2083-06",
+          "base_rate": 9.31,
+          "interest_spread": 4.6
+        },
+        {
           "date": "2083-05",
           "base_rate": 9.54,
           "interest_spread": 4.6
@@ -10630,6 +10660,11 @@
       "name": "Manjushree Finance",
       "website": "https://www.manjushreefinance.com.np/base-and-spread-rate",
       "history": [
+        {
+          "date": "2083-06",
+          "base_rate": 5.73,
+          "interest_spread": 4.36
+        },
         {
           "date": "2083-05",
           "base_rate": 5.74,
