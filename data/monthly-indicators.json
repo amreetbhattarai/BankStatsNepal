@@ -6,9 +6,14 @@
       "website": "https://adbl.gov.np/en/base-rate",
       "history": [
         {
+          "date": "2083-06",
+          "base_rate": 4.69,
+          "interest_spread": null
+        },
+        {
           "date": "2083-05",
           "base_rate": 4.54,
-          "interest_spread": null
+          "interest_spread": 3.42
         },
         {
           "date": "2083-04",
@@ -782,9 +787,14 @@
       "website": "https://www.globalimebank.com/base-rate/",
       "history": [
         {
+          "date": "2083-06",
+          "base_rate": 4.58,
+          "interest_spread": 3.17
+        },
+        {
           "date": "2083-05",
           "base_rate": 4.65,
-          "interest_spread": null
+          "interest_spread": 3.19
         },
         {
           "date": "2083-04",
@@ -3851,7 +3861,7 @@
       "website": "https://www.primebank.com.np/investor-relation/base-rate-and-interest-spread",
       "history": [
         {
-          "date": "2083-05",
+          "date": "2083-06",
           "base_rate": 4.87,
           "interest_spread": 3.50
         },
@@ -10246,9 +10256,14 @@
       "website": "https://www.icfcbank.com/investor/base_rates",
       "history": [
         {
+          "date": "2083-06",
+          "base_rate": 5.85,
+          "interest_spread": null
+        },
+        {
           "date": "2083-05",
           "base_rate": 5.82,
-          "interest_spread": null
+          "interest_spread": 4.03
         },
         {
           "date": "2083-04",
