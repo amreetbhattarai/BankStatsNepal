@@ -530,6 +530,11 @@
       "website": "https://everestbankltd.com/supports/interest-and-rates/base-spread-rate/",
       "history": [
         {
+          "date": "2083-06",
+          "base_rate": 4.25,
+          "interest_spread": 2.96
+        },
+        {
           "date": "2083-05",
           "base_rate": 4.13,
           "interest_spread": 3.08
@@ -1047,6 +1052,7 @@
       "id": "hbl",
       "name": "Himalayan Bank",
       "website": "https://himalayanbank.com/en/rates/base-rate",
+      "note": "Webpage Error",
       "history": [
         {
           "date": "2083-05",
@@ -2092,6 +2098,11 @@
       "website": "https://www.nicasiabank.com/interest-rates/",
       "history": [
         {
+          "date": "2083-06",
+          "base_rate": 5.55,
+          "interest_spread": 3.31
+        },
+        {
           "date": "2083-05",
           "base_rate": 5.57,
           "interest_spread": 3.24
@@ -2610,6 +2621,11 @@
       "name": "Nabil Bank",
       "website": "https://www.nabilbank.com/report/disclosures",
       "history": [
+        {
+          "date": "2083-06",
+          "base_rate": 4.32,
+          "interest_spread": 3.17
+        },
         {
           "date": "2083-05",
           "base_rate": 4.45,
@@ -3603,7 +3619,12 @@
       "name": "Prabhu Bank",
       "website": "https://www.prabhubank.com/financials/base-rate--interest-spread",
       "history": [
-         {
+        {
+          "date": "2083-06",
+          "base_rate": 4.95,
+          "interest_spread": 3.19
+        }, 
+        {
           "date": "2083-05",
           "base_rate": 4.98,
           "interest_spread": 3.19
@@ -5369,6 +5390,11 @@
       "name": "Excel Development Bank",
       "website": "https://edb.com.np/base-rate/",
       "history": [
+        {
+          "date": "2083-06",
+          "base_rate": 5.06,
+          "interest_spread": 4.23
+        },
         {
           "date": "2083-05",
           "base_rate": 4.88,
@@ -9268,6 +9294,11 @@
       "website": "https://centralfinance.com.np/base-rate",
       "history": [
         {
+          "date": "2083-06",
+          "base_rate": 6.17,
+          "interest_spread": 4.42
+        },
+        {
           "date": "2083-05",
           "base_rate": 6.18,
           "interest_spread": 4.4
@@ -11625,6 +11656,16 @@
       "website": "https://www.pfltd.com.np/investor-relation",
       "history": [
         {
+          "date": "2083-06",
+          "base_rate": 6.91,
+          "interest_spread": 4.57
+        },
+        {
+          "date": "2083-05",
+          "base_rate": 6.97,
+          "interest_spread": 4.59
+        },
+        {
           "date": "2083-04",
           "base_rate": 7.04,
           "interest_spread": 4.54
@@ -11830,6 +11871,7 @@
       "id": "reliance",
       "name": "Reliance Finance",
       "website": "https://reliancenepal.com.np/base-rate-spread-rate",
+      "note": "Webpage Error",
       "history": [
         {
           "date": "2083-05",
