@@ -4673,6 +4673,11 @@
       "website": "https://www.sc.com/np/important-information/historical-base-rate-interest/",
       "history": [
         {
+          "date": "2083-06",
+          "base_rate": 3.94,
+          "interest_spread": 3.68
+        },
+        {
           "date": "2083-05",
           "base_rate": 4.03,
           "interest_spread": 3.78
@@ -7490,6 +7495,16 @@
       "excludeFromAvg": true,
       "history": [
         {
+          "date": "2083-06",
+          "base_rate": 19.04,
+          "interest_spread": 1.40
+        },
+        {
+          "date": "2083-05",
+          "base_rate": 12.14,
+          "interest_spread": 3.96
+        },
+        {
           "date": "2083-04",
           "base_rate": 10.8,
           "interest_spread": 3.86
@@ -8782,6 +8797,11 @@
       "website": "https://www.sindhubank.com.np/base-rate/",
       "note": "MoU Signed for merger with Muktinath Bikas Bank",
       "history": [
+        {
+          "date": "2083-06",
+          "base_rate": 7.61,
+          "interest_spread": 4.59
+        },
         {
           "date": "2083-05",
           "base_rate": 7.30,
@@ -10080,6 +10100,11 @@
       "website": "https://gurkhasfinance.com.np/base-rate-and-net-spread-interest-rate",
       "history": [
         {
+          "date": "2083-06",
+          "base_rate": 6.10,
+          "interest_spread": 4.36
+        },
+        {
           "date": "2083-05",
           "base_rate": 6.11,
           "interest_spread": 4.45
@@ -11145,6 +11170,11 @@
       "name": "Nepal Finance",
       "website": "https://nepalfinance.com.np/base-rate",
       "history": [
+        {
+          "date": "2083-06",
+          "base_rate": 7.37,
+          "interest_spread": 4.41
+        },
         {
           "date": "2083-05",
           "base_rate": 7.27,
@@ -12378,6 +12408,11 @@
       "name": "Shree Investment & Finance",
       "website": "https://www.shreefinance.com.np/base-rate-and-intrest-sprea-sheet/",
       "history": [
+        {
+          "date": "2083-06",
+          "base_rate": 6.08,
+          "interest_spread": 3.63
+        },
         {
           "date": "2083-05",
           "base_rate": 6.24,
