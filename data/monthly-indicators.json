@@ -3146,6 +3146,11 @@
       "website": "https://www.nimb.com.np/personal-banking/base-rate-and-interest-rate-spread-(3-years-data)",
       "history": [
         {
+          "date": "2083-06",
+          "base_rate": 4.44,
+          "interest_spread": 3.00
+        },
+        {
           "date": "2083-05",
           "base_rate": 4.44,
           "interest_spread": 2.99
